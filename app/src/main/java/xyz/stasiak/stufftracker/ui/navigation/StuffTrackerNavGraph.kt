@@ -17,6 +17,7 @@ fun StuffTrackerNavHost(navController: NavHostController, modifier: Modifier = M
     ) {
         composable(route = LoginDestination.route) {
             LoginScreen(
+                navigateToHome = {}
             )
         }
     }
