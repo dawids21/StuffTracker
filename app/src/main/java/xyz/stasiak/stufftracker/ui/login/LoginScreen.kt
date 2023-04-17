@@ -31,12 +31,7 @@ fun LoginScreen(navigateToHome: () -> Unit, modifier: Modifier = Modifier) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Text(
-            text = stringResource(R.string.app_name),
-            fontFamily = FontFamily(Font(R.font.itim)),
-            fontSize = 48.sp,
-            color = MaterialTheme.colorScheme.onPrimary
-        )
+        Logo()
         Spacer(modifier = Modifier.height(48.dp))
         Button(
             onClick = navigateToHome,
@@ -48,6 +43,17 @@ fun LoginScreen(navigateToHome: () -> Unit, modifier: Modifier = Modifier) {
             Text(text = stringResource(R.string.login_with_google))
         }
     }
+}
+
+@Composable
+private fun Logo(modifier: Modifier = Modifier) {
+    Text(
+        text = stringResource(R.string.app_name),
+        fontFamily = FontFamily(Font(R.font.itim)),
+        fontSize = 48.sp,
+        color = MaterialTheme.colorScheme.onPrimary,
+        modifier = modifier
+    )
 }
 
 @Preview(showBackground = true)
