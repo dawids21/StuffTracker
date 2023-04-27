@@ -2,4 +2,11 @@
     <string name="app_name">StuffTracker</string>
     <string name="back_button">Back</string>
     <string name="login_with_google">Login with Google</string>
+    <string name="item_entry_title">Add item</string>
+    <string name="settings">Settings</string>
+    <string name="search">Search</string>
+    <string name="filter">Filter</string>
+    <string name="no_item_description">No item added yet</string>
+    <string name="item_entry_items">Items: %1$d</string>
+    <string name="item_entry_uses_left">Left: %1$d</string>
 </resources>
