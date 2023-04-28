@@ -7,6 +7,8 @@ data class Item(
     val name: String,
     val category: String,
     val numOfItems: Int,
+    val currentUses: Int,
     val usesLeft: Int,
+    val usesPerItem: Int,
     @DrawableRes val image: Int
 )
