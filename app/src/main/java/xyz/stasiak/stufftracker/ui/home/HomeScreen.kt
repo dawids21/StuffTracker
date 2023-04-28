@@ -24,9 +24,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Top
 import androidx.compose.ui.Modifier
@@ -93,7 +95,7 @@ fun HomeBody(
     showSearch: Boolean,
     modifier: Modifier = Modifier
 ) {
-    val searchValue = remember(showSearch) { mutableStateOf("") }
+    var searchValue by remember(showSearch) { mutableStateOf("") }
     val filteredCategories = remember { mutableStateListOf<String>() }
     Column(
         modifier = modifier
@@ -103,8 +105,8 @@ fun HomeBody(
     ) {
         if (showSearch) {
             ItemSearch(
-                searchValue = searchValue.value,
-                onSearch = { searchValue.value = it },
+                searchValue = searchValue,
+                onSearch = { searchValue = it },
             )
         }
         if (itemList.isEmpty()) {
@@ -122,7 +124,7 @@ fun HomeBody(
             ItemList(
                 itemList = itemList,
                 onItemClick = { onItemClick(it.id) },
-                searchValue = searchValue.value,
+                searchValue = searchValue,
                 filteredCategories = filteredCategories
             )
         }
