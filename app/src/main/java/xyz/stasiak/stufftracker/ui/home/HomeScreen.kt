@@ -3,6 +3,7 @@ package xyz.stasiak.stufftracker.ui.home
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -25,6 +26,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Top
 import androidx.compose.ui.Modifier
@@ -45,6 +50,7 @@ import xyz.stasiak.stufftracker.ui.theme.StuffTrackerTheme
 
 @Composable
 fun HomeScreen(modifier: Modifier = Modifier) {
+    val filtersShown = rememberSaveable { mutableStateOf(false) }
     Scaffold(
         topBar = {
             StuffTrackerTopAppBar(
@@ -83,26 +89,46 @@ fun HomeScreen(modifier: Modifier = Modifier) {
         HomeBody(
             itemList = ItemsRepository.getItems(),
             onItemClick = { },
+            filtersShown = filtersShown.value,
             modifier = Modifier.padding(innerPadding)
         )
     }
 }
 
 @Composable
-fun HomeBody(itemList: List<Item>, onItemClick: (Int) -> Unit, modifier: Modifier = Modifier) {
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-        if (itemList.isEmpty()) {
-            Text(
-                text = stringResource(R.string.no_item_description),
-                style = MaterialTheme.typography.bodyMedium
+fun HomeBody(
+    itemList: List<Item>,
+    onItemClick: (Int) -> Unit,
+    filtersShown: Boolean,
+    modifier: Modifier = Modifier
+) {
+    val filteredCategories = remember { mutableStateListOf<String>() }
+    Box(modifier = modifier.fillMaxSize()) {
+        Column(
+            modifier = Modifier
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            if (itemList.isEmpty()) {
+                Text(
+                    text = stringResource(R.string.no_item_description),
+                    style = MaterialTheme.typography.bodyMedium
+                )
+            } else {
+                ItemList(
+                    itemList = itemList,
+                    onItemClick = { onItemClick(it.id) },
+                    filteredCategories = filteredCategories
+                )
+            }
+        }
+        if (filtersShown) {
+            ItemFilter(
+                categories = itemList.map { it.category }.distinct(),
+                filtered = filteredCategories,
+                addToFilter = { filteredCategories.add(it) },
+                removeFromFilter = { filteredCategories.remove(it) }
             )
-        } else {
-            ItemList(itemList = itemList, onItemClick = { onItemClick(it.id) })
         }
     }
 }
@@ -111,10 +137,13 @@ fun HomeBody(itemList: List<Item>, onItemClick: (Int) -> Unit, modifier: Modifie
 private fun ItemList(
     itemList: List<Item>,
     onItemClick: (Item) -> Unit,
+    filteredCategories: List<String>,
     modifier: Modifier = Modifier
 ) {
+    val filteredItems =
+        itemList.filter { filteredCategories.isEmpty() || filteredCategories.contains(it.category) }
     LazyColumn(modifier = modifier) {
-        items(items = itemList, key = { it.id }) { item ->
+        items(items = filteredItems, key = { it.id }) { item ->
             ItemEntry(item = item, onItemClick = onItemClick)
             Divider()
         }
@@ -204,7 +233,7 @@ private fun ItemEntry(
 @Composable
 fun HomeBodyPreview() {
     StuffTrackerTheme(dynamicColor = false, darkTheme = true) {
-        HomeBody(itemList = ItemsRepository.getItems(), onItemClick = {})
+        HomeBody(itemList = ItemsRepository.getItems(), onItemClick = {}, filtersShown = false)
     }
 }
 
