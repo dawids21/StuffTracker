@@ -1,12 +1,13 @@
-package xyz.stasiak.stufftracker.ui.item.details
+package xyz.stasiak.stufftracker.ui.item.edit
 
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Save
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -15,8 +16,7 @@ import xyz.stasiak.stufftracker.StuffTrackerTopAppBar
 import xyz.stasiak.stufftracker.data.ItemsRepository
 
 @Composable
-fun ItemDetailsScreen(
-    navigateToEditItem: (Int) -> Unit,
+fun ItemEditScreen(
     navigateBack: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -24,26 +24,23 @@ fun ItemDetailsScreen(
     Scaffold(
         topBar = {
             StuffTrackerTopAppBar(
-                title = stringResource(ItemDetailsDestination.titleRes, item.name),
+                title = stringResource(ItemEditDestination.titleRes),
                 canNavigateBack = true,
                 navigateUp = navigateBack
             )
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { navigateToEditItem(item.id) },
+                onClick = { navigateBack() },
                 modifier = Modifier.navigationBarsPadding()
             ) {
                 Icon(
-                    imageVector = Icons.Default.Edit,
-                    contentDescription = stringResource(R.string.edit_item),
+                    imageVector = Icons.Default.Save,
+                    contentDescription = stringResource(R.string.save_item),
                 )
             }
         },
     ) { innerPadding ->
-        ItemDetailsBody(
-            item = item,
-            modifier = modifier.padding(innerPadding)
-        )
+        Text(item.name, modifier = modifier.padding(innerPadding))
     }
 }

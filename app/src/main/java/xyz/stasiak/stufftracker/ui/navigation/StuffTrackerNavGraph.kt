@@ -11,6 +11,8 @@ import xyz.stasiak.stufftracker.ui.home.HomeDestination
 import xyz.stasiak.stufftracker.ui.home.HomeScreen
 import xyz.stasiak.stufftracker.ui.item.details.ItemDetailsDestination
 import xyz.stasiak.stufftracker.ui.item.details.ItemDetailsScreen
+import xyz.stasiak.stufftracker.ui.item.edit.ItemEditDestination
+import xyz.stasiak.stufftracker.ui.item.edit.ItemEditScreen
 import xyz.stasiak.stufftracker.ui.login.LoginDestination
 import xyz.stasiak.stufftracker.ui.login.LoginScreen
 
@@ -40,7 +42,19 @@ fun StuffTrackerNavHost(navController: NavHostController, modifier: Modifier = M
             })
         ) {
             ItemDetailsScreen(
-                navigateToEditItem = { },
+                navigateToEditItem = {
+                    navController.navigate("${ItemEditDestination.route}/$it")
+                },
+                navigateBack = { navController.navigateUp() }
+            )
+        }
+        composable(
+            route = ItemEditDestination.routeWithArgs,
+            arguments = listOf(navArgument(ItemEditDestination.itemIdArg) {
+                type = NavType.IntType
+            })
+        ) {
+            ItemEditScreen(
                 navigateBack = { navController.navigateUp() }
             )
         }

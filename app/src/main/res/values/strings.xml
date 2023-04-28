@@ -11,7 +11,7 @@
     <string name="item_entry_uses_left">Left: %1$d</string>
     <string name="add_new_item">Add new item</string>
     <string name="item_detail_title">%1$s</string>
-    <string name="edit_item_title">Edit item</string>
+    <string name="edit_item">Edit item</string>
     <string name="item_num_of_items">Number of items: %1$s</string>
     <string name="item_current_uses">Current uses: %1$s</string>
     <string name="item_uses_left">Uses left: %1$s</string>
@@ -20,4 +20,6 @@
     <string name="buy_item">Buy item</string>
     <string name="add_item_to_shopping_list">Add item to shopping list</string>
     <string name="delete_item">Delete item</string>
+    <string name="item_edit_title">Edit item</string>
+    <string name="save_item">Save item</string>
 </resources>
