@@ -9,4 +9,5 @@
     <string name="no_item_description">No item added yet</string>
     <string name="item_entry_items">Items: %1$d</string>
     <string name="item_entry_uses_left">Left: %1$d</string>
+    <string name="add_new_item">Add new item</string>
 </resources>

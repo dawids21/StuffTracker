@@ -7,21 +7,18 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.FilterList
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Divider
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -40,6 +37,7 @@ import androidx.compose.ui.unit.dp
 import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox
 import xyz.stasiak.stufftracker.R
+import xyz.stasiak.stufftracker.StuffTrackerBottomAppBar
 import xyz.stasiak.stufftracker.StuffTrackerTopAppBar
 import xyz.stasiak.stufftracker.data.Item
 import xyz.stasiak.stufftracker.data.ItemsRepository
@@ -55,18 +53,6 @@ fun HomeScreen(modifier: Modifier = Modifier) {
                 actions = {
                     IconButton(onClick = { /* do something */ }) {
                         Icon(
-                            Icons.Filled.FilterList,
-                            contentDescription = stringResource(R.string.filter)
-                        )
-                    }
-                    IconButton(onClick = {}) {
-                        Icon(
-                            Icons.Filled.Search,
-                            contentDescription = stringResource(R.string.search)
-                        )
-                    }
-                    IconButton(onClick = { /* do something */ }) {
-                        Icon(
                             Icons.Filled.Settings,
                             contentDescription = stringResource(R.string.settings)
                         )
@@ -74,18 +60,23 @@ fun HomeScreen(modifier: Modifier = Modifier) {
                 }
             )
         },
-        floatingActionButton = {
-            FloatingActionButton(
-                onClick = { /*TODO*/ },
-                modifier = Modifier.navigationBarsPadding(),
-                containerColor = MaterialTheme.colorScheme.primary
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Add,
-                    contentDescription = stringResource(R.string.item_entry_title),
-                    tint = MaterialTheme.colorScheme.onPrimary
-                )
-            }
+        bottomBar = {
+            StuffTrackerBottomAppBar(
+                actions = {
+                    IconButton(onClick = {}) {
+                        Icon(
+                            Icons.Filled.Search,
+                            contentDescription = stringResource(R.string.search)
+                        )
+                    }
+                    IconButton(onClick = { filtersShown.value = !filtersShown.value }) {
+                        Icon(
+                            Icons.Filled.FilterList,
+                            contentDescription = stringResource(R.string.filter)
+                        )
+                    }
+                }
+            )
         },
         modifier = modifier
     ) { innerPadding ->
