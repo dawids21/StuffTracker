@@ -3,7 +3,6 @@ package xyz.stasiak.stufftracker.ui.home
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,7 +14,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
-import androidx.compose.material.icons.filled.FilterList
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
@@ -50,7 +48,7 @@ import xyz.stasiak.stufftracker.ui.theme.StuffTrackerTheme
 
 @Composable
 fun HomeScreen(modifier: Modifier = Modifier) {
-    val filtersShown = rememberSaveable { mutableStateOf(false) }
+    val showSearch = rememberSaveable { mutableStateOf(false) }
     Scaffold(
         topBar = {
             StuffTrackerTopAppBar(
@@ -69,16 +67,10 @@ fun HomeScreen(modifier: Modifier = Modifier) {
         bottomBar = {
             StuffTrackerBottomAppBar(
                 actions = {
-                    IconButton(onClick = {}) {
+                    IconButton(onClick = { showSearch.value = !showSearch.value }) {
                         Icon(
                             Icons.Filled.Search,
                             contentDescription = stringResource(R.string.search)
-                        )
-                    }
-                    IconButton(onClick = { filtersShown.value = !filtersShown.value }) {
-                        Icon(
-                            Icons.Filled.FilterList,
-                            contentDescription = stringResource(R.string.filter)
                         )
                     }
                 }
@@ -89,7 +81,7 @@ fun HomeScreen(modifier: Modifier = Modifier) {
         HomeBody(
             itemList = ItemsRepository.getItems(),
             onItemClick = { },
-            filtersShown = filtersShown.value,
+            showSearch = showSearch.value,
             modifier = Modifier.padding(innerPadding)
         )
     }
@@ -99,35 +91,40 @@ fun HomeScreen(modifier: Modifier = Modifier) {
 fun HomeBody(
     itemList: List<Item>,
     onItemClick: (Int) -> Unit,
-    filtersShown: Boolean,
+    showSearch: Boolean,
     modifier: Modifier = Modifier
 ) {
+    val searchValue = remember(showSearch) { mutableStateOf("") }
     val filteredCategories = remember { mutableStateListOf<String>() }
-    Box(modifier = modifier.fillMaxSize()) {
-        Column(
-            modifier = Modifier
-                .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            if (itemList.isEmpty()) {
-                Text(
-                    text = stringResource(R.string.no_item_description),
-                    style = MaterialTheme.typography.bodyMedium
-                )
-            } else {
-                ItemList(
-                    itemList = itemList,
-                    onItemClick = { onItemClick(it.id) },
-                    filteredCategories = filteredCategories
-                )
-            }
+    Column(
+        modifier = modifier
+            .padding(16.dp)
+            .fillMaxSize(),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        if (showSearch) {
+            ItemSearch(
+                searchValue = searchValue.value,
+                onSearch = { searchValue.value = it },
+            )
         }
-        if (filtersShown) {
+        if (itemList.isEmpty()) {
+            Text(
+                text = stringResource(R.string.no_item_description),
+                style = MaterialTheme.typography.bodyMedium
+            )
+        } else {
             ItemFilter(
                 categories = itemList.map { it.category }.distinct(),
                 filtered = filteredCategories,
                 addToFilter = { filteredCategories.add(it) },
                 removeFromFilter = { filteredCategories.remove(it) }
+            )
+            ItemList(
+                itemList = itemList,
+                onItemClick = { onItemClick(it.id) },
+                searchValue = searchValue.value,
+                filteredCategories = filteredCategories
             )
         }
     }
@@ -137,11 +134,13 @@ fun HomeBody(
 private fun ItemList(
     itemList: List<Item>,
     onItemClick: (Item) -> Unit,
+    searchValue: String,
     filteredCategories: List<String>,
     modifier: Modifier = Modifier
 ) {
     val filteredItems =
         itemList.filter { filteredCategories.isEmpty() || filteredCategories.contains(it.category) }
+            .filter { searchValue.isBlank() || it.name.contains(searchValue, ignoreCase = true) }
     LazyColumn(modifier = modifier) {
         items(items = filteredItems, key = { it.id }) { item ->
             ItemEntry(item = item, onItemClick = onItemClick)
@@ -233,7 +232,11 @@ private fun ItemEntry(
 @Composable
 fun HomeBodyPreview() {
     StuffTrackerTheme(dynamicColor = false, darkTheme = true) {
-        HomeBody(itemList = ItemsRepository.getItems(), onItemClick = {}, filtersShown = false)
+        HomeBody(
+            itemList = ItemsRepository.getItems(),
+            onItemClick = {},
+            showSearch = false
+        )
     }
 }
 
