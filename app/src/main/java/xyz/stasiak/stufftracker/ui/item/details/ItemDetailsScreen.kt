@@ -40,10 +40,11 @@ fun ItemDetailsScreen(
                 )
             }
         },
+        modifier = modifier
     ) { innerPadding ->
         ItemDetailsBody(
             item = item,
-            modifier = modifier.padding(innerPadding)
+            modifier = Modifier.padding(innerPadding)
         )
     }
 }

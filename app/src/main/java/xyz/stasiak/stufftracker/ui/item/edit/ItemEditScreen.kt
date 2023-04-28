@@ -7,9 +7,14 @@ import androidx.compose.material.icons.filled.Save
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import xyz.stasiak.stufftracker.R
 import xyz.stasiak.stufftracker.StuffTrackerTopAppBar
@@ -21,6 +26,9 @@ fun ItemEditScreen(
     modifier: Modifier = Modifier
 ) {
     val item = ItemsRepository.getItems().first()
+    var fabHeight by remember { mutableStateOf(0) }
+    val heightInDp = with(LocalDensity.current) { fabHeight.toDp() }
+
     Scaffold(
         topBar = {
             StuffTrackerTopAppBar(
@@ -31,8 +39,14 @@ fun ItemEditScreen(
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { navigateBack() },
-                modifier = Modifier.navigationBarsPadding()
+                onClick = {
+                    navigateBack()
+                },
+                modifier = Modifier
+                    .navigationBarsPadding()
+                    .onGloballyPositioned { coordinates ->
+                        fabHeight = coordinates.size.height
+                    }
             ) {
                 Icon(
                     imageVector = Icons.Default.Save,
@@ -40,7 +54,12 @@ fun ItemEditScreen(
                 )
             }
         },
+        modifier = modifier
     ) { innerPadding ->
-        Text(item.name, modifier = modifier.padding(innerPadding))
+        ItemEditBody(
+            item = item,
+            fabHeight = heightInDp,
+            modifier = Modifier.padding(innerPadding)
+        )
     }
 }

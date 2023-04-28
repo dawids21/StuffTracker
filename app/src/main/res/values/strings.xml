@@ -22,4 +22,9 @@
     <string name="delete_item">Delete item</string>
     <string name="item_edit_title">Edit item</string>
     <string name="save_item">Save item</string>
+    <string name="category">Category</string>
+    <string name="name">Name</string>
+    <string name="number_of_items">Number of items</string>
+    <string name="current_uses">Current uses</string>
+    <string name="uses_per_item">Uses per item</string>
 </resources>
