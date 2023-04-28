@@ -3,10 +3,14 @@ package xyz.stasiak.stufftracker.ui.navigation
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import xyz.stasiak.stufftracker.ui.home.HomeDestination
 import xyz.stasiak.stufftracker.ui.home.HomeScreen
+import xyz.stasiak.stufftracker.ui.item.details.ItemDetailsDestination
+import xyz.stasiak.stufftracker.ui.item.details.ItemDetailsScreen
 import xyz.stasiak.stufftracker.ui.login.LoginDestination
 import xyz.stasiak.stufftracker.ui.login.LoginScreen
 
@@ -23,7 +27,22 @@ fun StuffTrackerNavHost(navController: NavHostController, modifier: Modifier = M
             )
         }
         composable(route = HomeDestination.route) {
-            HomeScreen()
+            HomeScreen(
+                navigateToItemUpdate = {
+                    navController.navigate("${ItemDetailsDestination.route}/${it}")
+                }
+            )
+        }
+        composable(
+            route = ItemDetailsDestination.routeWithArgs,
+            arguments = listOf(navArgument(ItemDetailsDestination.itemIdArg) {
+                type = NavType.IntType
+            })
+        ) {
+            ItemDetailsScreen(
+                navigateToEditItem = { },
+                navigateBack = { navController.navigateUp() }
+            )
         }
     }
 }

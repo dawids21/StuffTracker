@@ -47,7 +47,7 @@ import xyz.stasiak.stufftracker.data.ItemsRepository
 import xyz.stasiak.stufftracker.ui.theme.StuffTrackerTheme
 
 @Composable
-fun HomeScreen(modifier: Modifier = Modifier) {
+fun HomeScreen(navigateToItemUpdate: (Int) -> Unit, modifier: Modifier = Modifier) {
     val showSearch = rememberSaveable { mutableStateOf(false) }
     Scaffold(
         topBar = {
@@ -80,7 +80,7 @@ fun HomeScreen(modifier: Modifier = Modifier) {
     ) { innerPadding ->
         HomeBody(
             itemList = ItemsRepository.getItems(),
-            onItemClick = { },
+            onItemClick = { navigateToItemUpdate(it) },
             showSearch = showSearch.value,
             modifier = Modifier.padding(innerPadding)
         )
@@ -185,12 +185,12 @@ private fun ItemEntry(
         startActions = listOf(useAction),
         endActions = listOf(restoreAction),
         modifier = modifier
+            .clickable(onClick = { onItemClick(item) })
     ) {
         Row(
             modifier = Modifier
                 .padding(vertical = 16.dp)
-                .fillMaxWidth()
-                .clickable(onClick = { onItemClick(item) }),
+                .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Image(
