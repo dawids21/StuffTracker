@@ -27,4 +27,6 @@
     <string name="number_of_items">Number of items</string>
     <string name="current_uses">Current uses</string>
     <string name="uses_per_item">Uses per item</string>
+    <string name="google_keep">Google Keep</string>
+    <string name="categories">Categories</string>
 </resources>

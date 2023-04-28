@@ -48,7 +48,11 @@ import xyz.stasiak.stufftracker.data.ItemsRepository
 import xyz.stasiak.stufftracker.ui.theme.StuffTrackerTheme
 
 @Composable
-fun HomeScreen(navigateToItemUpdate: (Int) -> Unit, modifier: Modifier = Modifier) {
+fun HomeScreen(
+    navigateToItemUpdate: (Int) -> Unit,
+    navigateToSettings: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     val showSearch = remember { mutableStateOf(false) }
     Scaffold(
         topBar = {
@@ -56,7 +60,7 @@ fun HomeScreen(navigateToItemUpdate: (Int) -> Unit, modifier: Modifier = Modifie
                 title = stringResource(HomeDestination.titleRes),
                 canNavigateBack = false,
                 actions = {
-                    IconButton(onClick = { /* do something */ }) {
+                    IconButton(onClick = { navigateToSettings() }) {
                         Icon(
                             Icons.Filled.Settings,
                             contentDescription = stringResource(R.string.settings)
