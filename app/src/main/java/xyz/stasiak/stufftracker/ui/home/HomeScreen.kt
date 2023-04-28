@@ -27,7 +27,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Top
 import androidx.compose.ui.Modifier
@@ -48,7 +47,7 @@ import xyz.stasiak.stufftracker.ui.theme.StuffTrackerTheme
 
 @Composable
 fun HomeScreen(navigateToItemUpdate: (Int) -> Unit, modifier: Modifier = Modifier) {
-    val showSearch = rememberSaveable { mutableStateOf(false) }
+    val showSearch = remember { mutableStateOf(false) }
     Scaffold(
         topBar = {
             StuffTrackerTopAppBar(
