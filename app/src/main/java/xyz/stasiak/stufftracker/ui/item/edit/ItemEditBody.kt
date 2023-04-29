@@ -82,6 +82,7 @@ fun ItemEditBody(item: Item, fabHeight: Dp, modifier: Modifier = Modifier) {
             },
             label = { Text(stringResource(R.string.name)) },
             isError = !nameValid,
+            singleLine = true,
             modifier = Modifier.fillMaxWidth()
         )
         OutlinedTextField(
@@ -92,6 +93,7 @@ fun ItemEditBody(item: Item, fabHeight: Dp, modifier: Modifier = Modifier) {
             },
             label = { Text(stringResource(R.string.category)) },
             isError = !categoryValid,
+            singleLine = true,
             modifier = Modifier.fillMaxWidth()
         )
         OutlinedTextField(
@@ -103,6 +105,7 @@ fun ItemEditBody(item: Item, fabHeight: Dp, modifier: Modifier = Modifier) {
             label = { Text(stringResource(R.string.number_of_items)) },
             isError = !numOfItemsValid,
             keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
+            singleLine = true,
             modifier = Modifier.fillMaxWidth()
         )
         OutlinedTextField(
@@ -114,6 +117,7 @@ fun ItemEditBody(item: Item, fabHeight: Dp, modifier: Modifier = Modifier) {
             label = { Text(stringResource(R.string.current_uses)) },
             isError = !currentUsesValid,
             keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
+            singleLine = true,
             modifier = Modifier.fillMaxWidth()
         )
         OutlinedTextField(
@@ -125,6 +129,7 @@ fun ItemEditBody(item: Item, fabHeight: Dp, modifier: Modifier = Modifier) {
             label = { Text(stringResource(R.string.uses_per_item)) },
             isError = !usesPerItemValid,
             keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
+            singleLine = true,
             modifier = Modifier.fillMaxWidth()
         )
     }
