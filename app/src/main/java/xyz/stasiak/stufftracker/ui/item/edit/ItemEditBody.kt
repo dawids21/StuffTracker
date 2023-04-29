@@ -42,19 +42,33 @@ fun ItemEditBody(item: Item, fabHeight: Dp, modifier: Modifier = Modifier) {
         categoryValid = category.isNotBlank()
     }
 
-    var numOfItems by remember { mutableStateOf(item.numOfItems.toString()) }
+    var numOfItems by remember {
+        mutableStateOf(if (item.numOfItems != 0) item.numOfItems.toString() else "")
+    }
     var numOfItemsValid by remember { mutableStateOf(true) }
     fun validateNumOfItems() {
         numOfItemsValid = numOfItems.isNotBlank() && numOfItems.toIntOrNull() != null
     }
 
-    var currentUses by remember { mutableStateOf(item.currentUses.toString()) }
+    var currentUses by remember {
+        mutableStateOf(if (item.currentUses != 0) item.currentUses.toString() else "")
+    }
     var currentUsesValid by remember { mutableStateOf(true) }
     fun validateCurrentUses() {
         currentUsesValid = currentUses.isNotBlank() && currentUses.toIntOrNull() != null
     }
 
-    var usesPerItem by remember { mutableStateOf(item.usesPerItem.toString()) }
+    var usesLeft by remember {
+        mutableStateOf(if (item.usesLeft != 0) item.usesLeft.toString() else "")
+    }
+    var usesLeftValid by remember { mutableStateOf(true) }
+    fun validateUsesLeft() {
+        usesLeftValid = usesLeft.isNotBlank() && usesLeft.toIntOrNull() != null
+    }
+
+    var usesPerItem by remember {
+        mutableStateOf(if (item.usesPerItem != 0) item.usesPerItem.toString() else "")
+    }
     var usesPerItemValid by remember { mutableStateOf(true) }
     fun validateUsesPerItem() {
         usesPerItemValid = usesPerItem.isNotBlank() && usesPerItem.toIntOrNull() != null
@@ -68,7 +82,7 @@ fun ItemEditBody(item: Item, fabHeight: Dp, modifier: Modifier = Modifier) {
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         Image(
-            painter = painterResource(item.image),
+            painter = painterResource(if (item.image != 0) item.image else R.drawable.ic_launcher_background),
             contentDescription = null,
             modifier = Modifier
                 .fillMaxWidth()
@@ -121,6 +135,18 @@ fun ItemEditBody(item: Item, fabHeight: Dp, modifier: Modifier = Modifier) {
             modifier = Modifier.fillMaxWidth()
         )
         OutlinedTextField(
+            value = usesLeft,
+            onValueChange = {
+                usesLeft = it
+                validateUsesLeft()
+            },
+            label = { Text(stringResource(R.string.uses_left)) },
+            isError = !usesLeftValid,
+            keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
+            singleLine = true,
+            modifier = Modifier.fillMaxWidth()
+        )
+        OutlinedTextField(
             value = usesPerItem,
             onValueChange = {
                 usesPerItem = it
@@ -140,8 +166,7 @@ fun ItemEditBody(item: Item, fabHeight: Dp, modifier: Modifier = Modifier) {
 fun ItemEditBodyPreview() {
     StuffTrackerTheme(dynamicColor = false, darkTheme = true) {
         ItemEditBody(
-            Item(1, "name", "description", 1, 1, 1, 1, R.drawable.shampoo),
-            (-16).dp
+            Item(1, "name", "description", 1, 1, 1, 1, R.drawable.shampoo), (-16).dp
         )
     }
 }

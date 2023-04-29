@@ -21,6 +21,7 @@ import xyz.stasiak.stufftracker.ui.theme.StuffTrackerTheme
 
 @Composable
 fun StuffTrackerBottomAppBar(
+    onFabClick: () -> Unit,
     modifier: Modifier = Modifier,
     actions: @Composable RowScope.() -> Unit = { }
 ) {
@@ -29,7 +30,7 @@ fun StuffTrackerBottomAppBar(
         actions = actions,
         floatingActionButton = {
             FloatingActionButton(
-                onClick = {},
+                onClick = onFabClick,
                 containerColor = BottomAppBarDefaults.bottomAppBarFabColor,
                 elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation()
             ) {
@@ -44,26 +45,28 @@ fun StuffTrackerBottomAppBar(
 @Composable
 fun BottomAppBarPreview() {
     StuffTrackerTheme(dynamicColor = false, darkTheme = true) {
-        StuffTrackerBottomAppBar(actions = {
-            IconButton(onClick = { /* do something */ }) {
-                Icon(
-                    Icons.Filled.FilterList,
-                    contentDescription = stringResource(R.string.filter)
-                )
+        StuffTrackerBottomAppBar(
+            onFabClick = {},
+            actions = {
+                IconButton(onClick = { /* do something */ }) {
+                    Icon(
+                        Icons.Filled.FilterList,
+                        contentDescription = stringResource(R.string.filter)
+                    )
+                }
+                IconButton(onClick = {}) {
+                    Icon(
+                        Icons.Filled.Search,
+                        contentDescription = stringResource(R.string.search)
+                    )
+                }
+                IconButton(onClick = { /* do something */ }) {
+                    Icon(
+                        Icons.Filled.Settings,
+                        contentDescription = stringResource(R.string.settings)
+                    )
+                }
             }
-            IconButton(onClick = {}) {
-                Icon(
-                    Icons.Filled.Search,
-                    contentDescription = stringResource(R.string.search)
-                )
-            }
-            IconButton(onClick = { /* do something */ }) {
-                Icon(
-                    Icons.Filled.Settings,
-                    contentDescription = stringResource(R.string.settings)
-                )
-            }
-        }
         )
     }
 }

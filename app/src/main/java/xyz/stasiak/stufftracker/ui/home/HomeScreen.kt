@@ -49,6 +49,7 @@ import xyz.stasiak.stufftracker.ui.theme.StuffTrackerTheme
 
 @Composable
 fun HomeScreen(
+    navigateToItemAdd: () -> Unit,
     navigateToItemUpdate: (Int) -> Unit,
     navigateToSettings: () -> Unit,
     modifier: Modifier = Modifier
@@ -71,6 +72,7 @@ fun HomeScreen(
         },
         bottomBar = {
             StuffTrackerBottomAppBar(
+                onFabClick = navigateToItemAdd,
                 actions = {
                     IconButton(onClick = { showSearch.value = !showSearch.value }) {
                         Icon(
