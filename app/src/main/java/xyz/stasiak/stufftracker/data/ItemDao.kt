@@ -8,4 +8,7 @@ import kotlinx.coroutines.flow.Flow
 interface ItemDao {
     @Query("SELECT * FROM items")
     fun getItems(): Flow<List<Item>>
+
+    @Query("SELECT * FROM items WHERE id = :id")
+    fun getItem(id: Int): Flow<Item>
 }

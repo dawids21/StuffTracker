@@ -33,4 +33,8 @@ class MockItemsRepository : ItemsRepository {
     override fun getItems(): Flow<List<Item>> {
         return flowOf(MockItemsRepository.getItems())
     }
+
+    override fun getItem(id: Int): Flow<Item> {
+        return flowOf(MockItemsRepository.getItems().first { it.id == id })
+    }
 }
