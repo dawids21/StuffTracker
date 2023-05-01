@@ -6,14 +6,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import xyz.stasiak.stufftracker.StuffTrackerTopAppBar
-import xyz.stasiak.stufftracker.data.ItemsRepository
+import xyz.stasiak.stufftracker.data.MockItemsRepository
 
 @Composable
 fun CategorySettingsScreen(
     navigateBack: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val categories = ItemsRepository.getItems().map { it.category }.distinct().sorted()
+    val categories = MockItemsRepository.getItems().map { it.category }.distinct().sorted()
     Scaffold(
         topBar = {
             StuffTrackerTopAppBar(

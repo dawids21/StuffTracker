@@ -44,7 +44,7 @@ import xyz.stasiak.stufftracker.R
 import xyz.stasiak.stufftracker.StuffTrackerBottomAppBar
 import xyz.stasiak.stufftracker.StuffTrackerTopAppBar
 import xyz.stasiak.stufftracker.data.Item
-import xyz.stasiak.stufftracker.data.ItemsRepository
+import xyz.stasiak.stufftracker.data.MockItemsRepository
 import xyz.stasiak.stufftracker.ui.theme.StuffTrackerTheme
 
 @Composable
@@ -86,7 +86,7 @@ fun HomeScreen(
         modifier = modifier
     ) { innerPadding ->
         HomeBody(
-            itemList = ItemsRepository.getItems(),
+            itemList = MockItemsRepository.getItems(),
             onItemClick = { navigateToItemUpdate(it) },
             showSearch = showSearch.value,
             modifier = Modifier.padding(innerPadding)
@@ -240,7 +240,7 @@ private fun ItemEntry(
 fun HomeBodyPreview() {
     StuffTrackerTheme(dynamicColor = false, darkTheme = true) {
         HomeBody(
-            itemList = ItemsRepository.getItems(),
+            itemList = MockItemsRepository.getItems(),
             onItemClick = {},
             showSearch = false
         )
@@ -251,6 +251,6 @@ fun HomeBodyPreview() {
 @Composable
 fun ItemEntryPreview() {
     StuffTrackerTheme(dynamicColor = false, darkTheme = true) {
-        ItemEntry(item = ItemsRepository.getItems().first(), onItemClick = {})
+        ItemEntry(item = MockItemsRepository.getItems().first(), onItemClick = {})
     }
 }

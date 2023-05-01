@@ -18,14 +18,14 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import xyz.stasiak.stufftracker.R
 import xyz.stasiak.stufftracker.StuffTrackerTopAppBar
-import xyz.stasiak.stufftracker.data.ItemsRepository
+import xyz.stasiak.stufftracker.data.MockItemsRepository
 
 @Composable
 fun ItemEditScreen(
     navigateBack: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val item = ItemsRepository.getItems().first()
+    val item = MockItemsRepository.getItems().first()
     var fabHeight by remember { mutableStateOf(0) }
     val heightInDp = with(LocalDensity.current) { fabHeight.toDp() }
 

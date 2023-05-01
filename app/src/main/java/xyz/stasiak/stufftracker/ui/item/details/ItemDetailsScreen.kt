@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import xyz.stasiak.stufftracker.R
 import xyz.stasiak.stufftracker.StuffTrackerTopAppBar
-import xyz.stasiak.stufftracker.data.ItemsRepository
+import xyz.stasiak.stufftracker.data.MockItemsRepository
 
 @Composable
 fun ItemDetailsScreen(
@@ -20,7 +20,7 @@ fun ItemDetailsScreen(
     navigateBack: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val item = ItemsRepository.getItems().first()
+    val item = MockItemsRepository.getItems().first()
     Scaffold(
         topBar = {
             StuffTrackerTopAppBar(

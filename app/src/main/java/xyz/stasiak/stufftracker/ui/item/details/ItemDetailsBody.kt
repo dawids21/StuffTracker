@@ -13,7 +13,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import xyz.stasiak.stufftracker.data.Item
-import xyz.stasiak.stufftracker.data.ItemsRepository
+import xyz.stasiak.stufftracker.data.MockItemsRepository
 import xyz.stasiak.stufftracker.ui.theme.StuffTrackerTheme
 
 @Composable
@@ -40,6 +40,6 @@ fun ItemDetailsBody(item: Item, modifier: Modifier = Modifier) {
 @Composable
 fun ItemDetailsBodyPreview() {
     StuffTrackerTheme(dynamicColor = false, darkTheme = true) {
-        ItemDetailsBody(ItemsRepository.getItems().first())
+        ItemDetailsBody(MockItemsRepository.getItems().first())
     }
 }
