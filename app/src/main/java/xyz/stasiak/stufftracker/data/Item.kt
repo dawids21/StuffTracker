@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "items")
 data class Item(
     @PrimaryKey(autoGenerate = true)
-    val id: Int,
+    val id: Int = 0,
     val name: String,
     val category: String,
     val numOfItems: Int,
@@ -15,17 +15,4 @@ data class Item(
     val usesLeft: Int,
     val usesPerItem: Int,
     @DrawableRes val image: Int
-) {
-    companion object {
-        val Empty = Item(
-            id = 0,
-            name = "",
-            category = "",
-            numOfItems = 0,
-            currentUses = 0,
-            usesLeft = 0,
-            usesPerItem = 0,
-            image = 0
-        )
-    }
-}
+)

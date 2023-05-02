@@ -9,12 +9,12 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import xyz.stasiak.stufftracker.ui.home.HomeDestination
 import xyz.stasiak.stufftracker.ui.home.HomeScreen
-import xyz.stasiak.stufftracker.ui.item.add.ItemAddDestination
-import xyz.stasiak.stufftracker.ui.item.add.ItemAddScreen
 import xyz.stasiak.stufftracker.ui.item.details.ItemDetailsDestination
 import xyz.stasiak.stufftracker.ui.item.details.ItemDetailsScreen
-import xyz.stasiak.stufftracker.ui.item.edit.ItemEditDestination
-import xyz.stasiak.stufftracker.ui.item.edit.ItemEditScreen
+import xyz.stasiak.stufftracker.ui.item.entry.add.ItemAddDestination
+import xyz.stasiak.stufftracker.ui.item.entry.add.ItemAddScreen
+import xyz.stasiak.stufftracker.ui.item.entry.edit.ItemEditDestination
+import xyz.stasiak.stufftracker.ui.item.entry.edit.ItemEditScreen
 import xyz.stasiak.stufftracker.ui.login.LoginDestination
 import xyz.stasiak.stufftracker.ui.login.LoginScreen
 import xyz.stasiak.stufftracker.ui.settings.SettingsDestination

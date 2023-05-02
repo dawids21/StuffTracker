@@ -1,4 +1,4 @@
-package xyz.stasiak.stufftracker.ui.item.add
+package xyz.stasiak.stufftracker.ui.item.entry.add
 
 import xyz.stasiak.stufftracker.R
 import xyz.stasiak.stufftracker.ui.navigation.NavigationDestination

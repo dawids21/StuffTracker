@@ -37,4 +37,16 @@ class MockItemsRepository : ItemsRepository {
     override fun getItem(id: Int): Flow<Item> {
         return flowOf(MockItemsRepository.getItems().first { it.id == id })
     }
+
+    override suspend fun saveItem(item: Item) {
+        // no-op
+    }
+
+    override suspend fun deleteItem(item: Item) {
+        // no-op
+    }
+
+    override suspend fun updateItem(item: Item) {
+        // no-op
+    }
 }

@@ -6,18 +6,33 @@ import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import xyz.stasiak.stufftracker.StuffTrackerApplication
-import xyz.stasiak.stufftracker.data.MockItemsRepository
 import xyz.stasiak.stufftracker.ui.home.HomeViewModel
 import xyz.stasiak.stufftracker.ui.item.details.ItemDetailsViewModel
+import xyz.stasiak.stufftracker.ui.item.entry.add.ItemAddViewModel
+import xyz.stasiak.stufftracker.ui.item.entry.edit.ItemEditViewModel
 
 object AppViewModelProvider {
     val Factory = viewModelFactory {
         initializer {
-            HomeViewModel(MockItemsRepository())
+            HomeViewModel(stuffTrackerApplication().container.itemsRepository)
         }
 
         initializer {
-            ItemDetailsViewModel(this.createSavedStateHandle(), MockItemsRepository())
+            ItemDetailsViewModel(
+                this.createSavedStateHandle(),
+                stuffTrackerApplication().container.itemsRepository
+            )
+        }
+
+        initializer {
+            ItemAddViewModel(stuffTrackerApplication().container.itemsRepository)
+        }
+
+        initializer {
+            ItemEditViewModel(
+                this.createSavedStateHandle(),
+                stuffTrackerApplication().container.itemsRepository
+            )
         }
     }
 }
