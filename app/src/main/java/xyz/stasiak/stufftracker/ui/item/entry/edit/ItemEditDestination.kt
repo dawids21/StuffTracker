@@ -1,4 +1,4 @@
-package xyz.stasiak.stufftracker.ui.item.edit
+package xyz.stasiak.stufftracker.ui.item.entry.edit
 
 import xyz.stasiak.stufftracker.R
 import xyz.stasiak.stufftracker.ui.navigation.NavigationDestination

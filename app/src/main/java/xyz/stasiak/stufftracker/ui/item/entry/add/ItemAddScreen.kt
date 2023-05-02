@@ -1,4 +1,4 @@
-package xyz.stasiak.stufftracker.ui.item.edit
+package xyz.stasiak.stufftracker.ui.item.entry.add
 
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
@@ -8,6 +8,7 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -16,23 +17,34 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
+import androidx.lifecycle.viewmodel.compose.viewModel
 import xyz.stasiak.stufftracker.R
 import xyz.stasiak.stufftracker.StuffTrackerTopAppBar
-import xyz.stasiak.stufftracker.data.ItemsRepository
+import xyz.stasiak.stufftracker.ui.AppViewModelProvider
+import xyz.stasiak.stufftracker.ui.item.entry.ItemEntryBody
+import xyz.stasiak.stufftracker.ui.item.entry.ItemEntryEvent
+import xyz.stasiak.stufftracker.ui.item.entry.ItemUiStatus
 
 @Composable
-fun ItemEditScreen(
+fun ItemAddScreen(
     navigateBack: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: ItemAddViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
-    val item = ItemsRepository.getItems().first()
+    val uiState = viewModel.itemUiState
     var fabHeight by remember { mutableStateOf(0) }
     val heightInDp = with(LocalDensity.current) { fabHeight.toDp() }
+
+    LaunchedEffect(uiState.status) {
+        if (uiState.status == ItemUiStatus.SAVED) {
+            navigateBack()
+        }
+    }
 
     Scaffold(
         topBar = {
             StuffTrackerTopAppBar(
-                title = stringResource(ItemEditDestination.titleRes),
+                title = stringResource(ItemAddDestination.titleRes),
                 canNavigateBack = true,
                 navigateUp = navigateBack
             )
@@ -40,7 +52,7 @@ fun ItemEditScreen(
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
-                    navigateBack()
+                    viewModel.handleEvent(ItemEntryEvent.SaveClicked)
                 },
                 modifier = Modifier
                     .navigationBarsPadding()
@@ -56,8 +68,9 @@ fun ItemEditScreen(
         },
         modifier = modifier
     ) { innerPadding ->
-        ItemEditBody(
-            item = item,
+        ItemEntryBody(
+            itemDetails = viewModel.itemUiState.itemDetails,
+            onValueChange = viewModel::handleEvent,
             fabHeight = heightInDp,
             modifier = Modifier.padding(innerPadding)
         )
