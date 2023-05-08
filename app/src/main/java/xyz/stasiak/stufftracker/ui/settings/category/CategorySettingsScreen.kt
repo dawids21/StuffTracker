@@ -29,9 +29,9 @@ fun CategorySettingsScreen(
         modifier = modifier
     ) { innerPadding ->
         CategorySettingsBody(
-            categories = categories.map { it.name },
-            onAdd = {},
-            onDelete = {},
+            categories = categories,
+            onAdd = {viewModel.addCategory(it)},
+            onDelete = {viewModel.deleteCategory(it)},
             modifier = Modifier.padding(innerPadding)
         )
     }

@@ -21,13 +21,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import xyz.stasiak.stufftracker.R
+import xyz.stasiak.stufftracker.data.Category
 import xyz.stasiak.stufftracker.ui.theme.StuffTrackerTheme
 
 @Composable
 fun CategorySettingsBody(
-    categories: List<String>,
+    categories: List<Category>,
     onAdd: (String) -> Unit,
-    onDelete: (String) -> Unit,
+    onDelete: (Category) -> Unit,
     modifier: Modifier = Modifier
 ) {
     var categoryName by remember { mutableStateOf("") }
@@ -37,7 +38,7 @@ fun CategorySettingsBody(
             .padding(16.dp),
     ) {
         categories.forEach { category ->
-            CategoryListItem(category = category, onDelete = onDelete)
+            CategoryListItem(category = category.name, onDelete = { onDelete(category) })
         }
         Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             OutlinedTextField(
@@ -64,7 +65,7 @@ fun CategorySettingsBody(
 fun CategorySettingsBodyPreview() {
     StuffTrackerTheme(dynamicColor = false, darkTheme = true) {
         CategorySettingsBody(
-            categories = listOf("Category 1", "Category 2"),
+            categories = listOf(Category(name = "Category 1"), Category(name = "Category 2")),
             onAdd = {},
             onDelete = {}
         )
