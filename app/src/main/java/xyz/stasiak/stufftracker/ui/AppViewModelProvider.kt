@@ -10,6 +10,7 @@ import xyz.stasiak.stufftracker.ui.home.HomeViewModel
 import xyz.stasiak.stufftracker.ui.item.details.ItemDetailsViewModel
 import xyz.stasiak.stufftracker.ui.item.entry.add.ItemAddViewModel
 import xyz.stasiak.stufftracker.ui.item.entry.edit.ItemEditViewModel
+import xyz.stasiak.stufftracker.ui.settings.category.CategorySettingsViewModel
 
 object AppViewModelProvider {
     val Factory = viewModelFactory {
@@ -33,6 +34,10 @@ object AppViewModelProvider {
                 this.createSavedStateHandle(),
                 stuffTrackerApplication().container.itemsRepository
             )
+        }
+
+        initializer {
+            CategorySettingsViewModel(stuffTrackerApplication().container.itemsRepository)
         }
     }
 }
