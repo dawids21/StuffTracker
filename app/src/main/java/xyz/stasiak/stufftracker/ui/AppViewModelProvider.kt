@@ -37,7 +37,7 @@ object AppViewModelProvider {
         }
 
         initializer {
-            CategorySettingsViewModel(stuffTrackerApplication().container.itemsRepository)
+            CategorySettingsViewModel(stuffTrackerApplication().container.categoryRepository)
         }
     }
 }

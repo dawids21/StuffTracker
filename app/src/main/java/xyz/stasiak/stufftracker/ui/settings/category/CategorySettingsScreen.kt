@@ -29,7 +29,7 @@ fun CategorySettingsScreen(
         modifier = modifier
     ) { innerPadding ->
         CategorySettingsBody(
-            categories = categories,
+            categories = categories.map { it.name },
             onAdd = {},
             onDelete = {},
             modifier = Modifier.padding(innerPadding)
