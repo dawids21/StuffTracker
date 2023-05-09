@@ -40,7 +40,7 @@ class ItemEditViewModel(
                 .map { ItemEntryUiState(itemDetails = it.toItemDetails()) }
                 .first()
 
-            categoryRepository.getCategories().collect() {
+            categoryRepository.getCategories().collect {
                 categories = it
             }
         }
@@ -139,8 +139,8 @@ class ItemEditViewModel(
         return name.isNotBlank()
     }
 
-    private fun validateCategory(category: String): Boolean {
-        return category.isNotBlank()
+    private fun validateCategory(category: String?): Boolean {
+        return category?.isNotBlank() ?: true
     }
 
     private fun validateNumOfItems(numOfItems: String): Boolean {

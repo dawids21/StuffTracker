@@ -39,7 +39,7 @@ fun ItemHeader(item: Item, modifier: Modifier = Modifier) {
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = item.category,
+                text = item.category ?: stringResource(R.string.no_item_category),
                 style = MaterialTheme.typography.titleMedium
             )
         }

@@ -62,7 +62,7 @@ fun ItemEntryBody(
         ) {
             OutlinedTextField(
                 readOnly = true,
-                value = itemDetails.category,
+                value = itemDetails.category ?: stringResource(R.string.no_item_category),
                 onValueChange = { },
                 label = { Text(stringResource(R.string.category)) },
                 isError = !itemDetails.categoryValid,
@@ -82,11 +82,18 @@ fun ItemEntryBody(
                 modifier = Modifier
                     .exposedDropdownSize()
             ) {
-                categories.forEach { selectionOption ->
+                DropdownMenuItem(
+                    text = { Text(text = stringResource(id = R.string.no_item_category)) },
+                    onClick = {
+                        onValueChange(ItemEntryEvent.CategoryChanged(null))
+                        expanded = false
+                    },
+                )
+                categories.forEach { category ->
                     DropdownMenuItem(
-                        text = { Text(text = selectionOption.name) },
+                        text = { Text(text = category.name) },
                         onClick = {
-                            onValueChange(ItemEntryEvent.CategoryChanged(selectionOption.name))
+                            onValueChange(ItemEntryEvent.CategoryChanged(category.name))
                             expanded = false
                         },
                     )

@@ -25,7 +25,7 @@ class ItemAddViewModel(
 
     init {
         viewModelScope.launch {
-            categoryRepository.getCategories().collect() {
+            categoryRepository.getCategories().collect {
                 categories = it
             }
         }
@@ -123,8 +123,8 @@ class ItemAddViewModel(
         return name.isNotBlank()
     }
 
-    private fun validateCategory(category: String): Boolean {
-        return category.isNotBlank()
+    private fun validateCategory(category: String?): Boolean {
+        return category?.isNotBlank() ?: true
     }
 
     private fun validateNumOfItems(numOfItems: String): Boolean {

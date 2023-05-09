@@ -15,7 +15,10 @@ import xyz.stasiak.stufftracker.ui.settings.category.CategorySettingsViewModel
 object AppViewModelProvider {
     val Factory = viewModelFactory {
         initializer {
-            HomeViewModel(stuffTrackerApplication().container.itemsRepository)
+            HomeViewModel(
+                stuffTrackerApplication().container.itemsRepository,
+                stuffTrackerApplication().container.categoryRepository
+            )
         }
 
         initializer {

@@ -45,6 +45,7 @@ import me.saket.swipe.SwipeableActionsBox
 import xyz.stasiak.stufftracker.R
 import xyz.stasiak.stufftracker.StuffTrackerBottomAppBar
 import xyz.stasiak.stufftracker.StuffTrackerTopAppBar
+import xyz.stasiak.stufftracker.data.Category
 import xyz.stasiak.stufftracker.data.Item
 import xyz.stasiak.stufftracker.data.MockItemsRepository
 import xyz.stasiak.stufftracker.ui.AppViewModelProvider
@@ -59,6 +60,7 @@ fun HomeScreen(
     viewModel: HomeViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
     val items = viewModel.items.collectAsState()
+    val categories by viewModel.categories.collectAsState()
     val showSearch = remember { mutableStateOf(false) }
     Scaffold(
         topBar = {
@@ -92,6 +94,7 @@ fun HomeScreen(
     ) { innerPadding ->
         HomeBody(
             itemList = items.value,
+            categories = categories,
             onItemClick = { navigateToItemUpdate(it) },
             showSearch = showSearch.value,
             modifier = Modifier.padding(innerPadding)
@@ -102,12 +105,13 @@ fun HomeScreen(
 @Composable
 fun HomeBody(
     itemList: List<Item>,
+    categories: List<Category>,
     onItemClick: (Int) -> Unit,
     showSearch: Boolean,
     modifier: Modifier = Modifier
 ) {
     var searchValue by remember(showSearch) { mutableStateOf("") }
-    val filteredCategories = remember { mutableStateListOf<String>() }
+    val filteredCategories = remember { mutableStateListOf<Category>() }
     Column(
         modifier = modifier
             .padding(16.dp)
@@ -127,7 +131,7 @@ fun HomeBody(
             )
         } else {
             ItemFilter(
-                categories = itemList.map { it.category }.distinct(),
+                categories = categories,
                 filtered = filteredCategories,
                 addToFilter = { filteredCategories.add(it) },
                 removeFromFilter = { filteredCategories.remove(it) }
@@ -147,11 +151,14 @@ private fun ItemList(
     itemList: List<Item>,
     onItemClick: (Item) -> Unit,
     searchValue: String,
-    filteredCategories: List<String>,
+    filteredCategories: List<Category>,
     modifier: Modifier = Modifier
 ) {
     val filteredItems =
-        itemList.filter { filteredCategories.isEmpty() || filteredCategories.contains(it.category) }
+        itemList.filter {
+            filteredCategories.isEmpty() || filteredCategories.map { category -> category.name }
+                .contains(it.category)
+        }
             .filter { searchValue.isBlank() || it.name.contains(searchValue, ignoreCase = true) }
     LazyColumn(modifier = modifier) {
         items(items = filteredItems, key = { it.id }) { item ->
@@ -232,7 +239,7 @@ private fun ItemEntry(
                 )
             }
             Text(
-                text = item.category,
+                text = item.category ?: stringResource(id = R.string.no_item_category),
                 style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier.align(Top)
             )
@@ -246,6 +253,12 @@ fun HomeBodyPreview() {
     StuffTrackerTheme(dynamicColor = false, darkTheme = true) {
         HomeBody(
             itemList = MockItemsRepository.getItems(),
+            categories = listOf(
+                Category(name = "Coffee"),
+                Category(name = "Hygiene"),
+                Category(name = "Food"),
+                Category(name = "Sport"),
+            ),
             onItemClick = {},
             showSearch = false
         )

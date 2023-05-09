@@ -9,7 +9,7 @@ data class Item(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     val name: String,
-    val category: String,
+    val category: String?,
     val numOfItems: Int,
     val currentUses: Int,
     val usesLeft: Int,
