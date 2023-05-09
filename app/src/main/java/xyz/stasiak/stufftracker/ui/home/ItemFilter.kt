@@ -12,14 +12,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import xyz.stasiak.stufftracker.data.Category
 import xyz.stasiak.stufftracker.ui.theme.StuffTrackerTheme
 
 @Composable
 fun ItemFilter(
-    categories: List<String>,
-    filtered: List<String>,
-    addToFilter: (String) -> Unit,
-    removeFromFilter: (String) -> Unit,
+    categories: List<Category>,
+    filtered: List<Category>,
+    addToFilter: (Category) -> Unit,
+    removeFromFilter: (Category) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(modifier = modifier
@@ -35,7 +36,7 @@ fun ItemFilter(
                 { addToFilter(category) }
             }
             FilterChip(
-                label = { Text(category) },
+                label = { Text(category.name) },
                 selected = isFiltered,
                 onClick = onClick,
                 modifier = Modifier.padding(horizontal = 8.dp)
@@ -49,8 +50,16 @@ fun ItemFilter(
 fun ItemFilterPreview() {
     StuffTrackerTheme(dynamicColor = false, darkTheme = true) {
         ItemFilter(
-            categories = listOf("Coffee", "Hygiene", "Food", "Sport"),
-            filtered = listOf("Coffee", "Sport"),
+            categories = listOf(
+                Category(name = "Coffee"),
+                Category(name = "Hygiene"),
+                Category(name = "Food"),
+                Category(name = "Sport"),
+            ),
+            filtered = listOf(
+                Category(name = "Hygiene"),
+                Category(name = "Food"),
+            ),
             addToFilter = {},
             removeFromFilter = {}
         )

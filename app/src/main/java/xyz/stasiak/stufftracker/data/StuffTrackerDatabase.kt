@@ -6,13 +6,14 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 
 @Database(
-    entities = [Item::class],
-    version = 1,
+    entities = [Item::class, Category::class],
+    version = 3,
     exportSchema = false
 )
 abstract class StuffTrackerDatabase : RoomDatabase() {
 
     abstract fun itemDao(): ItemDao
+    abstract fun categoryDao(): CategoryDao
 
     companion object {
         @Volatile

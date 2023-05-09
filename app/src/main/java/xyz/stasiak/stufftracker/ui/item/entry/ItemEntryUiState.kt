@@ -12,7 +12,7 @@ data class ItemDetails(
     val id: Int = 0,
     val name: String = "",
     val nameValid: Boolean = true,
-    val category: String = "",
+    val category: String? = null,
     val categoryValid: Boolean = true,
     val numOfItems: String = "",
     val numOfItemsValid: Boolean = true,
