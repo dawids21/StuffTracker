@@ -8,9 +8,17 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
@@ -18,15 +26,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import xyz.stasiak.stufftracker.R
+import xyz.stasiak.stufftracker.data.Category
 import xyz.stasiak.stufftracker.ui.theme.StuffTrackerTheme
 
 @Composable
 fun ItemEntryBody(
     itemDetails: ItemDetails,
     onValueChange: (ItemEntryEvent) -> Unit,
+    categories: List<Category>,
     fabHeight: Dp,
     modifier: Modifier = Modifier
 ) {
+    var expanded by remember { mutableStateOf(false) }
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -43,14 +54,45 @@ fun ItemEntryBody(
             singleLine = true,
             modifier = Modifier.fillMaxWidth()
         )
-        OutlinedTextField(
-            value = itemDetails.category,
-            onValueChange = { onValueChange(ItemEntryEvent.CategoryChanged(it)) },
-            label = { Text(stringResource(R.string.category)) },
-            isError = !itemDetails.categoryValid,
-            singleLine = true,
-            modifier = Modifier.fillMaxWidth()
-        )
+        ExposedDropdownMenuBox(
+            expanded = expanded,
+            onExpandedChange = {
+                expanded = !expanded
+            },
+        ) {
+            OutlinedTextField(
+                readOnly = true,
+                value = itemDetails.category,
+                onValueChange = { },
+                label = { Text(stringResource(R.string.category)) },
+                isError = !itemDetails.categoryValid,
+                singleLine = true,
+                trailingIcon = {
+                    ExposedDropdownMenuDefaults.TrailingIcon(
+                        expanded = expanded
+                    )
+                },
+                modifier = Modifier
+                    .menuAnchor()
+                    .fillMaxWidth()
+            )
+            DropdownMenu(
+                expanded = expanded,
+                onDismissRequest = { expanded = false },
+                modifier = Modifier
+                    .exposedDropdownSize()
+            ) {
+                categories.forEach { selectionOption ->
+                    DropdownMenuItem(
+                        text = { Text(text = selectionOption.name) },
+                        onClick = {
+                            onValueChange(ItemEntryEvent.CategoryChanged(selectionOption.name))
+                            expanded = false
+                        },
+                    )
+                }
+            }
+        }
         OutlinedTextField(
             value = itemDetails.numOfItems,
             onValueChange = { onValueChange(ItemEntryEvent.NumOfItemsChanged(it)) },
@@ -104,6 +146,7 @@ fun ItemEditBodyPreview() {
                 usesPerItem = "1",
             ),
             onValueChange = {},
+            categories = listOf(Category(name = "Category")),
             fabHeight = (-16).dp
         )
     }

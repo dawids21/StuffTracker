@@ -6,14 +6,30 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import xyz.stasiak.stufftracker.data.Category
+import xyz.stasiak.stufftracker.data.CategoryRepository
 import xyz.stasiak.stufftracker.data.ItemsRepository
 import xyz.stasiak.stufftracker.ui.item.entry.ItemEntryEvent
 import xyz.stasiak.stufftracker.ui.item.entry.ItemEntryUiState
 import xyz.stasiak.stufftracker.ui.item.entry.ItemUiStatus
 
-class ItemAddViewModel(private val itemsRepository: ItemsRepository) : ViewModel() {
+class ItemAddViewModel(
+    private val itemsRepository: ItemsRepository,
+    private val categoryRepository: CategoryRepository
+) : ViewModel() {
     var itemUiState by mutableStateOf(ItemEntryUiState())
         private set
+
+    var categories by mutableStateOf<List<Category>>(emptyList())
+        private set
+
+    init {
+        viewModelScope.launch {
+            categoryRepository.getCategories().collect() {
+                categories = it
+            }
+        }
+    }
 
     fun handleEvent(event: ItemEntryEvent) {
         when (event) {

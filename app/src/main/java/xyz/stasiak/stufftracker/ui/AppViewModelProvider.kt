@@ -26,13 +26,17 @@ object AppViewModelProvider {
         }
 
         initializer {
-            ItemAddViewModel(stuffTrackerApplication().container.itemsRepository)
+            ItemAddViewModel(
+                stuffTrackerApplication().container.itemsRepository,
+                stuffTrackerApplication().container.categoryRepository
+            )
         }
 
         initializer {
             ItemEditViewModel(
                 this.createSavedStateHandle(),
-                stuffTrackerApplication().container.itemsRepository
+                stuffTrackerApplication().container.itemsRepository,
+                stuffTrackerApplication().container.categoryRepository
             )
         }
 

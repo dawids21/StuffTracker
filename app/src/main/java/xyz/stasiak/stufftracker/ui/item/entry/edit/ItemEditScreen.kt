@@ -32,6 +32,7 @@ fun ItemEditScreen(
     viewModel: ItemEditViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
     val uiState = viewModel.itemUiState
+    val categories = viewModel.categories
     var fabHeight by remember { mutableStateOf(0) }
     val heightInDp = with(LocalDensity.current) { fabHeight.toDp() }
 
@@ -71,6 +72,7 @@ fun ItemEditScreen(
         ItemEntryBody(
             itemDetails = viewModel.itemUiState.itemDetails,
             onValueChange = viewModel::handleEvent,
+            categories = categories,
             fabHeight = heightInDp,
             modifier = Modifier.padding(innerPadding)
         )
