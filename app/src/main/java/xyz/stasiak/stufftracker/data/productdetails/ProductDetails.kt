@@ -1,6 +1,5 @@
 package xyz.stasiak.stufftracker.data.productdetails
 
-import androidx.annotation.DrawableRes
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
@@ -11,5 +10,5 @@ data class ProductDetails(
     val name: String,
     val categoryId: Int?,
     val numOfItems: Int,
-    @DrawableRes val image: Int
+    val image: String?
 )

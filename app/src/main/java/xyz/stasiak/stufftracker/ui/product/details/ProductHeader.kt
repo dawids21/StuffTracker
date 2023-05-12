@@ -82,7 +82,7 @@ fun ProductHeaderPreview() {
                 name = "Shampoo",
                 numOfItems = 1,
                 category = "Hygiene",
-                image = R.drawable.shampoo,
+                image = null,
                 averageUses = 10f,
                 lastItemUses = 5,
                 isCalculated = true

@@ -1,7 +1,13 @@
 package xyz.stasiak.stufftracker.ui.product.entry
 
+import android.content.Intent
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -20,6 +26,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
@@ -27,6 +34,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import xyz.stasiak.stufftracker.R
 import xyz.stasiak.stufftracker.data.category.Category
+import xyz.stasiak.stufftracker.ui.product.ProductImage
 import xyz.stasiak.stufftracker.ui.theme.StuffTrackerTheme
 
 @Composable
@@ -39,6 +47,17 @@ fun ProductEntryBody(
 ) {
     var expanded by remember { mutableStateOf(false) }
     val category = categories.find { it.id == productDetailsEntry.categoryId }
+    val contentResolver = LocalContext.current.contentResolver
+    val launcher =
+        rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri: Uri? ->
+            uri?.let {
+                contentResolver.takePersistableUriPermission(
+                    it,
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION
+                )
+                onValueChange(ProductEntryEvent.ImageChanged(it.toString()))
+            }
+        }
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -47,6 +66,13 @@ fun ProductEntryBody(
             .padding(bottom = fabHeight + 16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
+        ProductImage(
+            imageUri = productDetailsEntry.image,
+            modifier = Modifier
+                .fillMaxWidth()
+                .aspectRatio(1f)
+                .clickable(onClick = { launcher.launch(arrayOf("image/*")) })
+        )
         OutlinedTextField(
             value = productDetailsEntry.name,
             onValueChange = { onValueChange(ProductEntryEvent.NameChanged(it)) },

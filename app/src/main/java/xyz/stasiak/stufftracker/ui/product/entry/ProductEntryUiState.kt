@@ -1,6 +1,5 @@
 package xyz.stasiak.stufftracker.ui.product.entry
 
-import xyz.stasiak.stufftracker.R
 import xyz.stasiak.stufftracker.data.productdetails.ProductDetails
 
 data class ProductEntryUiState(
@@ -16,6 +15,7 @@ data class ProductDetailsEntry(
     val categoryValid: Boolean = true,
     val numOfItems: String = "",
     val numOfItemsValid: Boolean = true,
+    val image: String? = null,
 ) {
     fun toProductDetails(): ProductDetails {
         return ProductDetails(
@@ -23,7 +23,7 @@ data class ProductDetailsEntry(
             name = name,
             categoryId = categoryId,
             numOfItems = numOfItems.toInt(),
-            image = R.drawable.shampoo
+            image = image,
         )
     }
 }
@@ -36,6 +36,7 @@ fun ProductDetails.toProductDetailsEntry() = ProductDetailsEntry(
     categoryValid = true,
     numOfItems = numOfItems.toString(),
     numOfItemsValid = true,
+    image = image,
 )
 
 enum class ProductUiStatus {
