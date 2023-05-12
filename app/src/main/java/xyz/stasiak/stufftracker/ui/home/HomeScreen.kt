@@ -45,21 +45,21 @@ import me.saket.swipe.SwipeableActionsBox
 import xyz.stasiak.stufftracker.R
 import xyz.stasiak.stufftracker.StuffTrackerBottomAppBar
 import xyz.stasiak.stufftracker.StuffTrackerTopAppBar
-import xyz.stasiak.stufftracker.data.Category
-import xyz.stasiak.stufftracker.data.Item
-import xyz.stasiak.stufftracker.data.MockItemsRepository
+import xyz.stasiak.stufftracker.data.category.Category
+import xyz.stasiak.stufftracker.data.product.Product
 import xyz.stasiak.stufftracker.ui.AppViewModelProvider
 import xyz.stasiak.stufftracker.ui.theme.StuffTrackerTheme
+import kotlin.math.floor
 
 @Composable
 fun HomeScreen(
-    navigateToItemAdd: () -> Unit,
-    navigateToItemUpdate: (Int) -> Unit,
+    navigateToProductAdd: () -> Unit,
+    navigateToProductUpdate: (Int) -> Unit,
     navigateToSettings: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
-    val items = viewModel.items.collectAsState()
+    val products by viewModel.products.collectAsState()
     val categories by viewModel.categories.collectAsState()
     val showSearch = remember { mutableStateOf(false) }
     Scaffold(
@@ -79,7 +79,7 @@ fun HomeScreen(
         },
         bottomBar = {
             StuffTrackerBottomAppBar(
-                onFabClick = navigateToItemAdd,
+                onFabClick = navigateToProductAdd,
                 actions = {
                     IconButton(onClick = { showSearch.value = !showSearch.value }) {
                         Icon(
@@ -93,9 +93,9 @@ fun HomeScreen(
         modifier = modifier
     ) { innerPadding ->
         HomeBody(
-            itemList = items.value,
+            productList = products,
             categories = categories,
-            onItemClick = { navigateToItemUpdate(it) },
+            onProductClick = { navigateToProductUpdate(it) },
             showSearch = showSearch.value,
             modifier = Modifier.padding(innerPadding)
         )
@@ -104,9 +104,9 @@ fun HomeScreen(
 
 @Composable
 fun HomeBody(
-    itemList: List<Item>,
+    productList: List<Product>,
     categories: List<Category>,
-    onItemClick: (Int) -> Unit,
+    onProductClick: (Int) -> Unit,
     showSearch: Boolean,
     modifier: Modifier = Modifier
 ) {
@@ -119,26 +119,26 @@ fun HomeBody(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         if (showSearch) {
-            ItemSearch(
+            ProductSearch(
                 searchValue = searchValue,
                 onSearch = { searchValue = it },
             )
         }
-        if (itemList.isEmpty()) {
+        if (productList.isEmpty()) {
             Text(
-                text = stringResource(R.string.no_item_description),
+                text = stringResource(R.string.no_product_description),
                 style = MaterialTheme.typography.bodyMedium
             )
         } else {
-            ItemFilter(
+            ProductFilter(
                 categories = categories,
                 filtered = filteredCategories,
                 addToFilter = { filteredCategories.add(it) },
                 removeFromFilter = { filteredCategories.remove(it) }
             )
-            ItemList(
-                itemList = itemList,
-                onItemClick = { onItemClick(it.id) },
+            ProductList(
+                productList = productList,
+                onProductClick = { onProductClick(it.id) },
                 searchValue = searchValue,
                 filteredCategories = filteredCategories
             )
@@ -147,31 +147,31 @@ fun HomeBody(
 }
 
 @Composable
-private fun ItemList(
-    itemList: List<Item>,
-    onItemClick: (Item) -> Unit,
+private fun ProductList(
+    productList: List<Product>,
+    onProductClick: (Product) -> Unit,
     searchValue: String,
     filteredCategories: List<Category>,
     modifier: Modifier = Modifier
 ) {
-    val filteredItems =
-        itemList.filter {
+    val filteredProducts =
+        productList.filter {
             filteredCategories.isEmpty() || filteredCategories.map { category -> category.name }
                 .contains(it.category)
         }
             .filter { searchValue.isBlank() || it.name.contains(searchValue, ignoreCase = true) }
     LazyColumn(modifier = modifier) {
-        items(items = filteredItems, key = { it.id }) { item ->
-            ItemEntry(item = item, onItemClick = onItemClick)
+        items(items = filteredProducts, key = { it.id }) { product ->
+            ProductEntry(product = product, onProductClick = onProductClick)
             Divider()
         }
     }
 }
 
 @Composable
-private fun ItemEntry(
-    item: Item,
-    onItemClick: (Item) -> Unit,
+private fun ProductEntry(
+    product: Product,
+    onProductClick: (Product) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val useAction = SwipeAction(
@@ -204,7 +204,7 @@ private fun ItemEntry(
         startActions = listOf(useAction),
         endActions = listOf(restoreAction),
         modifier = modifier
-            .clickable(onClick = { onItemClick(item) })
+            .clickable(onClick = { onProductClick(product) })
     ) {
         Row(
             modifier = Modifier
@@ -213,7 +213,7 @@ private fun ItemEntry(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Image(
-                painter = painterResource(id = item.image),
+                painter = painterResource(id = product.image),
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
@@ -226,20 +226,26 @@ private fun ItemEntry(
                     .weight(1f)
             ) {
                 Text(
-                    text = item.name,
+                    text = product.name,
                     style = MaterialTheme.typography.bodyMedium
                 )
                 Text(
-                    text = stringResource(id = R.string.item_entry_items, item.numOfItems),
+                    text = stringResource(id = R.string.product_entry_items, product.numOfItems),
                     style = MaterialTheme.typography.labelMedium
                 )
-                Text(
-                    text = stringResource(id = R.string.item_entry_uses_left, item.usesLeft),
-                    style = MaterialTheme.typography.labelMedium
-                )
+                if (product.isCalculated) {
+                    val usesLeft = floor(product.averageUses - product.lastItemUses).toInt()
+                    Text(
+                        text = stringResource(
+                            id = R.string.product_entry_uses_left,
+                            if (usesLeft > 0) usesLeft else 0
+                        ),
+                        style = MaterialTheme.typography.labelMedium
+                    )
+                }
             }
             Text(
-                text = item.category ?: stringResource(id = R.string.no_item_category),
+                text = product.category ?: stringResource(id = R.string.no_product_category),
                 style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier.align(Top)
             )
@@ -252,14 +258,35 @@ private fun ItemEntry(
 fun HomeBodyPreview() {
     StuffTrackerTheme(dynamicColor = false, darkTheme = true) {
         HomeBody(
-            itemList = MockItemsRepository.getItems(),
+            productList = listOf(
+                Product(
+                    productId = 1,
+                    name = "Coffee",
+                    numOfItems = 1,
+                    category = "Coffee",
+                    image = R.drawable.shampoo,
+                    averageUses = 10f,
+                    lastItemUses = 5,
+                    isCalculated = true
+                ),
+                Product(
+                    productId = 2,
+                    name = "Shampoo",
+                    numOfItems = 1,
+                    category = "Hygiene",
+                    image = R.drawable.shampoo,
+                    averageUses = 10f,
+                    lastItemUses = 5,
+                    isCalculated = true
+                ),
+            ),
             categories = listOf(
                 Category(name = "Coffee"),
                 Category(name = "Hygiene"),
                 Category(name = "Food"),
                 Category(name = "Sport"),
             ),
-            onItemClick = {},
+            onProductClick = {},
             showSearch = false
         )
     }
@@ -267,8 +294,19 @@ fun HomeBodyPreview() {
 
 @Preview(showBackground = true)
 @Composable
-fun ItemEntryPreview() {
+fun ProductEntryPreview() {
     StuffTrackerTheme(dynamicColor = false, darkTheme = true) {
-        ItemEntry(item = MockItemsRepository.getItems().first(), onItemClick = {})
+        ProductEntry(
+            product = Product(
+                productId = 2,
+                name = "Shampoo",
+                numOfItems = 1,
+                category = "Hygiene",
+                image = R.drawable.shampoo,
+                averageUses = 10f,
+                lastItemUses = 5,
+                isCalculated = true
+            ),
+            onProductClick = {})
     }
 }

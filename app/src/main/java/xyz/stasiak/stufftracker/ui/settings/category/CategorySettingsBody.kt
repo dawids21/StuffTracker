@@ -21,7 +21,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import xyz.stasiak.stufftracker.R
-import xyz.stasiak.stufftracker.data.Category
+import xyz.stasiak.stufftracker.data.category.Category
 import xyz.stasiak.stufftracker.ui.theme.StuffTrackerTheme
 
 @Composable

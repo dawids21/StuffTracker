@@ -9,14 +9,14 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import xyz.stasiak.stufftracker.ui.home.HomeDestination
 import xyz.stasiak.stufftracker.ui.home.HomeScreen
-import xyz.stasiak.stufftracker.ui.item.details.ItemDetailsDestination
-import xyz.stasiak.stufftracker.ui.item.details.ItemDetailsScreen
-import xyz.stasiak.stufftracker.ui.item.entry.add.ItemAddDestination
-import xyz.stasiak.stufftracker.ui.item.entry.add.ItemAddScreen
-import xyz.stasiak.stufftracker.ui.item.entry.edit.ItemEditDestination
-import xyz.stasiak.stufftracker.ui.item.entry.edit.ItemEditScreen
 import xyz.stasiak.stufftracker.ui.login.LoginDestination
 import xyz.stasiak.stufftracker.ui.login.LoginScreen
+import xyz.stasiak.stufftracker.ui.product.details.ProductDetailsDestination
+import xyz.stasiak.stufftracker.ui.product.details.ProductDetailsScreen
+import xyz.stasiak.stufftracker.ui.product.entry.add.ProductAddDestination
+import xyz.stasiak.stufftracker.ui.product.entry.add.ProductAddScreen
+import xyz.stasiak.stufftracker.ui.product.entry.edit.ProductEditDestination
+import xyz.stasiak.stufftracker.ui.product.entry.edit.ProductEditScreen
 import xyz.stasiak.stufftracker.ui.settings.SettingsDestination
 import xyz.stasiak.stufftracker.ui.settings.SettingsScreen
 import xyz.stasiak.stufftracker.ui.settings.category.CategorySettingsDestination
@@ -38,35 +38,35 @@ fun StuffTrackerNavHost(navController: NavHostController, modifier: Modifier = M
         }
         composable(route = HomeDestination.route) {
             HomeScreen(
-                navigateToItemAdd = {
-                    navController.navigate(ItemAddDestination.route)
+                navigateToProductAdd = {
+                    navController.navigate(ProductAddDestination.route)
                 },
-                navigateToItemUpdate = {
-                    navController.navigate("${ItemDetailsDestination.route}/${it}")
+                navigateToProductUpdate = {
+                    navController.navigate("${ProductDetailsDestination.route}/${it}")
                 },
                 navigateToSettings = { navController.navigate(SettingsDestination.route) }
             )
         }
         composable(
-            route = ItemDetailsDestination.routeWithArgs,
-            arguments = listOf(navArgument(ItemDetailsDestination.itemIdArg) {
+            route = ProductDetailsDestination.routeWithArgs,
+            arguments = listOf(navArgument(ProductDetailsDestination.productIdArg) {
                 type = NavType.IntType
             })
         ) {
-            ItemDetailsScreen(
-                navigateToEditItem = {
-                    navController.navigate("${ItemEditDestination.route}/$it")
+            ProductDetailsScreen(
+                navigateToEditProduct = {
+                    navController.navigate("${ProductEditDestination.route}/$it")
                 },
                 navigateBack = { navController.navigateUp() }
             )
         }
         composable(
-            route = ItemEditDestination.routeWithArgs,
-            arguments = listOf(navArgument(ItemEditDestination.itemIdArg) {
+            route = ProductEditDestination.routeWithArgs,
+            arguments = listOf(navArgument(ProductEditDestination.productIdArg) {
                 type = NavType.IntType
             })
         ) {
-            ItemEditScreen(
+            ProductEditScreen(
                 navigateBack = { navController.navigateUp() }
             )
         }
@@ -87,8 +87,8 @@ fun StuffTrackerNavHost(navController: NavHostController, modifier: Modifier = M
                 navigateBack = { navController.navigateUp() }
             )
         }
-        composable(route = ItemAddDestination.route) {
-            ItemAddScreen(
+        composable(route = ProductAddDestination.route) {
+            ProductAddScreen(
                 navigateBack = { navController.navigateUp() }
             )
         }
