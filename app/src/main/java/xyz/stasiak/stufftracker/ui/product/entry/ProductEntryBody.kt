@@ -30,7 +30,7 @@ import xyz.stasiak.stufftracker.data.category.Category
 import xyz.stasiak.stufftracker.ui.theme.StuffTrackerTheme
 
 @Composable
-fun ItemEntryBody(
+fun ProductEntryBody(
     productDetailsEntry: ProductDetailsEntry,
     onValueChange: (ProductEntryEvent) -> Unit,
     categories: List<Category>,
@@ -118,7 +118,7 @@ fun ItemEntryBody(
 @Composable
 fun ItemEditBodyPreview() {
     StuffTrackerTheme(dynamicColor = false, darkTheme = true) {
-        ItemEntryBody(
+        ProductEntryBody(
             productDetailsEntry = ProductDetailsEntry(
                 name = "Name",
                 categoryId = 1,
