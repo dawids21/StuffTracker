@@ -5,8 +5,8 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import xyz.stasiak.stufftracker.data.Category
-import xyz.stasiak.stufftracker.data.CategoryRepository
+import xyz.stasiak.stufftracker.data.category.Category
+import xyz.stasiak.stufftracker.data.category.CategoryRepository
 
 class CategorySettingsViewModel(private val categoryRepository: CategoryRepository) : ViewModel() {
 
