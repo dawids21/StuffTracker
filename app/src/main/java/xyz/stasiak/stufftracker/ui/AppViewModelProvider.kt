@@ -35,7 +35,14 @@ object AppViewModelProvider {
                 this.createSavedStateHandle(),
                 stuffTrackerApplication().container.productRepository,
                 stuffTrackerApplication().container.productDetailsRepository,
-                stuffTrackerApplication().container.itemCalculationRepository
+                stuffTrackerApplication().container.itemCalculationRepository,
+                ItemCalculationService(
+                    stuffTrackerApplication().container.itemCalculationRepository,
+                    ProductService(
+                        stuffTrackerApplication().container.productRepository,
+                        stuffTrackerApplication().container.categoryRepository
+                    )
+                )
             )
         }
 

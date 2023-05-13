@@ -81,6 +81,7 @@ fun ProductDetailsScreen(
     ) { innerPadding ->
         ProductDetailsBody(
             uiState = uiState,
+            onProductUse = { viewModel.useItem(it.productId) },
             navigateBack = navigateBack,
             modifier = Modifier.padding(innerPadding)
         )

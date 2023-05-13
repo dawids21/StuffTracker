@@ -25,7 +25,7 @@ import xyz.stasiak.stufftracker.data.product.Product
 import xyz.stasiak.stufftracker.ui.theme.StuffTrackerTheme
 
 @Composable
-fun ProductHeader(product: Product, modifier: Modifier = Modifier) {
+fun ProductHeader(product: Product, onProductUse: (Product) -> Unit, modifier: Modifier = Modifier) {
     Row(
         modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -43,7 +43,7 @@ fun ProductHeader(product: Product, modifier: Modifier = Modifier) {
             )
         }
         Row {
-            IconButton(onClick = { }) {
+            IconButton(onClick = { onProductUse(product) }) {
                 Icon(
                     Icons.Outlined.CheckCircle,
                     contentDescription = stringResource(R.string.use_item)
@@ -80,6 +80,7 @@ fun ProductHeaderPreview() {
                 lastItemUses = 5,
                 isCalculated = true
             ),
+            onProductUse = {},
         )
 
     }

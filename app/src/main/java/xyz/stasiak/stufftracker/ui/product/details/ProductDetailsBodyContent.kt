@@ -9,7 +9,7 @@ import xyz.stasiak.stufftracker.data.product.Product
 import xyz.stasiak.stufftracker.ui.product.ProductImage
 
 @Composable
-fun ProductDetailsBodyContent(product: Product) {
+fun ProductDetailsBodyContent(product: Product, onProductUse: (Product) -> Unit) {
     ProductImage(
         product.image,
         contentScale = ContentScale.Crop,
@@ -17,6 +17,6 @@ fun ProductDetailsBodyContent(product: Product) {
             .fillMaxWidth()
             .aspectRatio(1f)
     )
-    ProductHeader(product)
+    ProductHeader(product, onProductUse = onProductUse)
     ProductParameters(product = product)
 }

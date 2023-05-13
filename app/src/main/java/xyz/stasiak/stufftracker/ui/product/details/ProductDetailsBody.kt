@@ -16,6 +16,7 @@ import xyz.stasiak.stufftracker.ui.theme.StuffTrackerTheme
 @Composable
 fun ProductDetailsBody(
     uiState: ProductDetailsUiState,
+    onProductUse: (Product) -> Unit,
     navigateBack: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -31,7 +32,10 @@ fun ProductDetailsBody(
             }
 
             is ProductDetailsUiState.Loading -> LoadingIndicator()
-            is ProductDetailsUiState.Content -> ProductDetailsBodyContent(uiState.product)
+            is ProductDetailsUiState.Content -> ProductDetailsBodyContent(
+                uiState.product,
+                onProductUse = onProductUse
+            )
         }
     }
 }
@@ -40,7 +44,7 @@ fun ProductDetailsBody(
 @Composable
 fun ProductDetailsBodyLoadingPreview() {
     StuffTrackerTheme(dynamicColor = false, darkTheme = true) {
-        ProductDetailsBody(ProductDetailsUiState.Loading, {})
+        ProductDetailsBody(ProductDetailsUiState.Loading, {}, {})
     }
 }
 
@@ -61,6 +65,7 @@ fun ProductDetailsBodyPreview() {
                     isCalculated = true
                 ),
             ),
+            {},
             {}
         )
     }
