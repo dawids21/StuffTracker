@@ -3,8 +3,8 @@ package xyz.stasiak.stufftracker.data
 import android.content.Context
 import xyz.stasiak.stufftracker.data.category.CategoryRepository
 import xyz.stasiak.stufftracker.data.category.OfflineCategoryRepository
-import xyz.stasiak.stufftracker.data.itemcalculation.ItemCalculationsRepository
-import xyz.stasiak.stufftracker.data.itemcalculation.OfflineItemCalculationsRepository
+import xyz.stasiak.stufftracker.data.itemcalculation.ItemCalculationRepository
+import xyz.stasiak.stufftracker.data.itemcalculation.OfflineItemCalculationRepository
 import xyz.stasiak.stufftracker.data.product.OfflineProductRepository
 import xyz.stasiak.stufftracker.data.product.ProductRepository
 import xyz.stasiak.stufftracker.data.productdetails.OfflineProductDetailsRepository
@@ -14,7 +14,7 @@ interface AppContainer {
     val categoryRepository: CategoryRepository
     val productRepository: ProductRepository
     val productDetailsRepository: ProductDetailsRepository
-    val itemCalculationsRepository: ItemCalculationsRepository
+    val itemCalculationRepository: ItemCalculationRepository
 }
 
 class AppDataContainer(private val context: Context) : AppContainer {
@@ -32,8 +32,8 @@ class AppDataContainer(private val context: Context) : AppContainer {
         )
     }
 
-    override val itemCalculationsRepository: ItemCalculationsRepository by lazy {
-        OfflineItemCalculationsRepository(
+    override val itemCalculationRepository: ItemCalculationRepository by lazy {
+        OfflineItemCalculationRepository(
             StuffTrackerDatabase.getDatabase(context).itemCalculationDao()
         )
     }

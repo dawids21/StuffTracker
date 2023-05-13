@@ -6,12 +6,14 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.launch
-import xyz.stasiak.stufftracker.data.itemcalculation.ItemCalculationsRepository
+import xyz.stasiak.stufftracker.data.itemcalculation.ItemCalculationRepository
+import xyz.stasiak.stufftracker.data.itemcalculation.ItemCalculationService
 import xyz.stasiak.stufftracker.data.product.ProductRepository
 import xyz.stasiak.stufftracker.data.productdetails.ProductDetailsRepository
 
@@ -20,7 +22,8 @@ class ProductDetailsViewModel(
     savedStateHandle: SavedStateHandle,
     private val productRepository: ProductRepository,
     private val productDetailsRepository: ProductDetailsRepository,
-    private val itemCalculationsRepository: ItemCalculationsRepository,
+    private val itemCalculationRepository: ItemCalculationRepository,
+    private val itemCalculationService: ItemCalculationService,
 ) : ViewModel() {
 
     var uiState by mutableStateOf<ProductDetailsUiState>(ProductDetailsUiState.Loading)
@@ -44,13 +47,19 @@ class ProductDetailsViewModel(
         }
     }
 
+    fun useItem(productId: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            itemCalculationService.useItem(productId)
+        }
+    }
+
     fun onDeleteClicked() {
         if (uiState is ProductDetailsUiState.Content) {
             val product = (uiState as ProductDetailsUiState.Content).product
             viewModelScope.launch {
                 productRepository.delete(product)
                 productDetailsRepository.deleteById(product.productId)
-                itemCalculationsRepository.deleteByProductId(product.productId)
+                itemCalculationRepository.deleteByProductId(product.productId)
             }
         }
     }

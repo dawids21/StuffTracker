@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.CheckCircle
-import androidx.compose.material.icons.outlined.DeleteForever
 import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.material.icons.outlined.ShoppingBag
 import androidx.compose.material3.Icon
@@ -26,7 +25,7 @@ import xyz.stasiak.stufftracker.data.product.Product
 import xyz.stasiak.stufftracker.ui.theme.StuffTrackerTheme
 
 @Composable
-fun ProductHeader(product: Product, modifier: Modifier = Modifier) {
+fun ProductHeader(product: Product, onProductUse: (Product) -> Unit, modifier: Modifier = Modifier) {
     Row(
         modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -44,7 +43,7 @@ fun ProductHeader(product: Product, modifier: Modifier = Modifier) {
             )
         }
         Row {
-            IconButton(onClick = { }) {
+            IconButton(onClick = { onProductUse(product) }) {
                 Icon(
                     Icons.Outlined.CheckCircle,
                     contentDescription = stringResource(R.string.use_item)
@@ -60,12 +59,6 @@ fun ProductHeader(product: Product, modifier: Modifier = Modifier) {
                 Icon(
                     Icons.Outlined.ShoppingBag,
                     contentDescription = stringResource(R.string.add_product_to_shopping_list)
-                )
-            }
-            IconButton(onClick = { }) {
-                Icon(
-                    Icons.Outlined.DeleteForever,
-                    contentDescription = stringResource(R.string.delete_product)
                 )
             }
         }
@@ -87,6 +80,7 @@ fun ProductHeaderPreview() {
                 lastItemUses = 5,
                 isCalculated = true
             ),
+            onProductUse = {},
         )
 
     }

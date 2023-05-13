@@ -6,6 +6,7 @@ import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import xyz.stasiak.stufftracker.StuffTrackerApplication
+import xyz.stasiak.stufftracker.data.itemcalculation.ItemCalculationService
 import xyz.stasiak.stufftracker.data.product.ProductService
 import xyz.stasiak.stufftracker.ui.home.HomeViewModel
 import xyz.stasiak.stufftracker.ui.product.details.ProductDetailsViewModel
@@ -18,7 +19,14 @@ object AppViewModelProvider {
         initializer {
             HomeViewModel(
                 stuffTrackerApplication().container.productRepository,
-                stuffTrackerApplication().container.categoryRepository
+                stuffTrackerApplication().container.categoryRepository,
+                ItemCalculationService(
+                    stuffTrackerApplication().container.itemCalculationRepository,
+                    ProductService(
+                        stuffTrackerApplication().container.productRepository,
+                        stuffTrackerApplication().container.categoryRepository
+                    )
+                )
             )
         }
 
@@ -27,7 +35,14 @@ object AppViewModelProvider {
                 this.createSavedStateHandle(),
                 stuffTrackerApplication().container.productRepository,
                 stuffTrackerApplication().container.productDetailsRepository,
-                stuffTrackerApplication().container.itemCalculationsRepository
+                stuffTrackerApplication().container.itemCalculationRepository,
+                ItemCalculationService(
+                    stuffTrackerApplication().container.itemCalculationRepository,
+                    ProductService(
+                        stuffTrackerApplication().container.productRepository,
+                        stuffTrackerApplication().container.categoryRepository
+                    )
+                )
             )
         }
 
