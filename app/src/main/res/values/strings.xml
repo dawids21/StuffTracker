@@ -19,7 +19,7 @@
     <string name="use_item">Use item</string>
     <string name="buy_product">Buy product</string>
     <string name="add_product_to_shopping_list">Add product to shopping list</string>
-    <string name="delete_product">Delete product</string>
+    <string name="delete_product">Delete</string>
     <string name="product_edit_title">Edit product</string>
     <string name="save_product">Save product</string>
     <string name="category">Category</string>
@@ -41,4 +41,6 @@
     <string name="camera_permission_denied">Camera permission denied</string>
     <string name="product_choose_new_photo">New photo</string>
     <string name="product_choose_existing_photo">Existing photo</string>
+    <string name="product_menu">More product options</string>
+    <string name="reset">Reset</string>
 </resources>
