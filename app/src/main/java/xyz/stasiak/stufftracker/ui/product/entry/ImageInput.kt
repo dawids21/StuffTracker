@@ -8,10 +8,11 @@ import android.net.Uri
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -20,7 +21,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
@@ -73,27 +76,44 @@ fun ImageInput(imageUri: String?, onValueChange: (Uri) -> Unit, modifier: Modifi
         }
     }
 
-    ProductImage(
-        imageUri = imageUri,
+    Column(
         modifier = modifier
-            .fillMaxWidth()
-            .aspectRatio(1f)
-            .clickable(onClick = { imagePickerLauncher.launch(arrayOf("image/*")) })
-    )
-    Button(
-        modifier = Modifier.padding(top = 16.dp),
-        onClick = {
-            val permissionCheckResult = ContextCompat.checkSelfPermission(context, permission)
-            if (permissionCheckResult == PackageManager.PERMISSION_GRANTED) {
-                launchCamera()
-            } else {
-                cameraPermissionLauncher.launch(permission)
-            }
-        },
+            .fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        Text(
-            text = "Take photo"
+        ProductImage(
+            imageUri = imageUri,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier
+                .fillMaxWidth()
+                .aspectRatio(1f)
         )
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceAround) {
+            Button(
+                onClick = {
+                    val permissionCheckResult =
+                        ContextCompat.checkSelfPermission(context, permission)
+                    if (permissionCheckResult == PackageManager.PERMISSION_GRANTED) {
+                        launchCamera()
+                    } else {
+                        cameraPermissionLauncher.launch(permission)
+                    }
+                },
+            ) {
+                Text(
+                    text = stringResource(R.string.product_choose_new_photo)
+                )
+            }
+            Button(
+                onClick = {
+                    imagePickerLauncher.launch(arrayOf("image/*"))
+                },
+            ) {
+                Text(
+                    text = stringResource(R.string.product_choose_existing_photo)
+                )
+            }
+        }
     }
 }
 
