@@ -44,11 +44,6 @@ class ProductService(
             )
         )
     }
-
-    suspend fun deleteProduct(productId: Int) {
-        val product = productRepository.getProductByProductId(productId)
-        productRepository.delete(product)
-    }
 }
 
 private fun ProductDetails.toProduct(category: Category?) = Product(

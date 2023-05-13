@@ -15,4 +15,7 @@ class OfflineItemCalculationsRepository(private val itemCalculationDao: ItemCalc
 
     override suspend fun delete(itemCalculation: ItemCalculation) =
         itemCalculationDao.delete(itemCalculation)
+
+    override suspend fun deleteByProductId(productId: Int) =
+        itemCalculationDao.deleteByProductId(productId)
 }

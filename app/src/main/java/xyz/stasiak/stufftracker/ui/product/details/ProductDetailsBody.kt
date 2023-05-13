@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -13,7 +14,11 @@ import xyz.stasiak.stufftracker.ui.LoadingIndicator
 import xyz.stasiak.stufftracker.ui.theme.StuffTrackerTheme
 
 @Composable
-fun ProductDetailsBody(uiState: ProductDetailsUiState, modifier: Modifier = Modifier) {
+fun ProductDetailsBody(
+    uiState: ProductDetailsUiState,
+    navigateBack: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -21,6 +26,10 @@ fun ProductDetailsBody(uiState: ProductDetailsUiState, modifier: Modifier = Modi
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         when (uiState) {
+            is ProductDetailsUiState.NavigateBack -> LaunchedEffect(Unit) {
+                navigateBack()
+            }
+
             is ProductDetailsUiState.Loading -> LoadingIndicator()
             is ProductDetailsUiState.Content -> ProductDetailsBodyContent(uiState.product)
         }
@@ -31,7 +40,7 @@ fun ProductDetailsBody(uiState: ProductDetailsUiState, modifier: Modifier = Modi
 @Composable
 fun ProductDetailsBodyLoadingPreview() {
     StuffTrackerTheme(dynamicColor = false, darkTheme = true) {
-        ProductDetailsBody(ProductDetailsUiState.Loading)
+        ProductDetailsBody(ProductDetailsUiState.Loading, {})
     }
 }
 
@@ -51,7 +60,8 @@ fun ProductDetailsBodyPreview() {
                     lastItemUses = 5,
                     isCalculated = true
                 ),
-            )
+            ),
+            {}
         )
     }
 }
