@@ -2,8 +2,8 @@ package xyz.stasiak.stufftracker.data.itemcalculation
 
 import kotlinx.coroutines.flow.Flow
 
-class OfflineItemCalculationsRepository(private val itemCalculationDao: ItemCalculationDao) :
-    ItemCalculationsRepository {
+class OfflineItemCalculationRepository(private val itemCalculationDao: ItemCalculationDao) :
+    ItemCalculationRepository {
     override fun getItemCalculation(productId: Int): Flow<ItemCalculation> =
         itemCalculationDao.getItemCalculation(productId)
 
