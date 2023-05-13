@@ -95,6 +95,7 @@ fun HomeScreen(
             productList = products,
             categories = categories,
             onProductClick = { navigateToProductUpdate(it) },
+            onProductUse = { viewModel.useItem(it.productId) },
             showSearch = showSearch.value,
             modifier = Modifier.padding(innerPadding)
         )
@@ -106,6 +107,7 @@ fun HomeBody(
     productList: List<Product>,
     categories: List<Category>,
     onProductClick: (Int) -> Unit,
+    onProductUse: (Product) -> Unit,
     showSearch: Boolean,
     modifier: Modifier = Modifier
 ) {
@@ -138,6 +140,7 @@ fun HomeBody(
             ProductList(
                 productList = productList,
                 onProductClick = { onProductClick(it.id) },
+                onProductUse = onProductUse,
                 searchValue = searchValue,
                 filteredCategories = filteredCategories
             )
@@ -149,6 +152,7 @@ fun HomeBody(
 private fun ProductList(
     productList: List<Product>,
     onProductClick: (Product) -> Unit,
+    onProductUse: (Product) -> Unit,
     searchValue: String,
     filteredCategories: List<Category>,
     modifier: Modifier = Modifier
@@ -161,7 +165,11 @@ private fun ProductList(
             .filter { searchValue.isBlank() || it.name.contains(searchValue, ignoreCase = true) }
     LazyColumn(modifier = modifier) {
         items(items = filteredProducts, key = { it.id }) { product ->
-            ProductEntry(product = product, onProductClick = onProductClick)
+            ProductEntry(
+                product = product,
+                onProductClick = onProductClick,
+                onProductUse = onProductUse
+            )
             Divider()
         }
     }
@@ -171,6 +179,7 @@ private fun ProductList(
 private fun ProductEntry(
     product: Product,
     onProductClick: (Product) -> Unit,
+    onProductUse: (Product) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val useAction = SwipeAction(
@@ -184,7 +193,7 @@ private fun ProductEntry(
             )
         },
         background = MaterialTheme.colorScheme.primary,
-        onSwipe = {}
+        onSwipe = { onProductUse(product) }
     )
     val restoreAction = SwipeAction(
         icon = {
@@ -285,6 +294,7 @@ fun HomeBodyPreview() {
                 Category(name = "Sport"),
             ),
             onProductClick = {},
+            onProductUse = {},
             showSearch = false
         )
     }
@@ -305,6 +315,8 @@ fun ProductEntryPreview() {
                 lastItemUses = 5,
                 isCalculated = true
             ),
-            onProductClick = {})
+            onProductClick = {},
+            onProductUse = {}
+        )
     }
 }

@@ -6,12 +6,11 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ItemCalculationDao {
     @Query("SELECT * FROM item_calculations WHERE productId = :productId")
-    fun getItemCalculation(productId: Int): Flow<ItemCalculation>
+    fun getItemCalculation(productId: Int): ItemCalculation?
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(itemCalculation: ItemCalculation)

@@ -1,9 +1,7 @@
 package xyz.stasiak.stufftracker.data.itemcalculation
 
-import kotlinx.coroutines.flow.Flow
-
 interface ItemCalculationRepository {
-    fun getItemCalculation(productId: Int): Flow<ItemCalculation>
+    fun getItemCalculation(productId: Int): ItemCalculation?
 
     suspend fun insert(itemCalculation: ItemCalculation)
 
