@@ -310,7 +310,7 @@ fun ProductEntryPreview() {
                 name = "Shampoo",
                 numOfItems = 1,
                 category = "Hygiene",
-                image = null, //TODO delete shampoo image
+                image = null,
                 averageUses = 10f,
                 lastItemUses = 5,
                 isCalculated = true
