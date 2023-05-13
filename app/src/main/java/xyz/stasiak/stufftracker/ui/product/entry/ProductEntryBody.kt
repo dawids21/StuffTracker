@@ -30,7 +30,7 @@ import xyz.stasiak.stufftracker.data.category.Category
 import xyz.stasiak.stufftracker.ui.theme.StuffTrackerTheme
 
 @Composable
-fun ItemEntryBody(
+fun ProductEntryBody(
     productDetailsEntry: ProductDetailsEntry,
     onValueChange: (ProductEntryEvent) -> Unit,
     categories: List<Category>,
@@ -47,6 +47,9 @@ fun ItemEntryBody(
             .padding(bottom = fabHeight + 16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
+        ImageInput(
+            imageUri = productDetailsEntry.image,
+            onValueChange = { onValueChange(ProductEntryEvent.ImageChanged(it.toString())) })
         OutlinedTextField(
             value = productDetailsEntry.name,
             onValueChange = { onValueChange(ProductEntryEvent.NameChanged(it)) },
@@ -118,7 +121,7 @@ fun ItemEntryBody(
 @Composable
 fun ItemEditBodyPreview() {
     StuffTrackerTheme(dynamicColor = false, darkTheme = true) {
-        ItemEntryBody(
+        ProductEntryBody(
             productDetailsEntry = ProductDetailsEntry(
                 name = "Name",
                 categoryId = 1,

@@ -70,6 +70,16 @@ class ProductAddViewModel(
                 }
             }
 
+            is ProductEntryEvent.ImageChanged -> {
+                productEntryUiState = productEntryUiState.run {
+                    copy(
+                        productDetailsEntry = productDetailsEntry.copy(
+                            image = event.image
+                        ),
+                    )
+                }
+            }
+
             is ProductEntryEvent.SaveClicked -> {
                 if (validateDetails()) {
                     viewModelScope.launch {

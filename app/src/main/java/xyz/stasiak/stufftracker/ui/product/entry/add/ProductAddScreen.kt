@@ -21,7 +21,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import xyz.stasiak.stufftracker.R
 import xyz.stasiak.stufftracker.StuffTrackerTopAppBar
 import xyz.stasiak.stufftracker.ui.AppViewModelProvider
-import xyz.stasiak.stufftracker.ui.product.entry.ItemEntryBody
+import xyz.stasiak.stufftracker.ui.product.entry.ProductEntryBody
 import xyz.stasiak.stufftracker.ui.product.entry.ProductEntryEvent
 import xyz.stasiak.stufftracker.ui.product.entry.ProductUiStatus
 
@@ -69,7 +69,7 @@ fun ProductAddScreen(
         },
         modifier = modifier
     ) { innerPadding ->
-        ItemEntryBody(
+        ProductEntryBody(
             productDetailsEntry = viewModel.productEntryUiState.productDetailsEntry,
             onValueChange = viewModel::handleEvent,
             categories = categories,

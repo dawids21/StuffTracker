@@ -1,6 +1,5 @@
 package xyz.stasiak.stufftracker.data.product
 
-import androidx.annotation.DrawableRes
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
@@ -15,5 +14,5 @@ data class Product(
     val lastItemUses: Int,
     val averageUses: Float,
     val isCalculated: Boolean,
-    @DrawableRes val image: Int
+    val image: String?
 )

@@ -1,6 +1,5 @@
 package xyz.stasiak.stufftracker.ui.home
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -35,7 +34,6 @@ import androidx.compose.ui.Alignment.Companion.Top
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -48,6 +46,7 @@ import xyz.stasiak.stufftracker.StuffTrackerTopAppBar
 import xyz.stasiak.stufftracker.data.category.Category
 import xyz.stasiak.stufftracker.data.product.Product
 import xyz.stasiak.stufftracker.ui.AppViewModelProvider
+import xyz.stasiak.stufftracker.ui.product.ProductImage
 import xyz.stasiak.stufftracker.ui.theme.StuffTrackerTheme
 import kotlin.math.floor
 
@@ -212,9 +211,8 @@ private fun ProductEntry(
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Image(
-                painter = painterResource(id = product.image),
-                contentDescription = null,
+            ProductImage(
+                imageUri = product.image,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .size(64.dp)
@@ -264,7 +262,7 @@ fun HomeBodyPreview() {
                     name = "Coffee",
                     numOfItems = 1,
                     category = "Coffee",
-                    image = R.drawable.shampoo,
+                    image = null,
                     averageUses = 10f,
                     lastItemUses = 5,
                     isCalculated = true
@@ -274,7 +272,7 @@ fun HomeBodyPreview() {
                     name = "Shampoo",
                     numOfItems = 1,
                     category = "Hygiene",
-                    image = R.drawable.shampoo,
+                    image = null,
                     averageUses = 10f,
                     lastItemUses = 5,
                     isCalculated = true
@@ -302,7 +300,7 @@ fun ProductEntryPreview() {
                 name = "Shampoo",
                 numOfItems = 1,
                 category = "Hygiene",
-                image = R.drawable.shampoo,
+                image = null, //TODO delete shampoo image
                 averageUses = 10f,
                 lastItemUses = 5,
                 isCalculated = true

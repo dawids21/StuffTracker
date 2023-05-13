@@ -8,7 +8,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import xyz.stasiak.stufftracker.R
 import xyz.stasiak.stufftracker.data.product.Product
 import xyz.stasiak.stufftracker.ui.LoadingIndicator
 import xyz.stasiak.stufftracker.ui.theme.StuffTrackerTheme
@@ -47,7 +46,7 @@ fun ProductDetailsBodyPreview() {
                     name = "Shampoo",
                     numOfItems = 1,
                     category = "Hygiene",
-                    image = R.drawable.shampoo,
+                    image = null,
                     averageUses = 10f,
                     lastItemUses = 5,
                     isCalculated = true

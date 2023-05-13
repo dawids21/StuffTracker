@@ -37,4 +37,8 @@
     <string name="uses_left">Uses left</string>
     <string name="loading">Loading</string>
     <string name="no_product_category">None</string>
+    <string name="select_product_image">Select product image</string>
+    <string name="camera_permission_denied">Camera permission denied</string>
+    <string name="product_choose_new_photo">New photo</string>
+    <string name="product_choose_existing_photo">Existing photo</string>
 </resources>
