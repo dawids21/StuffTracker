@@ -9,7 +9,7 @@ interface ProductRepository {
 
     fun getProductByProductId(productId: Int): Product
 
-    fun getProductFlowByProductId(productId: Int): Flow<Product>
+    fun getProductFlowByProductId(productId: Int): Flow<Product?>
 
     suspend fun insert(product: Product)
 

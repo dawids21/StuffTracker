@@ -13,7 +13,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -32,7 +31,7 @@ fun ProductDetailsScreen(
     modifier: Modifier = Modifier,
     viewModel: ProductDetailsViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
-    val uiState = viewModel.uiState.collectAsState().value
+    val uiState = viewModel.uiState
     val productId = if (uiState is ProductDetailsUiState.Content) uiState.product.id else -1
     val productName = if (uiState is ProductDetailsUiState.Content) uiState.product.name else ""
     var showMenu by remember { mutableStateOf(false) }
@@ -61,7 +60,7 @@ fun ProductDetailsScreen(
                         )
                         DropdownMenuItem(
                             text = { Text(stringResource(R.string.delete_product)) },
-                            onClick = { /*TODO*/ }
+                            onClick = { viewModel.onDeleteClicked() }
                         )
                     }
                 }
@@ -82,6 +81,7 @@ fun ProductDetailsScreen(
     ) { innerPadding ->
         ProductDetailsBody(
             uiState = uiState,
+            navigateBack = navigateBack,
             modifier = Modifier.padding(innerPadding)
         )
     }

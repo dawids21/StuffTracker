@@ -10,4 +10,6 @@ interface ProductDetailsRepository {
     suspend fun update(productDetails: ProductDetails)
 
     suspend fun delete(productDetails: ProductDetails)
+
+    suspend fun deleteById(id: Int)
 }

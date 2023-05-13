@@ -10,4 +10,6 @@ interface ItemCalculationsRepository {
     suspend fun update(itemCalculation: ItemCalculation)
 
     suspend fun delete(itemCalculation: ItemCalculation)
+
+    suspend fun deleteByProductId(productId: Int)
 }

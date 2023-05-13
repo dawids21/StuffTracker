@@ -21,4 +21,7 @@ interface ItemCalculationDao {
 
     @Delete
     suspend fun delete(itemCalculation: ItemCalculation)
+
+    @Query("DELETE FROM item_calculations WHERE productId = :productId")
+    suspend fun deleteByProductId(productId: Int)
 }

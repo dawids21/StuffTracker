@@ -15,4 +15,7 @@ class OfflineProductDetailsRepository(private val productDetailsDao: ProductDeta
 
     override suspend fun delete(productDetails: ProductDetails) =
         productDetailsDao.delete(productDetails)
+
+    override suspend fun deleteById(id: Int) =
+        productDetailsDao.deleteById(id)
 }

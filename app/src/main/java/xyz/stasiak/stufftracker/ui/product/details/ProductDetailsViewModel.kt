@@ -1,33 +1,57 @@
 package xyz.stasiak.stufftracker.ui.product.details
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.mapLatest
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
+import xyz.stasiak.stufftracker.data.itemcalculation.ItemCalculationsRepository
 import xyz.stasiak.stufftracker.data.product.ProductRepository
+import xyz.stasiak.stufftracker.data.productdetails.ProductDetailsRepository
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class ProductDetailsViewModel(
     savedStateHandle: SavedStateHandle,
-    productRepository: ProductRepository
+    private val productRepository: ProductRepository,
+    private val productDetailsRepository: ProductDetailsRepository,
+    private val itemCalculationsRepository: ItemCalculationsRepository,
 ) : ViewModel() {
 
-    companion object {
-        private const val TIMEOUT_MILLIS = 5_000L
+    var uiState by mutableStateOf<ProductDetailsUiState>(ProductDetailsUiState.Loading)
+        private set
+
+    init {
+        viewModelScope.launch {
+            savedStateHandle.getStateFlow<Int?>(ProductDetailsDestination.productIdArg, null)
+                .filterNotNull()
+                .flatMapLatest { productRepository.getProductFlowByProductId(it) }
+                .mapLatest { product ->
+                    if (product == null) {
+                        ProductDetailsUiState.NavigateBack
+                    } else {
+                        ProductDetailsUiState.Content(product)
+                    }
+                }
+                .collect {
+                    uiState = it
+                }
+        }
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    val uiState = savedStateHandle.getStateFlow<Int?>(ProductDetailsDestination.productIdArg, null)
-        .filterNotNull()
-        .flatMapLatest { productRepository.getProductFlowByProductId(it) }
-        .mapLatest { ProductDetailsUiState.Content(it) }
-        .stateIn(
-            scope = viewModelScope,
-            started = WhileSubscribed(TIMEOUT_MILLIS),
-            initialValue = ProductDetailsUiState.Loading
-        )
+    fun onDeleteClicked() {
+        if (uiState is ProductDetailsUiState.Content) {
+            val product = (uiState as ProductDetailsUiState.Content).product
+            viewModelScope.launch {
+                productRepository.delete(product)
+                productDetailsRepository.deleteById(product.productId)
+                itemCalculationsRepository.deleteByProductId(product.productId)
+            }
+        }
+    }
 }
