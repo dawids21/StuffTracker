@@ -12,6 +12,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Cancel
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Search
@@ -195,10 +196,10 @@ private fun ProductEntry(
         background = MaterialTheme.colorScheme.primary,
         onSwipe = { onProductUse(product) }
     )
-    val restoreAction = SwipeAction(
+    val depleteAction = SwipeAction(
         icon = {
             Icon(
-                imageVector = Icons.Filled.Refresh,
+                imageVector = Icons.Filled.Cancel,
                 contentDescription = null,
                 modifier = Modifier
                     .padding(16.dp),
@@ -206,10 +207,23 @@ private fun ProductEntry(
             )
         },
         background = MaterialTheme.colorScheme.secondary,
+        onSwipe = { }
+    )
+    val restoreAction = SwipeAction(
+        icon = {
+            Icon(
+                imageVector = Icons.Filled.Refresh,
+                contentDescription = null,
+                modifier = Modifier
+                    .padding(16.dp),
+                tint = MaterialTheme.colorScheme.onPrimary
+            )
+        },
+        background = MaterialTheme.colorScheme.primary,
         onSwipe = {}
     )
     SwipeableActionsBox(
-        startActions = listOf(useAction),
+        startActions = listOf(useAction, depleteAction),
         endActions = listOf(restoreAction),
         modifier = modifier
             .clickable(onClick = { onProductClick(product) })
