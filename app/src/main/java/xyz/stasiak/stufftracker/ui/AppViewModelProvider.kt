@@ -25,11 +25,7 @@ object AppViewModelProvider {
                 ),
                 stuffTrackerApplication().container.categoryRepository,
                 ItemCalculationService(
-                    stuffTrackerApplication().container.itemCalculationRepository,
-                    ProductService(
-                        stuffTrackerApplication().container.productRepository,
-                        stuffTrackerApplication().container.categoryRepository
-                    )
+                    stuffTrackerApplication().container.itemCalculationRepository
                 ),
                 stuffTrackerApplication().container.productDetailsRepository
             )
@@ -42,11 +38,11 @@ object AppViewModelProvider {
                 stuffTrackerApplication().container.productDetailsRepository,
                 stuffTrackerApplication().container.itemCalculationRepository,
                 ItemCalculationService(
-                    stuffTrackerApplication().container.itemCalculationRepository,
-                    ProductService(
-                        stuffTrackerApplication().container.productRepository,
-                        stuffTrackerApplication().container.categoryRepository
-                    )
+                    stuffTrackerApplication().container.itemCalculationRepository
+                ),
+                ProductService(
+                    stuffTrackerApplication().container.productRepository,
+                    stuffTrackerApplication().container.categoryRepository
                 )
             )
         }

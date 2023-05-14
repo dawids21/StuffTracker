@@ -14,6 +14,7 @@ import kotlinx.coroutines.launch
 import xyz.stasiak.stufftracker.data.itemcalculation.ItemCalculationRepository
 import xyz.stasiak.stufftracker.data.itemcalculation.ItemCalculationService
 import xyz.stasiak.stufftracker.data.product.ProductRepository
+import xyz.stasiak.stufftracker.data.product.ProductService
 import xyz.stasiak.stufftracker.data.productdetails.ProductDetailsRepository
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -23,6 +24,7 @@ class ProductDetailsViewModel(
     private val productDetailsRepository: ProductDetailsRepository,
     private val itemCalculationRepository: ItemCalculationRepository,
     private val itemCalculationService: ItemCalculationService,
+    private val productService: ProductService
 ) : ViewModel() {
 
     var uiState by mutableStateOf<ProductDetailsUiState>(ProductDetailsUiState.Loading)
@@ -48,7 +50,8 @@ class ProductDetailsViewModel(
 
     fun useItem(productId: Int) {
         viewModelScope.launch {
-            itemCalculationService.useItem(productId)
+            val itemCalculation = itemCalculationService.useItem(productId)
+            productService.onUseItem(itemCalculation)
         }
     }
 

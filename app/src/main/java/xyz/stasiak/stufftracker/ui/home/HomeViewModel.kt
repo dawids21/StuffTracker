@@ -37,7 +37,8 @@ class HomeViewModel(
 
     fun useItem(productId: Int) {
         viewModelScope.launch {
-            itemCalculationService.useItem(productId)
+            val itemCalculation = itemCalculationService.useItem(productId)
+            productService.onUseItem(itemCalculation)
         }
     }
 

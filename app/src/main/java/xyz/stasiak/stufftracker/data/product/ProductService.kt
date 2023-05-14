@@ -28,7 +28,7 @@ class ProductService(
         )
     }
 
-    suspend fun updateProductItemUses(itemCalculation: ItemCalculation) {
+    suspend fun onUseItem(itemCalculation: ItemCalculation) {
         val product = productRepository.getProductByProductId(itemCalculation.productId)
         productRepository.update(
             product.copy(lastItemUses = itemCalculation.itemUses)
