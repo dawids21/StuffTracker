@@ -7,7 +7,7 @@ class ItemCalculationService(
     private val productService: ProductService
 ) {
     suspend fun useItem(productId: Int) {
-        var itemCalculation = itemCalculationRepository.getItemCalculation(productId)
+        var itemCalculation = itemCalculationRepository.getUnfinishedItemCalculation(productId)
         if (itemCalculation == null) {
             itemCalculation = ItemCalculation(
                 productId = productId,
