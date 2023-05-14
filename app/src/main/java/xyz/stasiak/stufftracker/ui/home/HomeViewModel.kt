@@ -13,10 +13,12 @@ import xyz.stasiak.stufftracker.data.category.CategoryRepository
 import xyz.stasiak.stufftracker.data.itemcalculation.ItemCalculationService
 import xyz.stasiak.stufftracker.data.product.Product
 import xyz.stasiak.stufftracker.data.product.ProductRepository
+import xyz.stasiak.stufftracker.data.product.ProductService
 import xyz.stasiak.stufftracker.data.productdetails.ProductDetailsRepository
 
 class HomeViewModel(
-    private val productRepository: ProductRepository,
+    productRepository: ProductRepository,
+    private val productService: ProductService,
     categoryRepository: CategoryRepository,
     private val itemCalculationService: ItemCalculationService,
     private val productDetailsRepository: ProductDetailsRepository,
@@ -47,8 +49,9 @@ class HomeViewModel(
         }
         viewModelScope.launch {
             val productDetails = productDetailsRepository.getProductDetails(product.id)
-            productDetailsRepository.update(productDetails.copy(numOfItems = productDetails.numOfItems - 1))
-            productRepository.update(product.copy(numOfItems = product.numOfItems - 1))
+            val newProductDetails = productDetails.copy(numOfItems = productDetails.numOfItems - 1)
+            productDetailsRepository.update(newProductDetails)
+            productService.onProductItemDepleted(newProductDetails)
         }
     }
 

@@ -19,6 +19,10 @@ object AppViewModelProvider {
         initializer {
             HomeViewModel(
                 stuffTrackerApplication().container.productRepository,
+                ProductService(
+                    stuffTrackerApplication().container.productRepository,
+                    stuffTrackerApplication().container.categoryRepository
+                ),
                 stuffTrackerApplication().container.categoryRepository,
                 ItemCalculationService(
                     stuffTrackerApplication().container.itemCalculationRepository,
