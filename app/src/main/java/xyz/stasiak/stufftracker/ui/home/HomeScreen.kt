@@ -1,5 +1,6 @@
 package xyz.stasiak.stufftracker.ui.home
 
+import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -12,6 +13,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Cancel
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Search
@@ -23,6 +25,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
@@ -34,6 +37,7 @@ import androidx.compose.ui.Alignment.Companion.Top
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -61,6 +65,18 @@ fun HomeScreen(
     val products by viewModel.products.collectAsState()
     val categories by viewModel.categories.collectAsState()
     val showSearch = remember { mutableStateOf(false) }
+    val context = LocalContext.current
+    val toastShowState = viewModel.toastShowState
+    LaunchedEffect(toastShowState) {
+        if (toastShowState is ToastShowState.Show) {
+            Toast.makeText(
+                context,
+                context.resources.getString(R.string.no_items_left, toastShowState.productName),
+                Toast.LENGTH_SHORT
+            ).show()
+            viewModel.onToastShown()
+        }
+    }
     Scaffold(
         topBar = {
             StuffTrackerTopAppBar(
@@ -96,6 +112,7 @@ fun HomeScreen(
             categories = categories,
             onProductClick = { navigateToProductUpdate(it) },
             onProductUse = { viewModel.useItem(it.productId) },
+            onProductDeplete = { viewModel.depleteItem(it) },
             showSearch = showSearch.value,
             modifier = Modifier.padding(innerPadding)
         )
@@ -108,6 +125,7 @@ fun HomeBody(
     categories: List<Category>,
     onProductClick: (Int) -> Unit,
     onProductUse: (Product) -> Unit,
+    onProductDeplete: (Product) -> Unit,
     showSearch: Boolean,
     modifier: Modifier = Modifier
 ) {
@@ -141,6 +159,7 @@ fun HomeBody(
                 productList = productList,
                 onProductClick = { onProductClick(it.id) },
                 onProductUse = onProductUse,
+                onProductDeplete = onProductDeplete,
                 searchValue = searchValue,
                 filteredCategories = filteredCategories
             )
@@ -153,6 +172,7 @@ private fun ProductList(
     productList: List<Product>,
     onProductClick: (Product) -> Unit,
     onProductUse: (Product) -> Unit,
+    onProductDeplete: (Product) -> Unit,
     searchValue: String,
     filteredCategories: List<Category>,
     modifier: Modifier = Modifier
@@ -168,7 +188,8 @@ private fun ProductList(
             ProductEntry(
                 product = product,
                 onProductClick = onProductClick,
-                onProductUse = onProductUse
+                onProductUse = onProductUse,
+                onProductDeplete = onProductDeplete
             )
             Divider()
         }
@@ -180,6 +201,7 @@ private fun ProductEntry(
     product: Product,
     onProductClick: (Product) -> Unit,
     onProductUse: (Product) -> Unit,
+    onProductDeplete: (Product) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val useAction = SwipeAction(
@@ -195,10 +217,10 @@ private fun ProductEntry(
         background = MaterialTheme.colorScheme.primary,
         onSwipe = { onProductUse(product) }
     )
-    val restoreAction = SwipeAction(
+    val depleteAction = SwipeAction(
         icon = {
             Icon(
-                imageVector = Icons.Filled.Refresh,
+                imageVector = Icons.Filled.Cancel,
                 contentDescription = null,
                 modifier = Modifier
                     .padding(16.dp),
@@ -206,10 +228,23 @@ private fun ProductEntry(
             )
         },
         background = MaterialTheme.colorScheme.secondary,
+        onSwipe = { onProductDeplete(product) }
+    )
+    val restoreAction = SwipeAction(
+        icon = {
+            Icon(
+                imageVector = Icons.Filled.Refresh,
+                contentDescription = null,
+                modifier = Modifier
+                    .padding(16.dp),
+                tint = MaterialTheme.colorScheme.onPrimary
+            )
+        },
+        background = MaterialTheme.colorScheme.primary,
         onSwipe = {}
     )
     SwipeableActionsBox(
-        startActions = listOf(useAction),
+        startActions = listOf(useAction, depleteAction),
         endActions = listOf(restoreAction),
         modifier = modifier
             .clickable(onClick = { onProductClick(product) })
@@ -295,6 +330,7 @@ fun HomeBodyPreview() {
             ),
             onProductClick = {},
             onProductUse = {},
+            onProductDeplete = {},
             showSearch = false
         )
     }
@@ -310,13 +346,14 @@ fun ProductEntryPreview() {
                 name = "Shampoo",
                 numOfItems = 1,
                 category = "Hygiene",
-                image = null, //TODO delete shampoo image
+                image = null,
                 averageUses = 10f,
                 lastItemUses = 5,
                 isCalculated = true
             ),
             onProductClick = {},
-            onProductUse = {}
+            onProductUse = {},
+            onProductDeplete = {}
         )
     }
 }

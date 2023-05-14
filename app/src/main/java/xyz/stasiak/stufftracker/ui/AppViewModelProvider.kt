@@ -26,7 +26,8 @@ object AppViewModelProvider {
                         stuffTrackerApplication().container.productRepository,
                         stuffTrackerApplication().container.categoryRepository
                     )
-                )
+                ),
+                stuffTrackerApplication().container.productDetailsRepository
             )
         }
 

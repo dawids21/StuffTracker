@@ -3,7 +3,9 @@ package xyz.stasiak.stufftracker.data.productdetails
 import kotlinx.coroutines.flow.Flow
 
 interface ProductDetailsRepository {
-    fun getProductDetails(productId: Int): Flow<ProductDetails>
+    fun getProductDetailsFlow(productId: Int): Flow<ProductDetails>
+
+    suspend fun getProductDetails(productId: Int): ProductDetails
 
     suspend fun insert(productDetails: ProductDetails): Long
 
