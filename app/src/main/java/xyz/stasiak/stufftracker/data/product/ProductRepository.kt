@@ -7,7 +7,7 @@ interface ProductRepository {
 
     fun getProduct(id: Int): Flow<Product>
 
-    fun getProductByProductId(productId: Int): Product
+    suspend fun getProductByProductId(productId: Int): Product
 
     fun getProductFlowByProductId(productId: Int): Flow<Product?>
 

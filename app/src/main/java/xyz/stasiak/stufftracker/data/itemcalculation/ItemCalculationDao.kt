@@ -10,7 +10,7 @@ import androidx.room.Update
 @Dao
 interface ItemCalculationDao {
     @Query("SELECT * FROM item_calculations WHERE productId = :productId AND isFinished = 0 LIMIT 1")
-    fun getUnfinishedItemCalculation(productId: Int): ItemCalculation?
+    suspend fun getUnfinishedItemCalculation(productId: Int): ItemCalculation?
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(itemCalculation: ItemCalculation)

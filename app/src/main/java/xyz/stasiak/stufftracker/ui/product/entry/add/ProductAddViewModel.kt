@@ -5,9 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import xyz.stasiak.stufftracker.data.category.Category
 import xyz.stasiak.stufftracker.data.category.CategoryRepository
 import xyz.stasiak.stufftracker.data.product.ProductService
@@ -87,9 +85,7 @@ class ProductAddViewModel(
                             productEntryUiState.productDetailsEntry.toProductDetails()
                         val id = productDetailsRepository.insert(productDetails)
                         val productDetailsWithId = productDetails.copy(id = id.toInt())
-                        withContext(Dispatchers.IO) {
-                            productService.createProduct(productDetailsWithId)
-                        }
+                        productService.createProduct(productDetailsWithId)
                         productEntryUiState =
                             productEntryUiState.copy(status = ProductUiStatus.SAVED)
                     }

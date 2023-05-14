@@ -2,7 +2,7 @@ package xyz.stasiak.stufftracker.data.itemcalculation
 
 class OfflineItemCalculationRepository(private val itemCalculationDao: ItemCalculationDao) :
     ItemCalculationRepository {
-    override fun getUnfinishedItemCalculation(productId: Int): ItemCalculation? =
+    override suspend fun getUnfinishedItemCalculation(productId: Int): ItemCalculation? =
         itemCalculationDao.getUnfinishedItemCalculation(productId)
 
     override suspend fun insert(itemCalculation: ItemCalculation) =
