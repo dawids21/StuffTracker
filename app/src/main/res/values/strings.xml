@@ -43,4 +43,5 @@
     <string name="product_choose_existing_photo">Existing photo</string>
     <string name="product_menu">More product options</string>
     <string name="reset">Reset</string>
+    <string name="no_items_left">No %1$s items left</string>
 </resources>

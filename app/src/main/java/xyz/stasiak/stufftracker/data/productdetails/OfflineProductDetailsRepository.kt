@@ -4,7 +4,10 @@ import kotlinx.coroutines.flow.Flow
 
 class OfflineProductDetailsRepository(private val productDetailsDao: ProductDetailsDao) :
     ProductDetailsRepository {
-    override fun getProductDetails(productId: Int): Flow<ProductDetails> =
+    override fun getProductDetailsFlow(productId: Int): Flow<ProductDetails> =
+        productDetailsDao.getProductDetailsFlow(productId)
+
+    override suspend fun getProductDetails(productId: Int): ProductDetails =
         productDetailsDao.getProductDetails(productId)
 
     override suspend fun insert(productDetails: ProductDetails) =

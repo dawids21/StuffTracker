@@ -10,7 +10,10 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface ProductDetailsDao {
     @Query("SELECT * FROM product_details WHERE id = :id")
-    fun getProductDetails(id: Int): Flow<ProductDetails>
+    fun getProductDetailsFlow(id: Int): Flow<ProductDetails>
+
+    @Query("SELECT * FROM product_details WHERE id = :id")
+    suspend fun getProductDetails(id: Int): ProductDetails
 
     @Insert
     suspend fun insert(productDetails: ProductDetails): Long

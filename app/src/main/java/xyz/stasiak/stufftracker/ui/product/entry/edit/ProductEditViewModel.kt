@@ -41,7 +41,7 @@ class ProductEditViewModel(
             productEntryUiState =
                 savedStateHandle.getStateFlow<Int?>(ProductEditDestination.productIdArg, null)
                     .filterNotNull()
-                    .flatMapLatest { productDetailsRepository.getProductDetails(it) }
+                    .flatMapLatest { productDetailsRepository.getProductDetailsFlow(it) }
                     .map { ProductEntryUiState(productDetailsEntry = it.toProductDetailsEntry()) }
                     .first()
 
