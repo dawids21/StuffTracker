@@ -18,4 +18,20 @@ class ItemCalculationService(
         }
         return itemCalculation
     }
+
+    suspend fun finishItemCalculation(productId: Int): List<ItemCalculation> {
+        var itemCalculation = itemCalculationRepository.getUnfinishedItemCalculation(productId)
+        if (itemCalculation == null) {
+            itemCalculation = ItemCalculation(
+                productId = productId,
+                itemUses = 0,
+                isFinished = true
+            )
+            itemCalculationRepository.insert(itemCalculation)
+        } else {
+            itemCalculation = itemCalculation.copy(isFinished = true)
+            itemCalculationRepository.update(itemCalculation)
+        }
+        return itemCalculationRepository.getItemCalculations(productId)
+    }
 }

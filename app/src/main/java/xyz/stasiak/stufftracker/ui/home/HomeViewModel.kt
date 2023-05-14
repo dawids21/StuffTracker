@@ -52,6 +52,8 @@ class HomeViewModel(
             val newProductDetails = productDetails.copy(numOfItems = productDetails.numOfItems - 1)
             productDetailsRepository.update(newProductDetails)
             productService.onProductItemDepleted(newProductDetails)
+            val itemCalculations = itemCalculationService.finishItemCalculation(product.id)
+            productService.onItemCalculated(product.id, itemCalculations)
         }
     }
 

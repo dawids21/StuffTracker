@@ -35,11 +35,11 @@ class ProductService(
         )
     }
 
-    suspend fun calculateProduct(itemCalculation: ItemCalculation) {
-        val product = productRepository.getProductByProductId(itemCalculation.productId)
+    suspend fun onItemCalculated(productId: Int, itemCalculations: List<ItemCalculation>) {
+        val product = productRepository.getProductByProductId(productId)
         productRepository.update(
             product.copy(
-                averageUses = itemCalculation.itemUses.toFloat(),
+                averageUses = itemCalculations.map { it.itemUses }.average().toFloat(),
                 isCalculated = true
             )
         )
