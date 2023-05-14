@@ -11,16 +11,13 @@ class ItemCalculationService(
         if (itemCalculation == null) {
             itemCalculation = ItemCalculation(
                 productId = productId,
-                itemUses = 0,
+                itemUses = 1,
                 isFinished = false
             )
             itemCalculationRepository.insert(itemCalculation)
         } else {
-            itemCalculationRepository.update(
-                itemCalculation.copy(
-                    itemUses = itemCalculation.itemUses + 1
-                )
-            )
+            itemCalculation = itemCalculation.copy(itemUses = itemCalculation.itemUses + 1)
+            itemCalculationRepository.update(itemCalculation)
         }
         productService.updateProductItemUses(itemCalculation)
     }
