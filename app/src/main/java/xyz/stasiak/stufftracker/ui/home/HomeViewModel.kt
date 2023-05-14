@@ -5,7 +5,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -13,10 +12,12 @@ import xyz.stasiak.stufftracker.data.category.CategoryRepository
 import xyz.stasiak.stufftracker.data.itemcalculation.ItemCalculationService
 import xyz.stasiak.stufftracker.data.product.Product
 import xyz.stasiak.stufftracker.data.product.ProductRepository
+import xyz.stasiak.stufftracker.data.product.ProductService
 import xyz.stasiak.stufftracker.data.productdetails.ProductDetailsRepository
 
 class HomeViewModel(
-    private val productRepository: ProductRepository,
+    productRepository: ProductRepository,
+    private val productService: ProductService,
     categoryRepository: CategoryRepository,
     private val itemCalculationService: ItemCalculationService,
     private val productDetailsRepository: ProductDetailsRepository,
@@ -35,8 +36,9 @@ class HomeViewModel(
         private set
 
     fun useItem(productId: Int) {
-        viewModelScope.launch(Dispatchers.IO) {
-            itemCalculationService.useItem(productId)
+        viewModelScope.launch {
+            val itemCalculation = itemCalculationService.useItem(productId)
+            productService.onUseItem(itemCalculation)
         }
     }
 
@@ -47,8 +49,11 @@ class HomeViewModel(
         }
         viewModelScope.launch {
             val productDetails = productDetailsRepository.getProductDetails(product.id)
-            productDetailsRepository.update(productDetails.copy(numOfItems = productDetails.numOfItems - 1))
-            productRepository.update(product.copy(numOfItems = product.numOfItems - 1))
+            val newProductDetails = productDetails.copy(numOfItems = productDetails.numOfItems - 1)
+            productDetailsRepository.update(newProductDetails)
+            productService.onProductItemDepleted(newProductDetails)
+            val itemCalculations = itemCalculationService.finishItemCalculation(product.id)
+            productService.onItemCalculated(product.id, itemCalculations)
         }
     }
 

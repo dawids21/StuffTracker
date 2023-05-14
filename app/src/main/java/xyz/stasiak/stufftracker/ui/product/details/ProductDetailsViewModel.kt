@@ -6,7 +6,6 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
@@ -15,6 +14,7 @@ import kotlinx.coroutines.launch
 import xyz.stasiak.stufftracker.data.itemcalculation.ItemCalculationRepository
 import xyz.stasiak.stufftracker.data.itemcalculation.ItemCalculationService
 import xyz.stasiak.stufftracker.data.product.ProductRepository
+import xyz.stasiak.stufftracker.data.product.ProductService
 import xyz.stasiak.stufftracker.data.productdetails.ProductDetailsRepository
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -24,6 +24,7 @@ class ProductDetailsViewModel(
     private val productDetailsRepository: ProductDetailsRepository,
     private val itemCalculationRepository: ItemCalculationRepository,
     private val itemCalculationService: ItemCalculationService,
+    private val productService: ProductService
 ) : ViewModel() {
 
     var uiState by mutableStateOf<ProductDetailsUiState>(ProductDetailsUiState.Loading)
@@ -48,8 +49,9 @@ class ProductDetailsViewModel(
     }
 
     fun useItem(productId: Int) {
-        viewModelScope.launch(Dispatchers.IO) {
-            itemCalculationService.useItem(productId)
+        viewModelScope.launch {
+            val itemCalculation = itemCalculationService.useItem(productId)
+            productService.onUseItem(itemCalculation)
         }
     }
 

@@ -10,7 +10,7 @@ class OfflineProductRepository(private val productDao: ProductDao) : ProductRepo
     override fun getProductFlowByProductId(productId: Int): Flow<Product> =
         productDao.getProductFlowByProductId(productId)
 
-    override fun getProductByProductId(productId: Int): Product =
+    override suspend fun getProductByProductId(productId: Int): Product =
         productDao.getProductByProductId(productId)
 
     override suspend fun insert(product: Product) = productDao.insert(product)

@@ -1,13 +1,10 @@
 package xyz.stasiak.stufftracker.data.itemcalculation
 
-import xyz.stasiak.stufftracker.data.product.ProductService
-
 class ItemCalculationService(
-    private val itemCalculationRepository: ItemCalculationRepository,
-    private val productService: ProductService
+    private val itemCalculationRepository: ItemCalculationRepository
 ) {
-    suspend fun useItem(productId: Int) {
-        var itemCalculation = itemCalculationRepository.getItemCalculation(productId)
+    suspend fun useItem(productId: Int): ItemCalculation {
+        var itemCalculation = itemCalculationRepository.getUnfinishedItemCalculation(productId)
         if (itemCalculation == null) {
             itemCalculation = ItemCalculation(
                 productId = productId,
@@ -19,6 +16,22 @@ class ItemCalculationService(
             itemCalculation = itemCalculation.copy(itemUses = itemCalculation.itemUses + 1)
             itemCalculationRepository.update(itemCalculation)
         }
-        productService.updateProductItemUses(itemCalculation)
+        return itemCalculation
+    }
+
+    suspend fun finishItemCalculation(productId: Int): List<ItemCalculation> {
+        var itemCalculation = itemCalculationRepository.getUnfinishedItemCalculation(productId)
+        if (itemCalculation == null) {
+            itemCalculation = ItemCalculation(
+                productId = productId,
+                itemUses = 0,
+                isFinished = true
+            )
+            itemCalculationRepository.insert(itemCalculation)
+        } else {
+            itemCalculation = itemCalculation.copy(isFinished = true)
+            itemCalculationRepository.update(itemCalculation)
+        }
+        return itemCalculationRepository.getItemCalculations(productId)
     }
 }

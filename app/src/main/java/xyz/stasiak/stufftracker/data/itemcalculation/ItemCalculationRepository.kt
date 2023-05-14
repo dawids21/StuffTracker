@@ -1,7 +1,9 @@
 package xyz.stasiak.stufftracker.data.itemcalculation
 
 interface ItemCalculationRepository {
-    fun getItemCalculation(productId: Int): ItemCalculation?
+    suspend fun getUnfinishedItemCalculation(productId: Int): ItemCalculation?
+
+    suspend fun getItemCalculations(productId: Int): List<ItemCalculation>
 
     suspend fun insert(itemCalculation: ItemCalculation)
 

@@ -6,14 +6,12 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import xyz.stasiak.stufftracker.data.category.Category
 import xyz.stasiak.stufftracker.data.category.CategoryRepository
 import xyz.stasiak.stufftracker.data.product.ProductService
@@ -102,9 +100,7 @@ class ProductEditViewModel(
                         val productDetails =
                             productEntryUiState.productDetailsEntry.toProductDetails()
                         productDetailsRepository.update(productDetails)
-                        withContext(Dispatchers.IO) {
-                            productService.updateProductDetails(productDetails)
-                        }
+                        productService.updateProductDetails(productDetails)
                         productEntryUiState =
                             productEntryUiState.copy(status = ProductUiStatus.SAVED)
                     }

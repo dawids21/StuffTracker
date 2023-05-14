@@ -16,7 +16,7 @@ interface ProductDao {
     fun getProduct(id: Int): Flow<Product>
 
     @Query("SELECT * FROM products WHERE productId = :productId")
-    fun getProductByProductId(productId: Int): Product
+    suspend fun getProductByProductId(productId: Int): Product
 
     @Query("SELECT * FROM products WHERE productId = :productId")
     fun getProductFlowByProductId(productId: Int): Flow<Product>

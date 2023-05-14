@@ -9,8 +9,11 @@ import androidx.room.Update
 
 @Dao
 interface ItemCalculationDao {
+    @Query("SELECT * FROM item_calculations WHERE productId = :productId AND isFinished = 0 LIMIT 1")
+    suspend fun getUnfinishedItemCalculation(productId: Int): ItemCalculation?
+
     @Query("SELECT * FROM item_calculations WHERE productId = :productId")
-    fun getItemCalculation(productId: Int): ItemCalculation?
+    suspend fun getItemCalculations(productId: Int): List<ItemCalculation>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(itemCalculation: ItemCalculation)

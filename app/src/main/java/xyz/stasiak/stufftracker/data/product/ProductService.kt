@@ -28,19 +28,29 @@ class ProductService(
         )
     }
 
-    suspend fun updateProductItemUses(itemCalculation: ItemCalculation) {
+    suspend fun onUseItem(itemCalculation: ItemCalculation) {
         val product = productRepository.getProductByProductId(itemCalculation.productId)
         productRepository.update(
             product.copy(lastItemUses = itemCalculation.itemUses)
         )
     }
 
-    suspend fun calculateProduct(itemCalculation: ItemCalculation) {
-        val product = productRepository.getProductByProductId(itemCalculation.productId)
+    suspend fun onItemCalculated(productId: Int, itemCalculations: List<ItemCalculation>) {
+        val product = productRepository.getProductByProductId(productId)
         productRepository.update(
             product.copy(
-                averageUses = itemCalculation.itemUses.toFloat(),
+                averageUses = itemCalculations.map { it.itemUses }.average().toFloat(),
                 isCalculated = true
+            )
+        )
+    }
+
+    suspend fun onProductItemDepleted(productDetails: ProductDetails) {
+        val product = productRepository.getProductByProductId(productDetails.id)
+        productRepository.update(
+            product.copy(
+                numOfItems = productDetails.numOfItems,
+                lastItemUses = 0
             )
         )
     }
