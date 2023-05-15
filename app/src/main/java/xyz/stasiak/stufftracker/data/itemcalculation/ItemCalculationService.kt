@@ -34,4 +34,8 @@ class ItemCalculationService(
         }
         return itemCalculationRepository.getItemCalculations(productId)
     }
+
+    suspend fun resetItemCalculations(productId: Int) {
+        itemCalculationRepository.deleteByProductId(productId)
+    }
 }

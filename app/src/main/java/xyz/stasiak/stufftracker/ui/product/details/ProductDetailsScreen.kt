@@ -56,7 +56,7 @@ fun ProductDetailsScreen(
                     ) {
                         DropdownMenuItem(
                             text = { Text(stringResource(R.string.reset)) },
-                            onClick = { /*TODO*/ }
+                            onClick = { viewModel.onResetClicked() }
                         )
                         DropdownMenuItem(
                             text = { Text(stringResource(R.string.delete_product)) },

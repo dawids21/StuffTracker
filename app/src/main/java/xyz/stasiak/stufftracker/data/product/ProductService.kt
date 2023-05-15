@@ -63,6 +63,16 @@ class ProductService(
             )
         )
     }
+
+    suspend fun onProductItemReset(productId: Int) {
+        val product = productRepository.getProductByProductId(productId)
+        productRepository.update(
+            product.copy(
+                averageUses = 0f,
+                isCalculated = false
+            )
+        )
+    }
 }
 
 private fun ProductDetails.toProduct(category: Category?) = Product(
