@@ -1,6 +1,8 @@
 package xyz.stasiak.stufftracker.data
 
 import android.content.Context
+import com.google.android.gms.auth.api.identity.Identity
+import xyz.stasiak.stufftracker.auth.GoogleAuthUiClient
 import xyz.stasiak.stufftracker.data.category.CategoryRepository
 import xyz.stasiak.stufftracker.data.category.OfflineCategoryRepository
 import xyz.stasiak.stufftracker.data.itemcalculation.ItemCalculationRepository
@@ -15,6 +17,7 @@ interface AppContainer {
     val productRepository: ProductRepository
     val productDetailsRepository: ProductDetailsRepository
     val itemCalculationRepository: ItemCalculationRepository
+    val googleAuthUiClient: GoogleAuthUiClient
 }
 
 class AppDataContainer(private val context: Context) : AppContainer {
@@ -36,5 +39,9 @@ class AppDataContainer(private val context: Context) : AppContainer {
         OfflineItemCalculationRepository(
             StuffTrackerDatabase.getDatabase(context).itemCalculationDao()
         )
+    }
+
+    override val googleAuthUiClient: GoogleAuthUiClient by lazy {
+        GoogleAuthUiClient(context, Identity.getSignInClient(context))
     }
 }
