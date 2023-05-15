@@ -33,7 +33,11 @@ fun StuffTrackerNavHost(navController: NavHostController, modifier: Modifier = M
     ) {
         composable(route = LoginDestination.route) {
             LoginScreen(
-                navigateToHome = { navController.navigate(HomeDestination.route) }
+                navigateToHome = {
+                    navController.navigate(HomeDestination.route) {
+                        popUpTo(LoginDestination.route) { inclusive = true }
+                    }
+                }
             )
         }
         composable(route = HomeDestination.route) {
@@ -74,7 +78,13 @@ fun StuffTrackerNavHost(navController: NavHostController, modifier: Modifier = M
             SettingsScreen(
                 onCategoriesClick = { navController.navigate(CategorySettingsDestination.route) },
                 onGoogleKeepClick = { navController.navigate(ShoppingListSettingsDestination.route) },
-                navigateBack = { navController.navigateUp() }
+                navigateBack = { navController.navigateUp() },
+                navigateToLogin = {
+                    navController.navigate(LoginDestination.route) {
+                        popUpTo(LoginDestination.route) { inclusive = true }
+                    }
+                }
+
             )
         }
         composable(route = CategorySettingsDestination.route) {
