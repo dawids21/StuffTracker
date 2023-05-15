@@ -65,4 +65,14 @@ class ProductDetailsViewModel(
             }
         }
     }
+
+    fun onResetClicked() {
+        if (uiState is ProductDetailsUiState.Content) {
+            val product = (uiState as ProductDetailsUiState.Content).product
+            viewModelScope.launch {
+                itemCalculationService.resetItemCalculations(product.productId)
+                productService.onProductItemReset(product.productId)
+            }
+        }
+    }
 }
