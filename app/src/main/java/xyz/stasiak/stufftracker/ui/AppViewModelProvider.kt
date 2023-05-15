@@ -9,6 +9,7 @@ import xyz.stasiak.stufftracker.StuffTrackerApplication
 import xyz.stasiak.stufftracker.data.itemcalculation.ItemCalculationService
 import xyz.stasiak.stufftracker.data.product.ProductService
 import xyz.stasiak.stufftracker.ui.home.HomeViewModel
+import xyz.stasiak.stufftracker.ui.login.LoginViewModel
 import xyz.stasiak.stufftracker.ui.product.details.ProductDetailsViewModel
 import xyz.stasiak.stufftracker.ui.product.entry.add.ProductAddViewModel
 import xyz.stasiak.stufftracker.ui.product.entry.edit.ProductEditViewModel
@@ -16,6 +17,12 @@ import xyz.stasiak.stufftracker.ui.settings.category.CategorySettingsViewModel
 
 object AppViewModelProvider {
     val Factory = viewModelFactory {
+        initializer {
+            LoginViewModel(
+                stuffTrackerApplication().container.googleAuthUiClient
+            )
+        }
+
         initializer {
             HomeViewModel(
                 stuffTrackerApplication().container.productRepository,

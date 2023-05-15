@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'com.google.devtools.ksp' version "1.7.20-1.0.8"
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -85,4 +86,9 @@ dependencies {
     implementation "androidx.room:room-ktx:2.5.1"
 
     implementation "io.coil-kt:coil-compose:2.3.0"
+
+    //Firebase
+    implementation platform('com.google.firebase:firebase-bom:32.0.0')
+    implementation 'com.google.firebase:firebase-auth-ktx'
+    implementation 'com.google.android.gms:play-services-auth:20.5.0'
 }
