@@ -113,6 +113,7 @@ fun HomeScreen(
             onProductClick = { navigateToProductUpdate(it) },
             onProductUse = { viewModel.useItem(it.productId) },
             onProductDeplete = { viewModel.depleteItem(it) },
+            onProductBuy = { viewModel.buyProduct(it) },
             showSearch = showSearch.value,
             modifier = Modifier.padding(innerPadding)
         )
@@ -126,6 +127,7 @@ fun HomeBody(
     onProductClick: (Int) -> Unit,
     onProductUse: (Product) -> Unit,
     onProductDeplete: (Product) -> Unit,
+    onProductBuy: (Product) -> Unit,
     showSearch: Boolean,
     modifier: Modifier = Modifier
 ) {
@@ -160,6 +162,7 @@ fun HomeBody(
                 onProductClick = { onProductClick(it.id) },
                 onProductUse = onProductUse,
                 onProductDeplete = onProductDeplete,
+                onProductBuy = onProductBuy,
                 searchValue = searchValue,
                 filteredCategories = filteredCategories
             )
@@ -173,6 +176,7 @@ private fun ProductList(
     onProductClick: (Product) -> Unit,
     onProductUse: (Product) -> Unit,
     onProductDeplete: (Product) -> Unit,
+    onProductBuy: (Product) -> Unit,
     searchValue: String,
     filteredCategories: List<Category>,
     modifier: Modifier = Modifier
@@ -189,7 +193,8 @@ private fun ProductList(
                 product = product,
                 onProductClick = onProductClick,
                 onProductUse = onProductUse,
-                onProductDeplete = onProductDeplete
+                onProductDeplete = onProductDeplete,
+                onProductBuy = onProductBuy
             )
             Divider()
         }
@@ -202,6 +207,7 @@ private fun ProductEntry(
     onProductClick: (Product) -> Unit,
     onProductUse: (Product) -> Unit,
     onProductDeplete: (Product) -> Unit,
+    onProductBuy: (Product) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val useAction = SwipeAction(
@@ -230,7 +236,7 @@ private fun ProductEntry(
         background = MaterialTheme.colorScheme.secondary,
         onSwipe = { onProductDeplete(product) }
     )
-    val restoreAction = SwipeAction(
+    val buyAction = SwipeAction(
         icon = {
             Icon(
                 imageVector = Icons.Filled.Refresh,
@@ -241,11 +247,11 @@ private fun ProductEntry(
             )
         },
         background = MaterialTheme.colorScheme.primary,
-        onSwipe = {}
+        onSwipe = { onProductBuy(product) }
     )
     SwipeableActionsBox(
         startActions = listOf(useAction, depleteAction),
-        endActions = listOf(restoreAction),
+        endActions = listOf(buyAction),
         modifier = modifier
             .clickable(onClick = { onProductClick(product) })
     ) {
@@ -331,6 +337,7 @@ fun HomeBodyPreview() {
             onProductClick = {},
             onProductUse = {},
             onProductDeplete = {},
+            onProductBuy = {},
             showSearch = false
         )
     }
@@ -353,7 +360,8 @@ fun ProductEntryPreview() {
             ),
             onProductClick = {},
             onProductUse = {},
-            onProductDeplete = {}
+            onProductDeplete = {},
+            onProductBuy = {}
         )
     }
 }

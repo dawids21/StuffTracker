@@ -60,4 +60,13 @@ class HomeViewModel(
     fun onToastShown() {
         toastShowState = ToastShowState.Hide
     }
+
+    fun buyProduct(product: Product) {
+        viewModelScope.launch {
+            val productDetails = productDetailsRepository.getProductDetails(product.id)
+            val newProductDetails = productDetails.copy(numOfItems = productDetails.numOfItems + 1)
+            productDetailsRepository.update(newProductDetails)
+            productService.onProductItemBought(newProductDetails)
+        }
+    }
 }
