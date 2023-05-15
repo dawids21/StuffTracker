@@ -19,6 +19,7 @@ import xyz.stasiak.stufftracker.R
 fun SettingsBody(
     onCategoriesClick: () -> Unit,
     onGoogleKeepClick: () -> Unit,
+    onSignOutClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -46,6 +47,18 @@ fun SettingsBody(
         ) {
             Text(
                 text = stringResource(id = R.string.google_keep),
+                style = MaterialTheme.typography.bodyLarge,
+            )
+        }
+        Row(
+            modifier = Modifier
+                .clickable(onClick = onSignOutClick)
+                .fillMaxWidth()
+                .padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = stringResource(id = R.string.sign_out),
                 style = MaterialTheme.typography.bodyLarge,
             )
         }

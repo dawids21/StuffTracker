@@ -13,6 +13,7 @@ import xyz.stasiak.stufftracker.ui.login.LoginViewModel
 import xyz.stasiak.stufftracker.ui.product.details.ProductDetailsViewModel
 import xyz.stasiak.stufftracker.ui.product.entry.add.ProductAddViewModel
 import xyz.stasiak.stufftracker.ui.product.entry.edit.ProductEditViewModel
+import xyz.stasiak.stufftracker.ui.settings.SettingsViewModel
 import xyz.stasiak.stufftracker.ui.settings.category.CategorySettingsViewModel
 
 object AppViewModelProvider {
@@ -79,6 +80,12 @@ object AppViewModelProvider {
 
         initializer {
             CategorySettingsViewModel(stuffTrackerApplication().container.categoryRepository)
+        }
+
+        initializer {
+            SettingsViewModel(
+                stuffTrackerApplication().container.googleAuthUiClient,
+            )
         }
     }
 }
