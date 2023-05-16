@@ -14,7 +14,7 @@ import xyz.stasiak.stufftracker.data.product.Product
 import xyz.stasiak.stufftracker.data.product.ProductRepository
 import xyz.stasiak.stufftracker.data.product.ProductService
 import xyz.stasiak.stufftracker.data.productdetails.ProductDetailsRepository
-import xyz.stasiak.stufftracker.ui.RemindDialogState
+import xyz.stasiak.stufftracker.ui.DialogState
 
 class HomeViewModel(
     private val productRepository: ProductRepository,
@@ -36,7 +36,10 @@ class HomeViewModel(
     var toastShowState by mutableStateOf<ToastShowState>(ToastShowState.Hide)
         private set
 
-    var remindDialogState by mutableStateOf<RemindDialogState>(RemindDialogState.Hidden)
+    var remindDialogState by mutableStateOf<DialogState>(DialogState.Hidden)
+        private set
+
+    var depleteDialogState by mutableStateOf<DialogState>(DialogState.Hidden)
         private set
 
     fun useItem(productId: Int) {
@@ -44,17 +47,22 @@ class HomeViewModel(
             val itemCalculation = itemCalculationService.useItem(productId)
             productService.onUseItem(itemCalculation)
             val product = productRepository.getProductByProductId(productId)
-            if (!product.remindDialogShown && product.numOfItems == 1 &&
-                (itemCalculation.itemUses > product.averageUses * 0.8 || product.averageUses - itemCalculation.itemUses < 2.5)
-            ) {
-                remindDialogState = RemindDialogState.Showing(product.name)
-                productService.onRemindDialogShown(product.productId)
+            if (product.isCalculated) {
+                if (!product.depletedDialogShown && product.averageUses - itemCalculation.itemUses < 1) {
+                    depleteDialogState = DialogState.Showing(product)
+                    productService.onDepleteDialogShown(product.productId)
+                } else if (!product.remindDialogShown &&
+                    (itemCalculation.itemUses > product.averageUses * 0.8 || product.averageUses - itemCalculation.itemUses < 2.5)
+                ) {
+                    remindDialogState = DialogState.Showing(product)
+                    productService.onRemindDialogShown(product.productId)
+                }
             }
         }
     }
 
     fun depleteItem(product: Product) {
-        if (product.numOfItems == 0) {
+        if (product.numOfItems <= 0) {
             toastShowState = ToastShowState.Show(product.name)
             return
         }
@@ -82,6 +90,10 @@ class HomeViewModel(
     }
 
     fun onRemindDialogDismissed() {
-        remindDialogState = RemindDialogState.Hidden
+        remindDialogState = DialogState.Hidden
+    }
+
+    fun onDepleteDialogDismissed() {
+        depleteDialogState = DialogState.Hidden
     }
 }

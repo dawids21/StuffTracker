@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Cancel
 import androidx.compose.material.icons.outlined.CheckCircle
 import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.material.icons.outlined.ShoppingBag
@@ -25,7 +26,13 @@ import xyz.stasiak.stufftracker.data.product.Product
 import xyz.stasiak.stufftracker.ui.theme.StuffTrackerTheme
 
 @Composable
-fun ProductHeader(product: Product, onProductUse: (Product) -> Unit, modifier: Modifier = Modifier) {
+fun ProductHeader(
+    product: Product,
+    onProductUse: (Product) -> Unit,
+    onProductDeplete: (Product) -> Unit,
+    onProductBuy: (Product) -> Unit,
+    modifier: Modifier = Modifier
+) {
     Row(
         modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -49,7 +56,13 @@ fun ProductHeader(product: Product, onProductUse: (Product) -> Unit, modifier: M
                     contentDescription = stringResource(R.string.use_item)
                 )
             }
-            IconButton(onClick = { }) {
+            IconButton(onClick = { onProductDeplete(product) }) {
+                Icon(
+                    Icons.Outlined.Cancel,
+                    contentDescription = stringResource(R.string.deplete_product)
+                )
+            }
+            IconButton(onClick = { onProductBuy(product) }) {
                 Icon(
                     Icons.Outlined.Refresh,
                     contentDescription = stringResource(R.string.buy_product)
@@ -79,9 +92,12 @@ fun ProductHeaderPreview() {
                 averageUses = 10f,
                 lastItemUses = 5,
                 isCalculated = true,
-                remindDialogShown = false
+                remindDialogShown = false,
+                depletedDialogShown = false
             ),
             onProductUse = {},
+            onProductDeplete = {},
+            onProductBuy = {},
         )
 
     }

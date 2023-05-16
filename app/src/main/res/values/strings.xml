@@ -47,7 +47,13 @@
     <string name="web_client_id">635985292618-s34m5dffditlp3o54ho7437c985cj10u.apps.googleusercontent.com</string>
     <string name="sign_out">Sign out</string>
     <string name="remind_dialog_title">%1$s is nearly gone</string>
-    <string name="remind_dialog_text">Remember to buy %1$s next time you are in the shop.</string>
+    <string name="remind_dialog_text_more">You still have %1$d items. You can add %2$s to the shopping list.</string>
+    <string name="remind_dialog_text">You don\'t have more items of %1$s. Remember to buy %1$s next time you are in the shop.</string>
     <string name="close">Close</string>
     <string name="add_to_list">Add to list</string>
+    <string name="deplete_dialog_title">%1$s is gone</string>
+    <string name="deplete_dialog_text">We think that this item of %1$s is empty by now. Are we right?</string>
+    <string name="not_yet">Not yet</string>
+    <string name="mark_as_empty">Mark as empty</string>
+    <string name="deplete_product">Deplete product</string>
 </resources>

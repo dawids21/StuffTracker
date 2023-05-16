@@ -8,9 +8,9 @@ import androidx.compose.ui.res.stringResource
 import xyz.stasiak.stufftracker.R
 
 @Composable
-fun RemindDialog(
+fun DepleteDialog(
     productName: String,
-    productNumOfItems: Int,
+    onDepletionConfirmed: () -> Unit,
     onDialogDismissed: () -> Unit
 ) {
     AlertDialog(
@@ -18,41 +18,34 @@ fun RemindDialog(
         title = {
             Text(
                 text = stringResource(
-                    R.string.remind_dialog_title,
+                    R.string.deplete_dialog_title,
                     productName
                 )
             )
         },
         text = {
-            if (productNumOfItems > 1) {
-                Text(
-                    text = stringResource(
-                        R.string.remind_dialog_text_more,
-                        productNumOfItems,
-                        productName
-                    )
+            Text(
+                text = stringResource(
+                    R.string.deplete_dialog_text,
+                    productName
                 )
-            } else {
-                Text(
-                    text = stringResource(
-                        R.string.remind_dialog_text,
-                        productName
-                    )
-                )
-            }
+            )
         },
         confirmButton = {
             TextButton(
-                onClick = onDialogDismissed
+                onClick = {
+                    onDepletionConfirmed()
+                    onDialogDismissed()
+                }
             ) {
-                Text(stringResource(R.string.add_to_list))
+                Text(stringResource(R.string.mark_as_empty))
             }
         },
         dismissButton = {
             TextButton(
                 onClick = onDialogDismissed
             ) {
-                Text(stringResource(R.string.close))
+                Text(stringResource(R.string.not_yet))
             }
         }
     )
