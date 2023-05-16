@@ -11,7 +11,8 @@ import xyz.stasiak.stufftracker.R
 fun RemindDialog(
     productName: String,
     productNumOfItems: Int,
-    onDialogDismissed: () -> Unit
+    onDialogDismissed: () -> Unit,
+    onAddToShoppingList: () -> Unit
 ) {
     AlertDialog(
         onDismissRequest = onDialogDismissed,
@@ -43,7 +44,10 @@ fun RemindDialog(
         },
         confirmButton = {
             TextButton(
-                onClick = onDialogDismissed
+                onClick = {
+                    onAddToShoppingList()
+                    onDialogDismissed()
+                }
             ) {
                 Text(stringResource(R.string.add_to_list))
             }

@@ -31,6 +31,7 @@ fun ProductHeader(
     onProductUse: (Product) -> Unit,
     onProductDeplete: (Product) -> Unit,
     onProductBuy: (Product) -> Unit,
+    onProductAddedToList: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -68,7 +69,7 @@ fun ProductHeader(
                     contentDescription = stringResource(R.string.buy_product)
                 )
             }
-            IconButton(onClick = { }) {
+            IconButton(onClick = onProductAddedToList) {
                 Icon(
                     Icons.Outlined.ShoppingBag,
                     contentDescription = stringResource(R.string.add_product_to_shopping_list)
@@ -98,6 +99,7 @@ fun ProductHeaderPreview() {
             onProductUse = {},
             onProductDeplete = {},
             onProductBuy = {},
+            onProductAddedToList = {},
         )
 
     }
