@@ -23,7 +23,7 @@ fun ProductParameters(product: Product, modifier: Modifier = Modifier) {
             text = stringResource(id = R.string.product_current_uses, product.lastItemUses),
             style = MaterialTheme.typography.bodyMedium
         )
-        if (product.isCalculated) {
+        if (product.isCalculated && product.numOfItems != 0) {
             val usesLeft = floor(product.averageUses - product.lastItemUses).toInt()
             Text(
                 text = stringResource(

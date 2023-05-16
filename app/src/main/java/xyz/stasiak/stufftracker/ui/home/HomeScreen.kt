@@ -144,7 +144,7 @@ fun HomeScreen(
             productList = products,
             categories = categories,
             onProductClick = { navigateToProductUpdate(it) },
-            onProductUse = { viewModel.useItem(it.productId) },
+            onProductUse = { viewModel.useItem(it) },
             onProductDeplete = { viewModel.depleteItem(it) },
             onProductBuy = { viewModel.buyProduct(it) },
             showSearch = showSearch.value,
@@ -314,7 +314,7 @@ private fun ProductEntry(
                     text = stringResource(id = R.string.product_entry_items, product.numOfItems),
                     style = MaterialTheme.typography.labelMedium
                 )
-                if (product.isCalculated) {
+                if (product.isCalculated && product.numOfItems != 0) {
                     val usesLeft = floor(product.averageUses - product.lastItemUses).toInt()
                     Text(
                         text = stringResource(
