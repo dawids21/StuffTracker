@@ -1,5 +1,6 @@
 package xyz.stasiak.stufftracker.ui.product.details
 
+import android.content.Intent
 import android.widget.Toast
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
@@ -55,11 +56,19 @@ fun ProductDetailsScreen(
         }
     }
 
+    val sendIntent: Intent = Intent().apply {
+        action = Intent.ACTION_SEND
+        putExtra(Intent.EXTRA_TEXT, productName)
+        type = "text/plain"
+    }
+    val shareIntent = Intent.createChooser(sendIntent, null)
+
     val remindDialogState = viewModel.remindDialogState
     if (remindDialogState is DialogState.Showing) {
         RemindDialog(
             productName = remindDialogState.product.name,
             productNumOfItems = remindDialogState.product.numOfItems,
+            onAddToShoppingList = { context.startActivity(shareIntent) },
             onDialogDismissed = { viewModel.onRemindDialogDismissed() }
         )
     }
@@ -122,6 +131,7 @@ fun ProductDetailsScreen(
             onProductUse = { viewModel.useItem(it.productId) },
             onProductDeplete = { viewModel.depleteItem(it) },
             onProductBuy = { viewModel.buyProduct(it) },
+            onProductAddedToList = { context.startActivity(shareIntent) },
             navigateBack = navigateBack,
             modifier = Modifier.padding(innerPadding)
         )

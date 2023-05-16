@@ -1,5 +1,6 @@
 package xyz.stasiak.stufftracker.ui.home
 
+import android.content.Intent
 import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -81,11 +82,21 @@ fun HomeScreen(
         }
     }
 
+
     val remindDialogState = viewModel.remindDialogState
     if (remindDialogState is DialogState.Showing) {
         RemindDialog(
             productName = remindDialogState.product.name,
             productNumOfItems = remindDialogState.product.numOfItems,
+            onAddToShoppingList = {
+                val sendIntent: Intent = Intent().apply {
+                    action = Intent.ACTION_SEND
+                    putExtra(Intent.EXTRA_TEXT, remindDialogState.product.name)
+                    type = "text/plain"
+                }
+                val shareIntent = Intent.createChooser(sendIntent, null)
+                context.startActivity(shareIntent)
+            },
             onDialogDismissed = { viewModel.onRemindDialogDismissed() }
         )
     }
