@@ -45,7 +45,7 @@ class HomeViewModel(
             productService.onUseItem(itemCalculation)
             val product = productRepository.getProductByProductId(productId)
             if (!product.remindDialogShown && product.numOfItems == 1 &&
-                (itemCalculation.itemUses > product.averageUses * 0.8 || itemCalculation.itemUses - product.averageUses < 2.5)
+                (itemCalculation.itemUses > product.averageUses * 0.8 || product.averageUses - itemCalculation.itemUses < 2.5)
             ) {
                 remindDialogState = RemindDialogState.Showing(product.name)
                 productService.onRemindDialogShown(product.productId)
