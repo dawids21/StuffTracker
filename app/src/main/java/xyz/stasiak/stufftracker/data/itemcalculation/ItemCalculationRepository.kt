@@ -5,6 +5,8 @@ interface ItemCalculationRepository {
 
     suspend fun getItemCalculations(productId: Int): List<ItemCalculation>
 
+    suspend fun getFinishedItemCalculations(productId: Int): List<ItemCalculation>
+
     suspend fun insert(itemCalculation: ItemCalculation)
 
     suspend fun update(itemCalculation: ItemCalculation)

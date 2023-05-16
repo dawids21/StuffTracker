@@ -23,6 +23,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import xyz.stasiak.stufftracker.R
 import xyz.stasiak.stufftracker.StuffTrackerTopAppBar
 import xyz.stasiak.stufftracker.ui.AppViewModelProvider
+import xyz.stasiak.stufftracker.ui.RemindDialog
+import xyz.stasiak.stufftracker.ui.RemindDialogState
 
 @Composable
 fun ProductDetailsScreen(
@@ -35,6 +37,15 @@ fun ProductDetailsScreen(
     val productId = if (uiState is ProductDetailsUiState.Content) uiState.product.id else -1
     val productName = if (uiState is ProductDetailsUiState.Content) uiState.product.name else ""
     var showMenu by remember { mutableStateOf(false) }
+
+    val remindDialogState = viewModel.remindDialogState
+    if (remindDialogState is RemindDialogState.Showing) {
+        RemindDialog(
+            productName = remindDialogState.productName,
+            onDialogDismissed = { viewModel.onRemindDialogDismissed() }
+        )
+    }
+
     Scaffold(
         topBar = {
             StuffTrackerTopAppBar(

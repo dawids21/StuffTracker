@@ -16,6 +16,7 @@ import xyz.stasiak.stufftracker.data.itemcalculation.ItemCalculationService
 import xyz.stasiak.stufftracker.data.product.ProductRepository
 import xyz.stasiak.stufftracker.data.product.ProductService
 import xyz.stasiak.stufftracker.data.productdetails.ProductDetailsRepository
+import xyz.stasiak.stufftracker.ui.RemindDialogState
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class ProductDetailsViewModel(
@@ -28,6 +29,9 @@ class ProductDetailsViewModel(
 ) : ViewModel() {
 
     var uiState by mutableStateOf<ProductDetailsUiState>(ProductDetailsUiState.Loading)
+        private set
+
+    var remindDialogState by mutableStateOf<RemindDialogState>(RemindDialogState.Hidden)
         private set
 
     init {
@@ -52,6 +56,10 @@ class ProductDetailsViewModel(
         viewModelScope.launch {
             val itemCalculation = itemCalculationService.useItem(productId)
             productService.onUseItem(itemCalculation)
+            val product = productRepository.getProductByProductId(productId)
+            if (product.numOfItems == 1 && itemCalculation.itemUses > product.averageUses * 0.8) {
+                remindDialogState = RemindDialogState.Showing(product.name)
+            }
         }
     }
 
@@ -74,5 +82,9 @@ class ProductDetailsViewModel(
                 productService.onProductItemReset(product.productId)
             }
         }
+    }
+
+    fun onRemindDialogDismissed() {
+        remindDialogState = RemindDialogState.Hidden
     }
 }
