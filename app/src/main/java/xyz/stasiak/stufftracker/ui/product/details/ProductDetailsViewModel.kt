@@ -57,8 +57,9 @@ class ProductDetailsViewModel(
             val itemCalculation = itemCalculationService.useItem(productId)
             productService.onUseItem(itemCalculation)
             val product = productRepository.getProductByProductId(productId)
-            if (product.numOfItems == 1 && itemCalculation.itemUses > product.averageUses * 0.8) {
+            if (!product.remindDialogShown && product.numOfItems == 1 && itemCalculation.itemUses > product.averageUses * 0.8) {
                 remindDialogState = RemindDialogState.Showing(product.name)
+                productService.onRemindDialogShown(product.productId)
             }
         }
     }

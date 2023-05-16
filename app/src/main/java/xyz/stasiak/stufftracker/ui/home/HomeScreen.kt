@@ -326,7 +326,8 @@ fun HomeBodyPreview() {
                     image = null,
                     averageUses = 10f,
                     lastItemUses = 5,
-                    isCalculated = true
+                    isCalculated = true,
+                    remindDialogShown = false
                 ),
                 Product(
                     productId = 2,
@@ -336,7 +337,8 @@ fun HomeBodyPreview() {
                     image = null,
                     averageUses = 10f,
                     lastItemUses = 5,
-                    isCalculated = true
+                    isCalculated = true,
+                    remindDialogShown = false
                 ),
             ),
             categories = listOf(
@@ -367,7 +369,8 @@ fun ProductEntryPreview() {
                 image = null,
                 averageUses = 10f,
                 lastItemUses = 5,
-                isCalculated = true
+                isCalculated = true,
+                remindDialogShown = false
             ),
             onProductClick = {},
             onProductUse = {},
