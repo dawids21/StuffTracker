@@ -42,20 +42,24 @@ class HomeViewModel(
     var depleteDialogState by mutableStateOf<DialogState>(DialogState.Hidden)
         private set
 
-    fun useItem(productId: Int) {
+    fun useItem(product: Product) {
+        if (product.numOfItems <= 0) {
+            toastShowState = ToastShowState.Show(product.name)
+            return
+        }
         viewModelScope.launch {
-            val itemCalculation = itemCalculationService.useItem(productId)
+            val itemCalculation = itemCalculationService.useItem(product.id)
             productService.onUseItem(itemCalculation)
-            val product = productRepository.getProductByProductId(productId)
-            if (product.isCalculated) {
-                if (!product.depletedDialogShown && product.averageUses - itemCalculation.itemUses < 1) {
-                    depleteDialogState = DialogState.Showing(product)
-                    productService.onDepleteDialogShown(product.productId)
-                } else if (!product.remindDialogShown &&
-                    (itemCalculation.itemUses > product.averageUses * 0.8 || product.averageUses - itemCalculation.itemUses < 2.5)
+            val updatedProduct = productRepository.getProductByProductId(product.id)
+            if (updatedProduct.isCalculated) {
+                if (!updatedProduct.depletedDialogShown && updatedProduct.averageUses - itemCalculation.itemUses < 1) {
+                    depleteDialogState = DialogState.Showing(updatedProduct)
+                    productService.onDepleteDialogShown(updatedProduct.productId)
+                } else if (!updatedProduct.remindDialogShown &&
+                    (itemCalculation.itemUses > updatedProduct.averageUses * 0.8 || updatedProduct.averageUses - itemCalculation.itemUses < 2.5)
                 ) {
-                    remindDialogState = DialogState.Showing(product)
-                    productService.onRemindDialogShown(product.productId)
+                    remindDialogState = DialogState.Showing(updatedProduct)
+                    productService.onRemindDialogShown(updatedProduct.productId)
                 }
             }
         }

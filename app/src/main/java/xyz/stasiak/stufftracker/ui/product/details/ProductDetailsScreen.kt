@@ -128,7 +128,7 @@ fun ProductDetailsScreen(
     ) { innerPadding ->
         ProductDetailsBody(
             uiState = uiState,
-            onProductUse = { viewModel.useItem(it.productId) },
+            onProductUse = { viewModel.useItem(it) },
             onProductDeplete = { viewModel.depleteItem(it) },
             onProductBuy = { viewModel.buyProduct(it) },
             onProductAddedToList = { context.startActivity(shareIntent) },
