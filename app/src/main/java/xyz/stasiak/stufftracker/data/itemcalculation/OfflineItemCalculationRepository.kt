@@ -8,6 +8,9 @@ class OfflineItemCalculationRepository(private val itemCalculationDao: ItemCalcu
     override suspend fun getItemCalculations(productId: Int): List<ItemCalculation> =
         itemCalculationDao.getItemCalculations(productId)
 
+    override suspend fun getFinishedItemCalculations(productId: Int): List<ItemCalculation> =
+        itemCalculationDao.getFinishedItemCalculations(productId)
+
     override suspend fun insert(itemCalculation: ItemCalculation) =
         itemCalculationDao.insert(itemCalculation)
 

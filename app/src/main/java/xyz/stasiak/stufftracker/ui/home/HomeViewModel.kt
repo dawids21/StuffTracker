@@ -14,9 +14,10 @@ import xyz.stasiak.stufftracker.data.product.Product
 import xyz.stasiak.stufftracker.data.product.ProductRepository
 import xyz.stasiak.stufftracker.data.product.ProductService
 import xyz.stasiak.stufftracker.data.productdetails.ProductDetailsRepository
+import xyz.stasiak.stufftracker.ui.RemindDialogState
 
 class HomeViewModel(
-    productRepository: ProductRepository,
+    private val productRepository: ProductRepository,
     private val productService: ProductService,
     categoryRepository: CategoryRepository,
     private val itemCalculationService: ItemCalculationService,
@@ -35,10 +36,20 @@ class HomeViewModel(
     var toastShowState by mutableStateOf<ToastShowState>(ToastShowState.Hide)
         private set
 
+    var remindDialogState by mutableStateOf<RemindDialogState>(RemindDialogState.Hidden)
+        private set
+
     fun useItem(productId: Int) {
         viewModelScope.launch {
             val itemCalculation = itemCalculationService.useItem(productId)
             productService.onUseItem(itemCalculation)
+            val product = productRepository.getProductByProductId(productId)
+            if (!product.remindDialogShown && product.numOfItems == 1 &&
+                (itemCalculation.itemUses > product.averageUses * 0.8 || itemCalculation.itemUses - product.averageUses < 2.5)
+            ) {
+                remindDialogState = RemindDialogState.Showing(product.name)
+                productService.onRemindDialogShown(product.productId)
+            }
         }
     }
 
@@ -68,5 +79,9 @@ class HomeViewModel(
             productDetailsRepository.update(newProductDetails)
             productService.onProductItemBought(newProductDetails)
         }
+    }
+
+    fun onRemindDialogDismissed() {
+        remindDialogState = RemindDialogState.Hidden
     }
 }

@@ -62,7 +62,8 @@ fun ProductDetailsBodyPreview() {
                     image = null,
                     averageUses = 10f,
                     lastItemUses = 5,
-                    isCalculated = true
+                    isCalculated = true,
+                    remindDialogShown = false
                 ),
             ),
             {},

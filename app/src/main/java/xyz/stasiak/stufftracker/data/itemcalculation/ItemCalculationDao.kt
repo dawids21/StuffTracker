@@ -15,6 +15,9 @@ interface ItemCalculationDao {
     @Query("SELECT * FROM item_calculations WHERE productId = :productId")
     suspend fun getItemCalculations(productId: Int): List<ItemCalculation>
 
+    @Query("SELECT * FROM item_calculations WHERE productId = :productId AND isFinished = 1")
+    suspend fun getFinishedItemCalculations(productId: Int): List<ItemCalculation>
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(itemCalculation: ItemCalculation)
 

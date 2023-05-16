@@ -46,4 +46,8 @@
     <string name="no_items_left">No %1$s items left</string>
     <string name="web_client_id">635985292618-s34m5dffditlp3o54ho7437c985cj10u.apps.googleusercontent.com</string>
     <string name="sign_out">Sign out</string>
+    <string name="remind_dialog_title">%1$s is nearly gone</string>
+    <string name="remind_dialog_text">Remember to buy %1$s next time you are in the shop.</string>
+    <string name="close">Close</string>
+    <string name="add_to_list">Add to list</string>
 </resources>

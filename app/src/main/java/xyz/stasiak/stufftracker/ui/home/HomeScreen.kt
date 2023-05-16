@@ -50,6 +50,8 @@ import xyz.stasiak.stufftracker.StuffTrackerTopAppBar
 import xyz.stasiak.stufftracker.data.category.Category
 import xyz.stasiak.stufftracker.data.product.Product
 import xyz.stasiak.stufftracker.ui.AppViewModelProvider
+import xyz.stasiak.stufftracker.ui.RemindDialog
+import xyz.stasiak.stufftracker.ui.RemindDialogState
 import xyz.stasiak.stufftracker.ui.product.ProductImage
 import xyz.stasiak.stufftracker.ui.theme.StuffTrackerTheme
 import kotlin.math.floor
@@ -77,6 +79,15 @@ fun HomeScreen(
             viewModel.onToastShown()
         }
     }
+
+    val remindDialogState = viewModel.remindDialogState
+    if (remindDialogState is RemindDialogState.Showing) {
+        RemindDialog(
+            productName = remindDialogState.productName,
+            onDialogDismissed = { viewModel.onRemindDialogDismissed() }
+        )
+    }
+
     Scaffold(
         topBar = {
             StuffTrackerTopAppBar(
@@ -315,7 +326,8 @@ fun HomeBodyPreview() {
                     image = null,
                     averageUses = 10f,
                     lastItemUses = 5,
-                    isCalculated = true
+                    isCalculated = true,
+                    remindDialogShown = false
                 ),
                 Product(
                     productId = 2,
@@ -325,7 +337,8 @@ fun HomeBodyPreview() {
                     image = null,
                     averageUses = 10f,
                     lastItemUses = 5,
-                    isCalculated = true
+                    isCalculated = true,
+                    remindDialogShown = false
                 ),
             ),
             categories = listOf(
@@ -356,7 +369,8 @@ fun ProductEntryPreview() {
                 image = null,
                 averageUses = 10f,
                 lastItemUses = 5,
-                isCalculated = true
+                isCalculated = true,
+                remindDialogShown = false
             ),
             onProductClick = {},
             onProductUse = {},
