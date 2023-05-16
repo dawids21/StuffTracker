@@ -50,8 +50,9 @@ import xyz.stasiak.stufftracker.StuffTrackerTopAppBar
 import xyz.stasiak.stufftracker.data.category.Category
 import xyz.stasiak.stufftracker.data.product.Product
 import xyz.stasiak.stufftracker.ui.AppViewModelProvider
+import xyz.stasiak.stufftracker.ui.DepleteDialog
+import xyz.stasiak.stufftracker.ui.DialogState
 import xyz.stasiak.stufftracker.ui.RemindDialog
-import xyz.stasiak.stufftracker.ui.RemindDialogState
 import xyz.stasiak.stufftracker.ui.product.ProductImage
 import xyz.stasiak.stufftracker.ui.theme.StuffTrackerTheme
 import kotlin.math.floor
@@ -81,10 +82,19 @@ fun HomeScreen(
     }
 
     val remindDialogState = viewModel.remindDialogState
-    if (remindDialogState is RemindDialogState.Showing) {
+    if (remindDialogState is DialogState.Showing) {
         RemindDialog(
-            productName = remindDialogState.productName,
+            productName = remindDialogState.product.name,
             onDialogDismissed = { viewModel.onRemindDialogDismissed() }
+        )
+    }
+
+    val depleteDialogState = viewModel.depleteDialogState
+    if (depleteDialogState is DialogState.Showing) {
+        DepleteDialog(
+            productName = depleteDialogState.product.name,
+            onDepletionConfirmed = { viewModel.depleteItem(depleteDialogState.product) },
+            onDialogDismissed = { viewModel.onDepleteDialogDismissed() }
         )
     }
 
@@ -327,7 +337,8 @@ fun HomeBodyPreview() {
                     averageUses = 10f,
                     lastItemUses = 5,
                     isCalculated = true,
-                    remindDialogShown = false
+                    remindDialogShown = false,
+                    depletedDialogShown = false
                 ),
                 Product(
                     productId = 2,
@@ -338,7 +349,8 @@ fun HomeBodyPreview() {
                     averageUses = 10f,
                     lastItemUses = 5,
                     isCalculated = true,
-                    remindDialogShown = false
+                    remindDialogShown = false,
+                    depletedDialogShown = false
                 ),
             ),
             categories = listOf(
@@ -370,7 +382,8 @@ fun ProductEntryPreview() {
                 averageUses = 10f,
                 lastItemUses = 5,
                 isCalculated = true,
-                remindDialogShown = false
+                remindDialogShown = false,
+                depletedDialogShown = false
             ),
             onProductClick = {},
             onProductUse = {},

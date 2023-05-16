@@ -15,5 +15,6 @@ data class Product(
     val averageUses: Float,
     val isCalculated: Boolean,
     val remindDialogShown: Boolean,
+    val depletedDialogShown: Boolean,
     val image: String?
 )

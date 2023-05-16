@@ -24,7 +24,8 @@ class ProductService(
                 category = category?.name,
                 numOfItems = productDetails.numOfItems,
                 image = productDetails.image,
-                remindDialogShown = false
+                remindDialogShown = false,
+                depletedDialogShown = false
             )
         )
     }
@@ -52,7 +53,8 @@ class ProductService(
             product.copy(
                 numOfItems = productDetails.numOfItems,
                 lastItemUses = 0,
-                remindDialogShown = false
+                remindDialogShown = false,
+                depletedDialogShown = false
             )
         )
     }
@@ -62,7 +64,8 @@ class ProductService(
         productRepository.update(
             product.copy(
                 numOfItems = productDetails.numOfItems,
-                remindDialogShown = false
+                remindDialogShown = false,
+                depletedDialogShown = false
             )
         )
     }
@@ -73,7 +76,8 @@ class ProductService(
             product.copy(
                 averageUses = 0f,
                 isCalculated = false,
-                remindDialogShown = false
+                remindDialogShown = false,
+                depletedDialogShown = false
             )
         )
     }
@@ -83,6 +87,16 @@ class ProductService(
         productRepository.update(
             product.copy(
                 remindDialogShown = true
+            )
+        )
+    }
+
+    suspend fun onDepleteDialogShown(productId: Int) {
+        val product = productRepository.getProductByProductId(productId)
+        productRepository.update(
+            product.copy(
+                remindDialogShown = true,
+                depletedDialogShown = true
             )
         )
     }
@@ -97,5 +111,6 @@ private fun ProductDetails.toProduct(category: Category?) = Product(
     averageUses = 0f,
     isCalculated = false,
     remindDialogShown = false,
+    depletedDialogShown = false,
     image = image
 )
