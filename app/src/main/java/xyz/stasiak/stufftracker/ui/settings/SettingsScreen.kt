@@ -13,7 +13,6 @@ import xyz.stasiak.stufftracker.ui.AppViewModelProvider
 @Composable
 fun SettingsScreen(
     onCategoriesClick: () -> Unit,
-    onGoogleKeepClick: () -> Unit,
     navigateBack: () -> Unit,
     navigateToLogin: () -> Unit,
     modifier: Modifier = Modifier,
@@ -38,7 +37,6 @@ fun SettingsScreen(
     ) { innerPadding ->
         SettingsBody(
             onCategoriesClick = onCategoriesClick,
-            onGoogleKeepClick = onGoogleKeepClick,
             onSignOutClick = { viewModel.onLogoutClick() },
             modifier = Modifier.padding(innerPadding)
         )

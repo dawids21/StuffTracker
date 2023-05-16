@@ -18,7 +18,6 @@ import xyz.stasiak.stufftracker.R
 @Composable
 fun SettingsBody(
     onCategoriesClick: () -> Unit,
-    onGoogleKeepClick: () -> Unit,
     onSignOutClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -35,18 +34,6 @@ fun SettingsBody(
         ) {
             Text(
                 text = stringResource(id = R.string.categories),
-                style = MaterialTheme.typography.bodyLarge,
-            )
-        }
-        Row(
-            modifier = Modifier
-                .clickable(onClick = onGoogleKeepClick)
-                .fillMaxWidth()
-                .padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = stringResource(id = R.string.google_keep),
                 style = MaterialTheme.typography.bodyLarge,
             )
         }

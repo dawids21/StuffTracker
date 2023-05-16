@@ -21,8 +21,6 @@ import xyz.stasiak.stufftracker.ui.settings.SettingsDestination
 import xyz.stasiak.stufftracker.ui.settings.SettingsScreen
 import xyz.stasiak.stufftracker.ui.settings.category.CategorySettingsDestination
 import xyz.stasiak.stufftracker.ui.settings.category.CategorySettingsScreen
-import xyz.stasiak.stufftracker.ui.settings.shoppinglist.ShoppingListSettingsDestination
-import xyz.stasiak.stufftracker.ui.settings.shoppinglist.ShoppingListSettingsScreen
 
 @Composable
 fun StuffTrackerNavHost(navController: NavHostController, modifier: Modifier = Modifier) {
@@ -77,7 +75,6 @@ fun StuffTrackerNavHost(navController: NavHostController, modifier: Modifier = M
         composable(route = SettingsDestination.route) {
             SettingsScreen(
                 onCategoriesClick = { navController.navigate(CategorySettingsDestination.route) },
-                onGoogleKeepClick = { navController.navigate(ShoppingListSettingsDestination.route) },
                 navigateBack = { navController.navigateUp() },
                 navigateToLogin = {
                     navController.navigate(LoginDestination.route) {
@@ -89,11 +86,6 @@ fun StuffTrackerNavHost(navController: NavHostController, modifier: Modifier = M
         }
         composable(route = CategorySettingsDestination.route) {
             CategorySettingsScreen(
-                navigateBack = { navController.navigateUp() }
-            )
-        }
-        composable(route = ShoppingListSettingsDestination.route) {
-            ShoppingListSettingsScreen(
                 navigateBack = { navController.navigateUp() }
             )
         }
