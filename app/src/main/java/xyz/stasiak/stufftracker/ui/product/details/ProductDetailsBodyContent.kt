@@ -12,7 +12,8 @@ import xyz.stasiak.stufftracker.ui.product.ProductImage
 fun ProductDetailsBodyContent(
     product: Product,
     onProductUse: (Product) -> Unit,
-    onProductDeplete: (Product) -> Unit
+    onProductDeplete: (Product) -> Unit,
+    onProductBuy: (Product) -> Unit
 ) {
     ProductImage(
         product.image,
@@ -21,6 +22,6 @@ fun ProductDetailsBodyContent(
             .fillMaxWidth()
             .aspectRatio(1f)
     )
-    ProductHeader(product, onProductUse = onProductUse, onProductDeplete = onProductDeplete)
+    ProductHeader(product, onProductUse = onProductUse, onProductDeplete = onProductDeplete, onProductBuy = onProductBuy)
     ProductParameters(product = product)
 }

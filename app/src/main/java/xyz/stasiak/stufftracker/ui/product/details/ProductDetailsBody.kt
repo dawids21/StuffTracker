@@ -18,6 +18,7 @@ fun ProductDetailsBody(
     uiState: ProductDetailsUiState,
     onProductUse: (Product) -> Unit,
     onProductDeplete: (Product) -> Unit,
+    onProductBuy: (Product) -> Unit,
     navigateBack: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -36,7 +37,8 @@ fun ProductDetailsBody(
             is ProductDetailsUiState.Content -> ProductDetailsBodyContent(
                 uiState.product,
                 onProductUse = onProductUse,
-                onProductDeplete = onProductDeplete
+                onProductDeplete = onProductDeplete,
+                onProductBuy = onProductBuy
             )
         }
     }
@@ -46,7 +48,7 @@ fun ProductDetailsBody(
 @Composable
 fun ProductDetailsBodyLoadingPreview() {
     StuffTrackerTheme(dynamicColor = false, darkTheme = true) {
-        ProductDetailsBody(ProductDetailsUiState.Loading, {}, {}, {})
+        ProductDetailsBody(ProductDetailsUiState.Loading, {}, {}, {}, {})
     }
 }
 
@@ -69,6 +71,7 @@ fun ProductDetailsBodyPreview() {
                     depletedDialogShown = false
                 ),
             ),
+            {},
             {},
             {},
             {}

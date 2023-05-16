@@ -47,14 +47,16 @@ class HomeViewModel(
             val itemCalculation = itemCalculationService.useItem(productId)
             productService.onUseItem(itemCalculation)
             val product = productRepository.getProductByProductId(productId)
-            if (!product.depletedDialogShown && product.numOfItems == 1 && product.averageUses - itemCalculation.itemUses < 0.5) {
-                depleteDialogState = DialogState.Showing(product)
-                productService.onDepleteDialogShown(product.productId)
-            } else if (!product.remindDialogShown && product.numOfItems == 1 &&
-                (itemCalculation.itemUses > product.averageUses * 0.8 || product.averageUses - itemCalculation.itemUses < 2.5)
-            ) {
-                remindDialogState = DialogState.Showing(product)
-                productService.onRemindDialogShown(product.productId)
+            if (product.isCalculated) {
+                if (!product.depletedDialogShown && product.averageUses - itemCalculation.itemUses < 1) {
+                    depleteDialogState = DialogState.Showing(product)
+                    productService.onDepleteDialogShown(product.productId)
+                } else if (!product.remindDialogShown &&
+                    (itemCalculation.itemUses > product.averageUses * 0.8 || product.averageUses - itemCalculation.itemUses < 2.5)
+                ) {
+                    remindDialogState = DialogState.Showing(product)
+                    productService.onRemindDialogShown(product.productId)
+                }
             }
         }
     }

@@ -85,6 +85,7 @@ fun HomeScreen(
     if (remindDialogState is DialogState.Showing) {
         RemindDialog(
             productName = remindDialogState.product.name,
+            productNumOfItems = remindDialogState.product.numOfItems,
             onDialogDismissed = { viewModel.onRemindDialogDismissed() }
         )
     }

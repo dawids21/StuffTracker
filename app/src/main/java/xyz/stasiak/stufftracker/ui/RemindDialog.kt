@@ -10,6 +10,7 @@ import xyz.stasiak.stufftracker.R
 @Composable
 fun RemindDialog(
     productName: String,
+    productNumOfItems: Int,
     onDialogDismissed: () -> Unit
 ) {
     AlertDialog(
@@ -23,12 +24,22 @@ fun RemindDialog(
             )
         },
         text = {
-            Text(
-                text = stringResource(
-                    R.string.remind_dialog_text,
-                    productName
+            if (productNumOfItems > 1) {
+                Text(
+                    text = stringResource(
+                        R.string.remind_dialog_text_more,
+                        productNumOfItems,
+                        productName
+                    )
                 )
-            )
+            } else {
+                Text(
+                    text = stringResource(
+                        R.string.remind_dialog_text,
+                        productName
+                    )
+                )
+            }
         },
         confirmButton = {
             TextButton(

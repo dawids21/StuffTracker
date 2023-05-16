@@ -59,6 +59,7 @@ fun ProductDetailsScreen(
     if (remindDialogState is DialogState.Showing) {
         RemindDialog(
             productName = remindDialogState.product.name,
+            productNumOfItems = remindDialogState.product.numOfItems,
             onDialogDismissed = { viewModel.onRemindDialogDismissed() }
         )
     }
@@ -120,6 +121,7 @@ fun ProductDetailsScreen(
             uiState = uiState,
             onProductUse = { viewModel.useItem(it.productId) },
             onProductDeplete = { viewModel.depleteItem(it) },
+            onProductBuy = { viewModel.buyProduct(it) },
             navigateBack = navigateBack,
             modifier = Modifier.padding(innerPadding)
         )
