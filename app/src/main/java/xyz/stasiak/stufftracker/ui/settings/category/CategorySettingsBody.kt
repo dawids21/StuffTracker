@@ -28,6 +28,7 @@ import xyz.stasiak.stufftracker.ui.theme.StuffTrackerTheme
 fun CategorySettingsBody(
     categories: List<Category>,
     onAdd: (String) -> Unit,
+    onEdit: (Category, String) -> Unit,
     onDelete: (Category) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -38,7 +39,7 @@ fun CategorySettingsBody(
             .padding(16.dp),
     ) {
         categories.forEach { category ->
-            CategoryListItem(category = category.name, onDelete = { onDelete(category) })
+            CategoryListItem(category = category, onEdit = onEdit, onDelete = onDelete)
         }
         Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             OutlinedTextField(
@@ -70,6 +71,7 @@ fun CategorySettingsBodyPreview() {
                 Category(name = "Category 2", userId = "")
             ),
             onAdd = {},
+            onEdit = { _, _ -> },
             onDelete = {}
         )
     }

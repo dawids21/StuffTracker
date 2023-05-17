@@ -9,5 +9,7 @@ interface CategoryRepository {
 
     suspend fun saveCategory(category: Category)
 
+    suspend fun updateCategory(category: Category)
+
     suspend fun deleteCategory(category: Category)
 }

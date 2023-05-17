@@ -10,5 +10,7 @@ class OfflineCategoryRepository(private val categoryDao: CategoryDao) : Category
 
     override suspend fun saveCategory(category: Category) = categoryDao.insert(category)
 
+    override suspend fun updateCategory(category: Category) = categoryDao.update(category)
+
     override suspend fun deleteCategory(category: Category) = categoryDao.delete(category)
 }

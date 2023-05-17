@@ -23,9 +23,21 @@ class CategorySettingsViewModel(
             )
 
     fun addCategory(name: String) {
+        if (name.isBlank()) {
+            return
+        }
         viewModelScope.launch {
             val userId = googleAuthUiClient.getSignedInUser()?.id ?: return@launch
             categoryRepository.saveCategory(Category(name = name, userId = userId))
+        }
+    }
+
+    fun editCategory(category: Category, newName: String) {
+        if (newName.isBlank()) {
+            return
+        }
+        viewModelScope.launch {
+            categoryRepository.updateCategory(category.copy(name = newName))
         }
     }
 
