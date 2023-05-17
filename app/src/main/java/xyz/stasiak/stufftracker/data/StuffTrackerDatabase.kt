@@ -15,7 +15,7 @@ import xyz.stasiak.stufftracker.data.productdetails.ProductDetailsDao
 
 @Database(
     entities = [Category::class, Product::class, ProductDetails::class, ItemCalculation::class],
-    version = 9,
+    version = 10,
     exportSchema = false
 )
 abstract class StuffTrackerDatabase : RoomDatabase() {

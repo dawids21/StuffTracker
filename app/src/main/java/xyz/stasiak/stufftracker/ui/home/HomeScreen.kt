@@ -350,7 +350,8 @@ fun HomeBodyPreview() {
                     lastItemUses = 5,
                     isCalculated = true,
                     remindDialogShown = false,
-                    depletedDialogShown = false
+                    depletedDialogShown = false,
+                    userId = ""
                 ),
                 Product(
                     productId = 2,
@@ -362,14 +363,15 @@ fun HomeBodyPreview() {
                     lastItemUses = 5,
                     isCalculated = true,
                     remindDialogShown = false,
-                    depletedDialogShown = false
+                    depletedDialogShown = false,
+                    userId = ""
                 ),
             ),
             categories = listOf(
-                Category(name = "Coffee"),
-                Category(name = "Hygiene"),
-                Category(name = "Food"),
-                Category(name = "Sport"),
+                Category(name = "Coffee", userId = ""),
+                Category(name = "Hygiene", userId = ""),
+                Category(name = "Food", userId = ""),
+                Category(name = "Sport", userId = ""),
             ),
             onProductClick = {},
             onProductUse = {},
@@ -395,7 +397,8 @@ fun ProductEntryPreview() {
                 lastItemUses = 5,
                 isCalculated = true,
                 remindDialogShown = false,
-                depletedDialogShown = false
+                depletedDialogShown = false,
+                userId = ""
             ),
             onProductClick = {},
             onProductUse = {},

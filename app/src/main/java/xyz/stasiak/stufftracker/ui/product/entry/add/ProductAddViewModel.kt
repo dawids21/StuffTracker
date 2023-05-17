@@ -6,6 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import xyz.stasiak.stufftracker.auth.GoogleAuthUiClient
 import xyz.stasiak.stufftracker.data.category.Category
 import xyz.stasiak.stufftracker.data.category.CategoryRepository
 import xyz.stasiak.stufftracker.data.product.ProductService
@@ -17,7 +18,8 @@ import xyz.stasiak.stufftracker.ui.product.entry.ProductUiStatus
 class ProductAddViewModel(
     private val productDetailsRepository: ProductDetailsRepository,
     private val categoryRepository: CategoryRepository,
-    private val productService: ProductService
+    private val productService: ProductService,
+    private val googleAuthUiClient: GoogleAuthUiClient
 ) : ViewModel() {
     var productEntryUiState by mutableStateOf(ProductEntryUiState())
         private set
@@ -27,7 +29,8 @@ class ProductAddViewModel(
 
     init {
         viewModelScope.launch {
-            categoryRepository.getCategories().collect {
+            val userId = googleAuthUiClient.getSignedInUser()?.id ?: ""
+            categoryRepository.getCategories(userId).collect {
                 categories = it
             }
         }
@@ -81,8 +84,9 @@ class ProductAddViewModel(
             is ProductEntryEvent.SaveClicked -> {
                 if (validateDetails()) {
                     viewModelScope.launch {
+                        val userId = googleAuthUiClient.getSignedInUser()?.id ?: return@launch
                         val productDetails =
-                            productEntryUiState.productDetailsEntry.toProductDetails()
+                            productEntryUiState.productDetailsEntry.toProductDetails(userId)
                         val id = productDetailsRepository.insert(productDetails)
                         val productDetailsWithId = productDetails.copy(id = id.toInt())
                         productService.createProduct(productDetailsWithId)

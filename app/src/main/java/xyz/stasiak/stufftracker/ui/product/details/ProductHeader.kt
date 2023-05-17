@@ -94,7 +94,8 @@ fun ProductHeaderPreview() {
                 lastItemUses = 5,
                 isCalculated = true,
                 remindDialogShown = false,
-                depletedDialogShown = false
+                depletedDialogShown = false,
+                userId = ""
             ),
             onProductUse = {},
             onProductDeplete = {},

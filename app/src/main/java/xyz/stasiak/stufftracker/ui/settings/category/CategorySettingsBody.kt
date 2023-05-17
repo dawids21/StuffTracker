@@ -65,7 +65,10 @@ fun CategorySettingsBody(
 fun CategorySettingsBodyPreview() {
     StuffTrackerTheme(dynamicColor = false, darkTheme = true) {
         CategorySettingsBody(
-            categories = listOf(Category(name = "Category 1"), Category(name = "Category 2")),
+            categories = listOf(
+                Category(name = "Category 1", userId = ""),
+                Category(name = "Category 2", userId = "")
+            ),
             onAdd = {},
             onDelete = {}
         )

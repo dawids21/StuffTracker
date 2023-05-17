@@ -10,5 +10,6 @@ data class ProductDetails(
     val name: String,
     val categoryId: Int?,
     val numOfItems: Int,
-    val image: String?
+    val image: String?,
+    val userId: String
 )

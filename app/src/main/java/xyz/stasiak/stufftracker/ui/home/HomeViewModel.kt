@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import xyz.stasiak.stufftracker.auth.GoogleAuthUiClient
 import xyz.stasiak.stufftracker.data.category.CategoryRepository
 import xyz.stasiak.stufftracker.data.itemcalculation.ItemCalculationService
 import xyz.stasiak.stufftracker.data.product.Product
@@ -22,6 +23,7 @@ class HomeViewModel(
     categoryRepository: CategoryRepository,
     private val itemCalculationService: ItemCalculationService,
     private val productDetailsRepository: ProductDetailsRepository,
+    googleAuthUiClient: GoogleAuthUiClient
 ) :
     ViewModel() {
 
@@ -29,10 +31,11 @@ class HomeViewModel(
         private const val TIMEOUT_MILLIS = 5_000L
     }
 
-    val products = productRepository.getProducts()
+    val products = productRepository.getProducts(googleAuthUiClient.getSignedInUser()?.id ?: "")
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(TIMEOUT_MILLIS), emptyList())
-    val categories = categoryRepository.getCategories()
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(TIMEOUT_MILLIS), emptyList())
+    val categories =
+        categoryRepository.getCategories(googleAuthUiClient.getSignedInUser()?.id ?: "")
+            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(TIMEOUT_MILLIS), emptyList())
     var toastShowState by mutableStateOf<ToastShowState>(ToastShowState.Hide)
         private set
 

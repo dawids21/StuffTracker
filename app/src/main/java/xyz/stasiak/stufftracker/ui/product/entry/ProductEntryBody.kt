@@ -128,7 +128,7 @@ fun ItemEditBodyPreview() {
                 numOfItems = "1"
             ),
             onValueChange = {},
-            categories = listOf(Category(id = 1, name = "Category")),
+            categories = listOf(Category(id = 1, name = "Category", userId = "")),
             fabHeight = (-16).dp
         )
     }
