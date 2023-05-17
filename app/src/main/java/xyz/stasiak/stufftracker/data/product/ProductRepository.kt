@@ -3,7 +3,7 @@ package xyz.stasiak.stufftracker.data.product
 import kotlinx.coroutines.flow.Flow
 
 interface ProductRepository {
-    fun getProducts(): Flow<List<Product>>
+    fun getProducts(userId: String): Flow<List<Product>>
 
     fun getProduct(id: Int): Flow<Product>
 

@@ -17,13 +17,14 @@ data class ProductDetailsEntry(
     val numOfItemsValid: Boolean = true,
     val image: String? = null,
 ) {
-    fun toProductDetails(): ProductDetails {
+    fun toProductDetails(userId: String): ProductDetails {
         return ProductDetails(
             id = id,
             name = name,
             categoryId = categoryId,
             numOfItems = numOfItems.toInt(),
             image = image,
+            userId = userId
         )
     }
 }

@@ -16,5 +16,6 @@ data class Product(
     val isCalculated: Boolean,
     val remindDialogShown: Boolean,
     val depletedDialogShown: Boolean,
-    val image: String?
+    val image: String?,
+    val userId: String
 )

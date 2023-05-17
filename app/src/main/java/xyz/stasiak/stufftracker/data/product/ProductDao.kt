@@ -9,8 +9,8 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ProductDao {
-    @Query("SELECT * FROM products")
-    fun getProducts(): Flow<List<Product>>
+    @Query("SELECT * FROM products WHERE userId = :userId")
+    fun getProducts(userId: String): Flow<List<Product>>
 
     @Query("SELECT * FROM products WHERE id = :id")
     fun getProduct(id: Int): Flow<Product>

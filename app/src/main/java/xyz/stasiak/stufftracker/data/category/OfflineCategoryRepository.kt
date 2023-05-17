@@ -3,7 +3,8 @@ package xyz.stasiak.stufftracker.data.category
 import kotlinx.coroutines.flow.Flow
 
 class OfflineCategoryRepository(private val categoryDao: CategoryDao) : CategoryRepository {
-    override fun getCategories(): Flow<List<Category>> = categoryDao.getCategories()
+    override fun getCategories(userId: String): Flow<List<Category>> =
+        categoryDao.getCategories(userId)
 
     override suspend fun getCategory(id: Int): Category = categoryDao.getCategory(id)
 

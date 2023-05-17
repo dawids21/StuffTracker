@@ -3,7 +3,7 @@ package xyz.stasiak.stufftracker.data.product
 import kotlinx.coroutines.flow.Flow
 
 class OfflineProductRepository(private val productDao: ProductDao) : ProductRepository {
-    override fun getProducts(): Flow<List<Product>> = productDao.getProducts()
+    override fun getProducts(userId: String): Flow<List<Product>> = productDao.getProducts(userId)
 
     override fun getProduct(id: Int): Flow<Product> = productDao.getProduct(id)
 

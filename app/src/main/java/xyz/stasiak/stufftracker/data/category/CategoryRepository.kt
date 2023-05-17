@@ -3,7 +3,7 @@ package xyz.stasiak.stufftracker.data.category
 import kotlinx.coroutines.flow.Flow
 
 interface CategoryRepository {
-    fun getCategories(): Flow<List<Category>>
+    fun getCategories(userId: String): Flow<List<Category>>
 
     suspend fun getCategory(id: Int): Category
 

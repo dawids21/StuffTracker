@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import xyz.stasiak.stufftracker.auth.GoogleAuthUiClient
 import xyz.stasiak.stufftracker.data.category.Category
 import xyz.stasiak.stufftracker.data.category.CategoryRepository
 import xyz.stasiak.stufftracker.data.product.ProductService
@@ -26,7 +27,8 @@ class ProductEditViewModel(
     savedStateHandle: SavedStateHandle,
     private val productDetailsRepository: ProductDetailsRepository,
     private val categoryRepository: CategoryRepository,
-    private val productService: ProductService
+    private val productService: ProductService,
+    private val googleAuthUiClient: GoogleAuthUiClient
 ) : ViewModel() {
     var productEntryUiState by mutableStateOf(ProductEntryUiState())
         private set
@@ -36,6 +38,7 @@ class ProductEditViewModel(
 
     init {
         viewModelScope.launch {
+            val userId = googleAuthUiClient.getSignedInUser()?.id ?: ""
             productEntryUiState =
                 savedStateHandle.getStateFlow<Int?>(ProductEditDestination.productIdArg, null)
                     .filterNotNull()
@@ -43,7 +46,7 @@ class ProductEditViewModel(
                     .map { ProductEntryUiState(productDetailsEntry = it.toProductDetailsEntry()) }
                     .first()
 
-            categoryRepository.getCategories().collect {
+            categoryRepository.getCategories(userId).collect {
                 categories = it
             }
         }
@@ -97,8 +100,9 @@ class ProductEditViewModel(
             is ProductEntryEvent.SaveClicked -> {
                 if (validateDetails()) {
                     viewModelScope.launch {
+                        val userId = googleAuthUiClient.getSignedInUser()?.id ?: return@launch
                         val productDetails =
-                            productEntryUiState.productDetailsEntry.toProductDetails()
+                            productEntryUiState.productDetailsEntry.toProductDetails(userId)
                         productDetailsRepository.update(productDetails)
                         productService.updateProductDetails(productDetails)
                         productEntryUiState =

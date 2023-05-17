@@ -35,7 +35,8 @@ object AppViewModelProvider {
                 ItemCalculationService(
                     stuffTrackerApplication().container.itemCalculationRepository
                 ),
-                stuffTrackerApplication().container.productDetailsRepository
+                stuffTrackerApplication().container.productDetailsRepository,
+                stuffTrackerApplication().container.googleAuthUiClient
             )
         }
 
@@ -61,8 +62,9 @@ object AppViewModelProvider {
                 stuffTrackerApplication().container.categoryRepository,
                 ProductService(
                     stuffTrackerApplication().container.productRepository,
-                    stuffTrackerApplication().container.categoryRepository
-                )
+                    stuffTrackerApplication().container.categoryRepository,
+                ),
+                stuffTrackerApplication().container.googleAuthUiClient
             )
         }
 
@@ -74,12 +76,16 @@ object AppViewModelProvider {
                 ProductService(
                     stuffTrackerApplication().container.productRepository,
                     stuffTrackerApplication().container.categoryRepository
-                )
+                ),
+                stuffTrackerApplication().container.googleAuthUiClient
             )
         }
 
         initializer {
-            CategorySettingsViewModel(stuffTrackerApplication().container.categoryRepository)
+            CategorySettingsViewModel(
+                stuffTrackerApplication().container.categoryRepository,
+                stuffTrackerApplication().container.googleAuthUiClient
+            )
         }
 
         initializer {

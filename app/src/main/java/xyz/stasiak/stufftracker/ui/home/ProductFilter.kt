@@ -52,14 +52,14 @@ fun ItemFilterPreview() {
     StuffTrackerTheme(dynamicColor = false, darkTheme = true) {
         ProductFilter(
             categories = listOf(
-                Category(name = "Coffee"),
-                Category(name = "Hygiene"),
-                Category(name = "Food"),
-                Category(name = "Sport"),
+                Category(name = "Coffee", userId = ""),
+                Category(name = "Hygiene", userId = ""),
+                Category(name = "Food", userId = ""),
+                Category(name = "Sport", userId = ""),
             ),
             filtered = listOf(
-                Category(name = "Hygiene"),
-                Category(name = "Food"),
+                Category(name = "Hygiene", userId = ""),
+                Category(name = "Food", userId = ""),
             ),
             addToFilter = {},
             removeFromFilter = {}

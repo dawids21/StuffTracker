@@ -112,5 +112,6 @@ private fun ProductDetails.toProduct(category: Category?) = Product(
     isCalculated = false,
     remindDialogShown = false,
     depletedDialogShown = false,
-    image = image
+    image = image,
+    userId = userId
 )
