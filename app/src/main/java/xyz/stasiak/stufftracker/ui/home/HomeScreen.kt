@@ -2,8 +2,10 @@ package xyz.stasiak.stufftracker.ui.home
 
 import android.content.Intent
 import android.widget.Toast
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -36,6 +38,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Top
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -166,13 +169,24 @@ fun HomeBody(
 ) {
     var searchValue by remember(showSearch) { mutableStateOf("") }
     val filteredCategories = remember { mutableStateListOf<Category>() }
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
+        ClockAnimation(
+            size = 200.dp,
+            modifier = Modifier
+                .align(Alignment.Center)
+                .alpha(0.2f)
+        )
+    }
     Column(
         modifier = modifier
             .padding(16.dp)
             .fillMaxSize(),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        if (showSearch) {
+        AnimatedVisibility(visible = showSearch) {
             ProductSearch(
                 searchValue = searchValue,
                 onSearch = { searchValue = it },
