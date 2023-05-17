@@ -2,6 +2,7 @@ package xyz.stasiak.stufftracker.ui.home
 
 import android.content.Intent
 import android.widget.Toast
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -172,7 +173,7 @@ fun HomeBody(
             .fillMaxSize(),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        if (showSearch) {
+        AnimatedVisibility(visible = showSearch) {
             ProductSearch(
                 searchValue = searchValue,
                 onSearch = { searchValue = it },
