@@ -1,5 +1,6 @@
 package xyz.stasiak.stufftracker.ui.home
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -18,7 +19,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 
 @Composable
-fun ProductSearch(searchValue: String, onSearch: (String) -> Unit, modifier: Modifier = Modifier) {
+fun ProductSearch(searchValue: String, onSearch: (String) -> Unit, onBack: () -> Unit, modifier: Modifier = Modifier) {
     val focusManager = LocalFocusManager.current
     val focusRequester = remember { FocusRequester() }
     OutlinedTextField(
@@ -42,5 +43,8 @@ fun ProductSearch(searchValue: String, onSearch: (String) -> Unit, modifier: Mod
     DisposableEffect(Unit) {
         focusRequester.requestFocus()
         onDispose { }
+    }
+    BackHandler {
+        onBack()
     }
 }

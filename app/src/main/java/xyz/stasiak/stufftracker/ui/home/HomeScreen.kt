@@ -71,7 +71,7 @@ fun HomeScreen(
 ) {
     val products by viewModel.products.collectAsState()
     val categories by viewModel.categories.collectAsState()
-    val showSearch = remember { mutableStateOf(false) }
+    var showSearch by remember { mutableStateOf(false) }
     val context = LocalContext.current
     val toastShowState = viewModel.toastShowState
     LaunchedEffect(toastShowState) {
@@ -132,7 +132,7 @@ fun HomeScreen(
             StuffTrackerBottomAppBar(
                 onFabClick = navigateToProductAdd,
                 actions = {
-                    IconButton(onClick = { showSearch.value = !showSearch.value }) {
+                    IconButton(onClick = { showSearch = !showSearch }) {
                         Icon(
                             Icons.Filled.Search,
                             contentDescription = stringResource(R.string.search)
@@ -150,7 +150,8 @@ fun HomeScreen(
             onProductUse = { viewModel.useItem(it) },
             onProductDeplete = { viewModel.depleteItem(it) },
             onProductBuy = { viewModel.buyProduct(it) },
-            showSearch = showSearch.value,
+            showSearch = showSearch,
+            onBackSearch = { showSearch = false },
             modifier = Modifier.padding(innerPadding)
         )
     }
@@ -165,6 +166,7 @@ fun HomeBody(
     onProductDeplete: (Product) -> Unit,
     onProductBuy: (Product) -> Unit,
     showSearch: Boolean,
+    onBackSearch: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     var searchValue by remember(showSearch) { mutableStateOf("") }
@@ -190,6 +192,10 @@ fun HomeBody(
             ProductSearch(
                 searchValue = searchValue,
                 onSearch = { searchValue = it },
+                onBack = {
+                    onBackSearch()
+                    searchValue = ""
+                }
             )
         }
         if (productList.isEmpty()) {
@@ -391,7 +397,8 @@ fun HomeBodyPreview() {
             onProductUse = {},
             onProductDeplete = {},
             onProductBuy = {},
-            showSearch = false
+            showSearch = false,
+            onBackSearch = {},
         )
     }
 }
