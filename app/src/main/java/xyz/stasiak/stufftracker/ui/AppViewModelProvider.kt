@@ -84,7 +84,12 @@ object AppViewModelProvider {
         initializer {
             CategorySettingsViewModel(
                 stuffTrackerApplication().container.categoryRepository,
-                stuffTrackerApplication().container.googleAuthUiClient
+                stuffTrackerApplication().container.googleAuthUiClient,
+                stuffTrackerApplication().container.productDetailsRepository,
+                ProductService(
+                    stuffTrackerApplication().container.productRepository,
+                    stuffTrackerApplication().container.categoryRepository
+                )
             )
         }
 

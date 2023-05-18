@@ -15,6 +15,9 @@ interface ProductDetailsDao {
     @Query("SELECT * FROM product_details WHERE id = :id")
     suspend fun getProductDetails(id: Int): ProductDetails
 
+    @Query("SELECT * FROM product_details WHERE categoryId = :categoryId and userId = :userId")
+    suspend fun getProductDetailsByCategoryId(categoryId: Int, userId: String): List<ProductDetails>
+
     @Insert
     suspend fun insert(productDetails: ProductDetails): Long
 

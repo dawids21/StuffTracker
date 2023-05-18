@@ -10,6 +10,12 @@ class OfflineProductDetailsRepository(private val productDetailsDao: ProductDeta
     override suspend fun getProductDetails(productId: Int): ProductDetails =
         productDetailsDao.getProductDetails(productId)
 
+    override suspend fun getProductDetailsByCategoryId(
+        categoryId: Int,
+        userId: String
+    ): List<ProductDetails> =
+        productDetailsDao.getProductDetailsByCategoryId(categoryId, userId)
+
     override suspend fun insert(productDetails: ProductDetails) =
         productDetailsDao.insert(productDetails)
 

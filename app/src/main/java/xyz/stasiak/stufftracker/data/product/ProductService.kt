@@ -100,6 +100,28 @@ class ProductService(
             )
         )
     }
+
+    suspend fun onCategoryNameChanged(category: Category, productsDetails: List<ProductDetails>) {
+        for (productDetails in productsDetails) {
+            val product = productRepository.getProductByProductId(productDetails.id)
+            productRepository.update(
+                product.copy(
+                    category = category.name
+                )
+            )
+        }
+    }
+
+    suspend fun onCategoryDeleted(productsDetails: List<ProductDetails>) {
+        for (productDetails in productsDetails) {
+            val product = productRepository.getProductByProductId(productDetails.id)
+            productRepository.update(
+                product.copy(
+                    category = null
+                )
+            )
+        }
+    }
 }
 
 private fun ProductDetails.toProduct(category: Category?) = Product(

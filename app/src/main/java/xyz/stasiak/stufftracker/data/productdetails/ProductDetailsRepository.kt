@@ -7,6 +7,8 @@ interface ProductDetailsRepository {
 
     suspend fun getProductDetails(productId: Int): ProductDetails
 
+    suspend fun getProductDetailsByCategoryId(categoryId: Int, userId: String): List<ProductDetails>
+
     suspend fun insert(productDetails: ProductDetails): Long
 
     suspend fun update(productDetails: ProductDetails)
